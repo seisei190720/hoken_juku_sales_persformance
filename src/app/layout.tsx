@@ -10,8 +10,8 @@ import SideBar from "./_components/sidebar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "MUI 管理画面",
-  description: "Material-UI Admin Page Example",
+  title: "ほけん塾 | 営業成績管理システム",
+  description: "HokenJuku Sales Performance Management System",
 };
 
 export default function RootLayout({

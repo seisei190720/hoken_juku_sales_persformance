@@ -20,6 +20,7 @@ type MenuItem = {
   icon: React.ReactNode;
 };
 const menuList: MenuItem[] = [
+  { name: "マイページ", url: "/mypage", icon: <BeachAccessIcon /> },
   { name: "ページ１", url: "/page1", icon: <BeachAccessIcon /> },
   { name: "ページ２", url: "/page2", icon: <CoffeeIcon /> },
 ];

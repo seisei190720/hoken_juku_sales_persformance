@@ -11,7 +11,7 @@ const NavigationBar = () => {
       <Toolbar>
         <Typography variant="h6" noWrap component="div">
           <Link href="/" underline="none" color="inherit">
-            MUI 管理画面
+            ほけん塾 営業成績管理システム
           </Link>
         </Typography>
       </Toolbar>

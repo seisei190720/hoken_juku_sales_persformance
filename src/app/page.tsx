@@ -11,21 +11,7 @@ import {
 export default function Home() {
   return (
     <Container>
-      <Paper elevation={3} sx={{ p: 5 }}>
-        <h1 className={styles.title}>Welcome to Material UI!</h1>
-        <FormGroup>
-          <FormControlLabel
-            control={<Checkbox defaultChecked />}
-            label="Label"
-          />
-          <FormControlLabel required control={<Checkbox />} label="Required" />
-          <FormControlLabel disabled control={<Checkbox />} label="Disabled" />
-        </FormGroup>
-        <hr />
-        <Button variant="contained" color="primary">
-          ボタン
-        </Button>
-      </Paper>
+      <>本ページは削除する</>
     </Container>
   );
 }
