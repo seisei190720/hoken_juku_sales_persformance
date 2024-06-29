@@ -40,9 +40,7 @@ const SideMenu: FC<Props> = ({ menuList, selectedMenu, setSelectedMenu }) => {
                 selected={menuKind === selectedMenu}
               >
                 <ListItemIcon>{icon}</ListItemIcon>
-                {/* <Link href={url} underline="none" color="inherit"> */}
                 {name}
-                {/* </Link> */}
               </ListItemButton>
             </ListItem>
           ))}
