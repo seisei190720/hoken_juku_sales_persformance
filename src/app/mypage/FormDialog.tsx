@@ -14,13 +14,15 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import dayjs from "dayjs";
 import { FC, useCallback, useState } from "react";
-import { ConsultContentMst, RouteMst } from "../types";
+import { ConsultContentMst, NewVisitor, RouteMst } from "../types";
+import { useNewVisitor } from "./hooks/useNewVisitor";
 
 type Props = {
   openFormDialog: boolean;
   handleClose: () => void;
   routeMst: RouteMst[];
   consultContentMst: ConsultContentMst[];
+  postVisitorData: (newData: NewVisitor) => Promise<void>;
 };
 
 const FormDialog: FC<Props> = ({
@@ -28,8 +30,10 @@ const FormDialog: FC<Props> = ({
   handleClose,
   routeMst,
   consultContentMst,
+  postVisitorData,
 }) => {
   const today = dayjs().format("YYYY-MM-DD");
+  const { newVisitor, submitNewVisitor } = useNewVisitor(postVisitorData);
 
   const [selectedRoute, setSelectedRoute] = useState<RouteMst | undefined>(
     undefined
@@ -129,7 +133,7 @@ const FormDialog: FC<Props> = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>キャンセル</Button>
-          <Button type="submit">新規登録</Button>
+          <Button onClick={submitNewVisitor}>新規登録</Button>
         </DialogActions>
       </Dialog>
     </>

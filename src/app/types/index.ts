@@ -9,6 +9,7 @@ export type MenuKind = "mypage" | "search" | "dashboard";
 export type applicationStatus = "未成立" | "成立" | "不成立" | null;
 
 export type IndividualSalesResult = {
+  uuid: string;
   userId: string;
   firstVisitDate: string; //初回来店日
   visitRoute: string; //経路 mst
@@ -22,6 +23,14 @@ export type IndividualSalesResult = {
   // result: string;//これいらないんじゃね？
   establishDate: string | null; //成立日
   thankyou: boolean; //ありがとう
+};
+
+export type NewVisitor = {
+  firstVisitDate: string | null;
+  visitRoute: string | null;
+  name: string | null;
+  nextAppointment: boolean;
+  consultContent: string | null;
 };
 
 export type RouteMst = {

@@ -8,15 +8,16 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { applicationStatus, IndividualSalesResult } from "../types";
 import Chip from "@mui/material/Chip";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
 
 type Props = {
   salesResults: IndividualSalesResult[];
 };
 const VisitorList: FC<Props> = ({ salesResults }) => {
   const statusChipElm = (status: applicationStatus) => {
-    if (status === null) {
-      return "-";
-    }
     switch (status) {
       case "成立":
         return <Chip label={status} color="success" />;
@@ -24,6 +25,8 @@ const VisitorList: FC<Props> = ({ salesResults }) => {
         return <Chip label={status} color="warning" />;
       case "未成立":
         return <Chip label={status} color="info" />;
+      case null:
+        return <Button>申込情報を登録する＞</Button>;
     }
   };
   return (
@@ -31,13 +34,15 @@ const VisitorList: FC<Props> = ({ salesResults }) => {
       {/* componentにライブラリのPaperをつけることで立体感がでてよくなります */}
       <Table>
         <TableHead>
-          <TableRow style={{ backgroundColor: "#F2F2F2" }}>
+          <TableRow sx={{ backgroundColor: "#F2F2F2" }}>
             <TableCell>来店日</TableCell>
             <TableCell>お名前</TableCell>
             <TableCell>経路</TableCell>
             <TableCell>相談内容</TableCell>
             <TableCell>次アポ</TableCell>
-            <TableCell>状態</TableCell>
+            <TableCell>申込状態</TableCell>
+            <TableCell sx={{ width: 20 }}>編集</TableCell>
+            <TableCell sx={{ width: 20 }}>削除</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -53,6 +58,17 @@ const VisitorList: FC<Props> = ({ salesResults }) => {
               <TableCell>{row.consultContent}</TableCell>
               <TableCell>{row.nextAppointment ? "◯" : "-"}</TableCell>
               <TableCell>{statusChipElm(row.status)}</TableCell>
+              {/* FIXME: 最悪menuアイコンにしてアンカーで「編集・削除」を選択できるようにする  */}
+              <TableCell>
+                <IconButton>
+                  <EditIcon />
+                </IconButton>
+              </TableCell>
+              <TableCell>
+                <IconButton>
+                  <DeleteIcon />
+                </IconButton>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -2,17 +2,24 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FC, useState } from "react";
-import { ConsultContentMst, IndividualSalesResult, RouteMst } from "../types";
+import {
+  ConsultContentMst,
+  IndividualSalesResult,
+  NewVisitor,
+  RouteMst,
+} from "../types";
 import FormDialog from "./FormDialog";
 
 type Props = {
-  salesResults: IndividualSalesResult[];
+  salesResultData: IndividualSalesResult[];
+  postVisitorData: (newData: NewVisitor) => Promise<void>;
   routeMst: RouteMst[];
   consultContentMst: ConsultContentMst[];
 };
 
 const HeaderArea: FC<Props> = ({
-  salesResults,
+  salesResultData,
+  postVisitorData,
   routeMst,
   consultContentMst,
 }) => {
@@ -44,6 +51,7 @@ const HeaderArea: FC<Props> = ({
         handleClose={handleClose}
         routeMst={routeMst}
         consultContentMst={consultContentMst}
+        postVisitorData={postVisitorData}
       />
     </>
   );
