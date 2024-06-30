@@ -8,7 +8,7 @@ import {
   NewVisitor,
   RouteMst,
 } from "../types";
-import FormDialog from "./FormDialog";
+import VisitorFormDialog from "./VisitorFormDialog";
 
 type Props = {
   salesResultData: IndividualSalesResult[];
@@ -46,7 +46,7 @@ const HeaderArea: FC<Props> = ({
           </Button>
         </Stack>
       </Stack>
-      <FormDialog
+      <VisitorFormDialog
         openFormDialog={openFormDialog}
         handleClose={handleClose}
         routeMst={routeMst}

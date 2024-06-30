@@ -1,4 +1,9 @@
-import { Application, IndividualSalesResult, NewVisitor } from "../types";
+import {
+  Application,
+  NewApplication,
+  IndividualSalesResult,
+  NewVisitor,
+} from "../types";
 import useSWR from "swr";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
@@ -65,5 +70,23 @@ export const useSalesResultApi = (userId: string) => {
     [userId]
   );
 
-  return { salesResultData, postVisitorData };
+  const updateApplicationsData = useCallback(
+    async (newData: NewApplication[]) => {
+      try {
+        // const response = await axios.post(url, {
+        //   userId,
+        //   firstVisitDate: newData.firstVisitDate,
+        //   visitRoute: newData.visitRoute?.name,
+        //   name: newData.name,
+        //   nextAppointment: newData.nextAppointment,
+        //   consultContent: newData.consultContent?.name,
+        // });
+      } catch (error) {
+        console.error("Error posting data:", error);
+      }
+    },
+    [userId]
+  );
+
+  return { salesResultData, postVisitorData, updateApplicationsData };
 };

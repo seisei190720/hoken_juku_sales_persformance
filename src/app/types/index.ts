@@ -21,12 +21,18 @@ export type IndividualSalesResult = {
 };
 
 export type Application = {
+  applicationDate: string; //申込日
   product: string; //mst
   company: string; //mst
   firstYearFee: number | null; //初年度手数料
-  applicationDate: string | null; //申込日
-  status: applicationStatus | null; //ステータス mst(未成立、成立、不成立)
+  status: applicationStatus; //ステータス mst(未成立、成立、不成立)
   establishDate: string | null; //成立日
+};
+
+export type NewApplication = {
+  applicationDate: string;
+  product: ProductMst | null;
+  company: CompanyMst | null;
 };
 
 export type NewVisitor = {
@@ -43,6 +49,16 @@ export type RouteMst = {
 };
 
 export type ConsultContentMst = {
+  id: string;
+  name: string;
+};
+
+export type ProductMst = {
+  id: string;
+  name: string;
+};
+
+export type CompanyMst = {
   id: string;
   name: string;
 };

@@ -27,14 +27,13 @@ type Props = {
   postVisitorData: (newData: NewVisitor) => Promise<void>;
 };
 
-const FormDialog: FC<Props> = ({
+const VisitorFormDialog: FC<Props> = ({
   openFormDialog,
   handleClose,
   routeMst,
   consultContentMst,
   postVisitorData,
 }) => {
-  const today = dayjs().format("YYYY-MM-DD");
   const {
     newVisitorData,
     updateFirstVisitDate,
@@ -180,4 +179,4 @@ const FormDialog: FC<Props> = ({
   );
 };
 
-export default FormDialog;
+export default VisitorFormDialog;

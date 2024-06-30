@@ -1,0 +1,152 @@
+import { IconButton, Typography } from "@mui/material";
+import { FC, useEffect } from "react";
+import {
+  NewApplication,
+  CompanyMst,
+  IndividualSalesResult,
+  ProductMst,
+} from "../types";
+import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import { useNewApplications } from "./hooks/useNewApplications";
+
+type Props = {
+  openFormDialog: boolean;
+  handleClose: () => void;
+  salesResult: IndividualSalesResult | undefined;
+  productMst: ProductMst[];
+  companyMst: CompanyMst[];
+  updateApplicationsData: (newData: NewApplication[]) => Promise<void>;
+};
+
+const ApplicationFormDialog: FC<Props> = ({
+  openFormDialog,
+  handleClose,
+  salesResult,
+  productMst,
+  companyMst,
+  updateApplicationsData,
+}) => {
+  const { newApplications, addProduct, submitNewVisitor } = useNewApplications(
+    salesResult,
+    productMst,
+    companyMst,
+    updateApplicationsData
+  );
+  useEffect(() => {
+    console.log("newApplications");
+    console.log(newApplications);
+  }, []);
+
+  if (!salesResult) return <></>;
+  return (
+    <Dialog
+      open={openFormDialog}
+      onClose={handleClose}
+      fullWidth
+      maxWidth="lg"
+      PaperProps={{
+        component: "form",
+      }}
+    >
+      <DialogTitle>{`${salesResult.name}さんの申込情報登録`}</DialogTitle>
+      <DialogContent>
+        <Stack gap={3} direction="column">
+          <DialogContentText>
+            申込情報を入力してください。登録後にも内容を編集できます。
+          </DialogContentText>
+          {newApplications.map((app, idx) => {
+            return (
+              <Stack gap={3} direction="row" alignItems="flex-end">
+                <Typography variant="h6">{`${idx}.`}</Typography>
+                <TextField
+                  // autoFocus
+                  required
+                  id={`${idx}_applicationDate`}
+                  name={`${idx}_applicationDate`}
+                  label="申込日"
+                  value={app.applicationDate}
+                  // onChange={(e) => updateFirstVisitDate(e.target.value)}
+                  type="date"
+                  fullWidth
+                  variant="standard"
+                />
+                <FormControl required variant="standard" fullWidth>
+                  <InputLabel>保険会社</InputLabel>
+                  <Select
+                    labelId={`${idx}_company`}
+                    id={`${idx}_company`}
+                    value={app.company?.id}
+                    label="保険会社"
+                    //   onChange={updateRoute}
+                  >
+                    {companyMst.map((r) => (
+                      <MenuItem value={r.id}>{r.name}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <FormControl required variant="standard" fullWidth>
+                  <InputLabel>商品</InputLabel>
+                  <Select
+                    labelId={`${idx}_product`}
+                    id={`${idx}_product`}
+                    value={app.product?.id}
+                    label="商品"
+                    //   onChange={updateRoute}
+                  >
+                    {productMst.map((r) => (
+                      <MenuItem value={r.id}>{r.name}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <IconButton>
+                  <DeleteIcon />
+                </IconButton>
+              </Stack>
+            );
+          })}
+          <Stack direction="row" justifyContent="flex-start">
+            <Button
+              variant="text"
+              startIcon={<AddIcon />}
+              onClick={addProduct}
+              color="inherit"
+            >
+              追加
+            </Button>
+          </Stack>
+        </Stack>
+      </DialogContent>
+      <DialogActions>
+        <Stack gap={1} direction="row">
+          <Button onClick={handleClose}>キャンセル</Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              submitNewVisitor();
+              handleClose();
+            }}
+          >
+            新規登録
+          </Button>
+        </Stack>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+export default ApplicationFormDialog;

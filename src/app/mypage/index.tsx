@@ -17,8 +17,9 @@ type Props = {
 type MyPageMode = "visitor" | "applicator";
 
 const MyPage: FC<Props> = ({ user }) => {
-  const { routeMst, consultContentMst } = useMockData();
-  const { salesResultData, postVisitorData } = useSalesResultApi(user.userId);
+  const { routeMst, consultContentMst, productMst, companyMst } = useMockData();
+  const { salesResultData, postVisitorData, updateApplicationsData } =
+    useSalesResultApi(user.userId);
   const [viewMode, setViewMode] = useState<MyPageMode>("visitor");
 
   const updateViewMode = useCallback(
@@ -61,7 +62,12 @@ const MyPage: FC<Props> = ({ user }) => {
               routeMst={routeMst}
               consultContentMst={consultContentMst}
             />
-            <VisitorList salesResults={salesResultData || []} />
+            <VisitorList
+              salesResults={salesResultData || []}
+              productMst={productMst}
+              companyMst={companyMst}
+              updateApplicationsData={updateApplicationsData}
+            />
           </>
         ) : (
           <Typography>申込者一覧ページ_作成中</Typography>
