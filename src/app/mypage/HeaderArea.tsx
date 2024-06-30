@@ -41,7 +41,7 @@ const HeaderArea: FC<Props> = ({
         </Stack>
         <Stack direction="row" spacing={2}>
           <Button variant="outlined">レポートを確認する</Button>
-          <Button variant="outlined" onClick={handleClickOpen}>
+          <Button variant="contained" onClick={handleClickOpen}>
             来店記録を追加する
           </Button>
         </Stack>

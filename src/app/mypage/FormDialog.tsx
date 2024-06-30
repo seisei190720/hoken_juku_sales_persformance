@@ -93,6 +93,7 @@ const FormDialog: FC<Props> = ({
               label="来店日"
               // defaultValue={today}
               value={newVisitorData.firstVisitDate}
+              onChange={(e) => updateFirstVisitDate(e.target.value)}
               type="date"
               fullWidth
               variant="standard"
@@ -150,6 +151,7 @@ const FormDialog: FC<Props> = ({
         <DialogActions>
           <Button onClick={handleClose}>キャンセル</Button>
           <Button
+            variant="contained"
             onClick={() => {
               submitNewVisitor();
               handleClose();

@@ -16,13 +16,17 @@ export type IndividualSalesResult = {
   name: string; //お名前
   nextAppointment: boolean; //次アポ
   consultContent: string; //相談内容 mst(生保、損保、その他)
-  products: string[]; //mst
+  applications: Application[];
+  thankyou: boolean; //ありがとう
+};
+
+export type Application = {
+  product: string; //mst
+  company: string; //mst
   firstYearFee: number | null; //初年度手数料
   applicationDate: string | null; //申込日
   status: applicationStatus | null; //ステータス mst(未成立、成立、不成立)
-  // result: string;//これいらないんじゃね？
   establishDate: string | null; //成立日
-  thankyou: boolean; //ありがとう
 };
 
 export type NewVisitor = {

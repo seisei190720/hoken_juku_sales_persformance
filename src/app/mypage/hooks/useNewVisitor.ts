@@ -11,7 +11,7 @@ export const useNewVisitor = (
   const today = dayjs().format("YYYY-MM-DD");
 
   const [newVisitorData, setNewVisitorData] = useState<NewVisitor>({
-    firstVisitDate: today, //今日の日付を入れる
+    firstVisitDate: today,
     visitRoute: null,
     name: null,
     nextAppointment: false,

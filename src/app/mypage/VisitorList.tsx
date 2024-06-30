@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -17,18 +17,21 @@ type Props = {
   salesResults: IndividualSalesResult[];
 };
 const VisitorList: FC<Props> = ({ salesResults }) => {
-  const statusChipElm = (status: applicationStatus) => {
-    switch (status) {
-      case "成立":
-        return <Chip label={status} color="success" />;
-      case "不成立":
-        return <Chip label={status} color="warning" />;
-      case "未成立":
-        return <Chip label={status} color="info" />;
-      case null:
-        return <Button>申込情報を登録する＞</Button>;
-    }
-  };
+  // const statusChipElm = (status: applicationStatus) => {
+  //   switch (status) {
+  //     case "成立":
+  //       return <Chip label={status} color="success" />;
+  //     case "不成立":
+  //       return <Chip label={status} color="warning" />;
+  //     case "未成立":
+  //       return <Chip label={status} color="info" />;
+  //     case null:
+  //       return <Button>申込情報を登録する＞</Button>;
+  //   }
+  // };
+  useEffect(() => {
+    console.log(salesResults);
+  }, [salesResults]);
   return (
     <TableContainer component={Paper} style={{ marginBottom: 30 }}>
       {/* componentにライブラリのPaperをつけることで立体感がでてよくなります */}
@@ -40,7 +43,8 @@ const VisitorList: FC<Props> = ({ salesResults }) => {
             <TableCell>経路</TableCell>
             <TableCell>相談内容</TableCell>
             <TableCell>次アポ</TableCell>
-            <TableCell>申込状態</TableCell>
+            <TableCell>申込件数</TableCell>
+            <TableCell></TableCell>
             <TableCell sx={{ width: 20 }}>編集</TableCell>
             <TableCell sx={{ width: 20 }}>削除</TableCell>
           </TableRow>
@@ -57,7 +61,10 @@ const VisitorList: FC<Props> = ({ salesResults }) => {
               <TableCell>{row.visitRoute}</TableCell>
               <TableCell>{row.consultContent}</TableCell>
               <TableCell>{row.nextAppointment ? "◯" : "-"}</TableCell>
-              <TableCell>{statusChipElm(row.status)}</TableCell>
+              <TableCell>{`${row.applications.length}件`}</TableCell>
+              <TableCell>
+                <Button>申込情報を登録する＞</Button>
+              </TableCell>
               {/* FIXME: 最悪menuアイコンにしてアンカーで「編集・削除」を選択できるようにする  */}
               <TableCell>
                 <IconButton>

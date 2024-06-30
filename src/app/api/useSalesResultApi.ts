@@ -1,4 +1,4 @@
-import { applicationStatus, IndividualSalesResult, NewVisitor } from "../types";
+import { Application, IndividualSalesResult, NewVisitor } from "../types";
 import useSWR from "swr";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
@@ -26,11 +26,14 @@ export const useSalesResultApi = (userId: string) => {
               name: v.name,
               nextAppointment: v.nextAppointment,
               consultContent: v.consultContent,
-              products: v.products || null,
-              firstYearFee: v.firstYearFee || null,
-              applicationDate: v.applicationDate || null,
-              status: v.status || null,
-              establishDate: v.establishDate || null,
+              applications: v.applications.map((a: Application) => ({
+                product: a.product || null,
+                company: a.company || null,
+                firstYearFee: a.firstYearFee || null,
+                applicationDate: a.applicationDate || null,
+                status: a.status || null,
+                establishDate: a.establishDate || null,
+              })),
               thankyou: v.thankyou,
             })
           );
