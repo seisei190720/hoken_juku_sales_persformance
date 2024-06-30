@@ -50,10 +50,10 @@ export const useSalesResultApi = (userId: string) => {
         const response = await axios.post(url, {
           userId,
           firstVisitDate: newData.firstVisitDate,
-          visitRoute: newData.visitRoute,
+          visitRoute: newData.visitRoute?.name,
           name: newData.name,
           nextAppointment: newData.nextAppointment,
-          consultContent: newData.consultContent,
+          consultContent: newData.consultContent?.name,
         });
       } catch (error) {
         console.error("Error posting data:", error);

@@ -27,18 +27,18 @@ export type IndividualSalesResult = {
 
 export type NewVisitor = {
   firstVisitDate: string | null;
-  visitRoute: string | null;
+  visitRoute: RouteMst | null;
   name: string | null;
   nextAppointment: boolean;
-  consultContent: string | null;
+  consultContent: ConsultContentMst | null;
 };
 
 export type RouteMst = {
-  id: number;
+  id: string;
   name: string;
 };
 
 export type ConsultContentMst = {
-  id: number;
+  id: string;
   name: string;
 };

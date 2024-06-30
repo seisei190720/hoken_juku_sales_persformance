@@ -1,3 +1,4 @@
+import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import Dialog from "@mui/material/Dialog";
@@ -10,6 +11,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import Snackbar from "@mui/material/Snackbar";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import dayjs from "dayjs";
@@ -33,22 +35,31 @@ const FormDialog: FC<Props> = ({
   postVisitorData,
 }) => {
   const today = dayjs().format("YYYY-MM-DD");
-  const { newVisitor, submitNewVisitor } = useNewVisitor(postVisitorData);
+  const {
+    newVisitorData,
+    updateFirstVisitDate,
+    updateName,
+    updateRoute,
+    updateConsultContent,
+    updateNextAppointment,
+    submitNewVisitor,
+  } = useNewVisitor(postVisitorData, routeMst, consultContentMst);
+  const [openSnackBar, setOpenSnackBar] = useState(false);
 
-  const [selectedRoute, setSelectedRoute] = useState<RouteMst | undefined>(
-    undefined
-  );
-  const [selectedConsultContent, setSelectedConsultContent] = useState<
-    ConsultContentMst | undefined
-  >(undefined);
+  const handleClickSnacBar = () => {
+    setOpenSnackBar(true);
+  };
 
-  const udpateSelectedRoute = useCallback((v: string) => {
-    setSelectedRoute(routeMst.find((r) => v === r.name));
-  }, []);
+  const handleCloseSnacBar = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
 
-  const udpateSelectedConsultContent = useCallback((v: string) => {
-    setSelectedConsultContent(consultContentMst.find((r) => v === r.name));
-  }, []);
+    setOpenSnackBar(false);
+  };
 
   return (
     <>
@@ -80,7 +91,8 @@ const FormDialog: FC<Props> = ({
               id="visitDate"
               name="visitDate"
               label="来店日"
-              defaultValue={today}
+              // defaultValue={today}
+              value={newVisitorData.firstVisitDate}
               type="date"
               fullWidth
               variant="standard"
@@ -93,15 +105,17 @@ const FormDialog: FC<Props> = ({
               type="text"
               fullWidth
               variant="standard"
+              value={newVisitorData.name}
+              onChange={(e) => updateName(e.target.value)}
             />
             <FormControl required variant="standard" fullWidth>
               <InputLabel>経路</InputLabel>
               <Select
                 labelId="route"
                 id="route"
-                value={selectedRoute?.name}
+                value={newVisitorData.visitRoute?.id}
                 label="経路"
-                onChange={(e) => udpateSelectedRoute(e.target.value)}
+                onChange={updateRoute}
               >
                 {routeMst.map((r) => (
                   <MenuItem value={r.id}>{r.name}</MenuItem>
@@ -113,9 +127,9 @@ const FormDialog: FC<Props> = ({
               <Select
                 labelId="consultContent"
                 id="consultContent"
-                value={selectedConsultContent?.name}
+                value={newVisitorData.consultContent?.id}
                 label="相談内容"
-                onChange={(e) => udpateSelectedConsultContent(e.target.value)}
+                onChange={updateConsultContent}
               >
                 {consultContentMst.map((r) => (
                   <MenuItem value={r.id}>{r.name}</MenuItem>
@@ -123,19 +137,43 @@ const FormDialog: FC<Props> = ({
               </Select>
             </FormControl>
             <FormControlLabel
-              control={<Checkbox />}
+              control={
+                <Checkbox
+                  checked={newVisitorData.nextAppointment}
+                  onChange={(e) => updateNextAppointment(e.target.checked)}
+                />
+              }
               label="次アポ取得済み"
-              sx={{
-                margin: "dense",
-              }}
             />
           </Stack>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>キャンセル</Button>
-          <Button onClick={submitNewVisitor}>新規登録</Button>
+          <Button
+            onClick={() => {
+              submitNewVisitor();
+              handleClose();
+              handleClickSnacBar();
+            }}
+          >
+            新規登録
+          </Button>
         </DialogActions>
       </Dialog>
+      <Snackbar
+        open={openSnackBar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnacBar}
+      >
+        <Alert
+          onClose={handleCloseSnacBar}
+          severity="success"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          来店者の登録が完了しました
+        </Alert>
+      </Snackbar>
     </>
   );
 };
