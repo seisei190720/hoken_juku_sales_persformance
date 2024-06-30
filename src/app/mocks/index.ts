@@ -1,4 +1,4 @@
-import { IndividualSalesResult } from "../types";
+import { ConsultContentMst, IndividualSalesResult, RouteMst } from "../types";
 
 export const useMockData = () => {
   const salesResults: IndividualSalesResult[] = [
@@ -73,5 +73,64 @@ export const useMockData = () => {
       thankyou: false,
     },
   ];
-  return { salesResults };
+
+  const routeMst: RouteMst[] = [
+    {
+      id: 1,
+      name: "ネット・電話",
+    },
+    {
+      id: 2,
+      name: "直来",
+    },
+    {
+      id: 3,
+      name: "セミナー",
+    },
+    {
+      id: 4,
+      name: "ご紹介",
+    },
+    {
+      id: 5,
+      name: "家族",
+    },
+    {
+      id: 6,
+      name: "募集人関連",
+    },
+    {
+      id: 7,
+      name: "その他",
+    },
+    {
+      id: 8,
+      name: "更改",
+    },
+    {
+      id: 9,
+      name: "自発的",
+    },
+    {
+      id: 10,
+      name: "フォロー",
+    },
+  ];
+
+  const consultContentMst: ConsultContentMst[] = [
+    {
+      id: 1,
+      name: "生保",
+    },
+    {
+      id: 2,
+      name: "損保",
+    },
+    {
+      id: 3,
+      name: "その他",
+    },
+  ];
+
+  return { salesResults, routeMst, consultContentMst };
 };

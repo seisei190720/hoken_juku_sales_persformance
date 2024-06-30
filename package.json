@@ -18,6 +18,7 @@
     "@mui/material-nextjs": "^5.15.11",
     "amazon-cognito-identity-js": "^6.3.12",
     "aws-amplify": "^6.3.8",
+    "dayjs": "^1.11.11",
     "next": "14.2.4",
     "react": "^18",
     "react-dom": "^18"

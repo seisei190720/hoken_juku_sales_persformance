@@ -6,7 +6,7 @@ export type MenuItem = {
 
 export type MenuKind = "mypage" | "search" | "dashboard";
 
-export type applicationStatus = "未成立" | "成立" | "不成立";
+export type applicationStatus = "未成立" | "成立" | "不成立" | null;
 
 export type IndividualSalesResult = {
   userId: string;
@@ -22,4 +22,14 @@ export type IndividualSalesResult = {
   // result: string;//これいらないんじゃね？
   establishDate: string | null; //成立日
   thankyou: boolean; //ありがとう
+};
+
+export type RouteMst = {
+  id: number;
+  name: string;
+};
+
+export type ConsultContentMst = {
+  id: number;
+  name: string;
 };

@@ -11,12 +11,16 @@ type Props = {
 };
 
 const MyPage: FC<Props> = ({ user }) => {
-  const { salesResults } = useMockData();
+  const { salesResults, routeMst, consultContentMst } = useMockData();
   return (
     <>
       <Stack gap={2} sx={{ width: "100%" }}>
         <Typography variant="h4">{user.username}さんの営業成績</Typography>
-        <HeaderArea salesResults={salesResults} />
+        <HeaderArea
+          salesResults={salesResults}
+          routeMst={routeMst}
+          consultContentMst={consultContentMst}
+        />
         <VisitorList salesResults={salesResults} />
       </Stack>
     </>

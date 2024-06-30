@@ -2,14 +2,20 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FC, useState } from "react";
-import { IndividualSalesResult } from "../types";
+import { ConsultContentMst, IndividualSalesResult, RouteMst } from "../types";
 import FormDialog from "./FormDialog";
 
 type Props = {
   salesResults: IndividualSalesResult[];
+  routeMst: RouteMst[];
+  consultContentMst: ConsultContentMst[];
 };
 
-const HeaderArea: FC<Props> = ({ salesResults }) => {
+const HeaderArea: FC<Props> = ({
+  salesResults,
+  routeMst,
+  consultContentMst,
+}) => {
   const [openFormDialog, setOpenFormDialog] = useState(false);
   const handleClickOpen = () => {
     setOpenFormDialog(true);
@@ -33,7 +39,12 @@ const HeaderArea: FC<Props> = ({ salesResults }) => {
           </Button>
         </Stack>
       </Stack>
-      <FormDialog openFormDialog={openFormDialog} handleClose={handleClose} />
+      <FormDialog
+        openFormDialog={openFormDialog}
+        handleClose={handleClose}
+        routeMst={routeMst}
+        consultContentMst={consultContentMst}
+      />
     </>
   );
 };

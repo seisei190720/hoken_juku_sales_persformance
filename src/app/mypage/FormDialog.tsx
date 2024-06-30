@@ -1,20 +1,51 @@
 import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import { FC, useState } from "react";
+import dayjs from "dayjs";
+import { FC, useCallback, useState } from "react";
+import { ConsultContentMst, RouteMst } from "../types";
 
 type Props = {
   openFormDialog: boolean;
   handleClose: () => void;
+  routeMst: RouteMst[];
+  consultContentMst: ConsultContentMst[];
 };
 
-const FormDialog: FC<Props> = ({ openFormDialog, handleClose }) => {
+const FormDialog: FC<Props> = ({
+  openFormDialog,
+  handleClose,
+  routeMst,
+  consultContentMst,
+}) => {
+  const today = dayjs().format("YYYY-MM-DD");
+
+  const [selectedRoute, setSelectedRoute] = useState<RouteMst | undefined>(
+    undefined
+  );
+  const [selectedConsultContent, setSelectedConsultContent] = useState<
+    ConsultContentMst | undefined
+  >(undefined);
+
+  const udpateSelectedRoute = useCallback((v: string) => {
+    setSelectedRoute(routeMst.find((r) => v === r.name));
+  }, []);
+
+  const udpateSelectedConsultContent = useCallback((v: string) => {
+    setSelectedConsultContent(consultContentMst.find((r) => v === r.name));
+  }, []);
+
   return (
     <>
       <Dialog
@@ -33,27 +64,72 @@ const FormDialog: FC<Props> = ({ openFormDialog, handleClose }) => {
           // },
         }}
       >
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>来店記録の新規登録</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            To subscribe to this website, please enter your email address here.
-            We will send updates occasionally.
-          </DialogContentText>
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="email"
-            label="Email Address"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
+          <Stack gap={3}>
+            <DialogContentText>
+              来店されたお客様の情報を入力してください。登録後にも内容を編集できます。
+            </DialogContentText>
+            <TextField
+              // autoFocus
+              required
+              id="visitDate"
+              name="visitDate"
+              label="来店日"
+              defaultValue={today}
+              type="date"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              required
+              id="name"
+              name="name"
+              label="お名前"
+              type="text"
+              fullWidth
+              variant="standard"
+            />
+            <FormControl required variant="standard" fullWidth>
+              <InputLabel>経路</InputLabel>
+              <Select
+                labelId="route"
+                id="route"
+                value={selectedRoute?.name}
+                label="経路"
+                onChange={(e) => udpateSelectedRoute(e.target.value)}
+              >
+                {routeMst.map((r) => (
+                  <MenuItem value={r.id}>{r.name}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl required variant="standard" fullWidth>
+              <InputLabel>相談内容</InputLabel>
+              <Select
+                labelId="consultContent"
+                id="consultContent"
+                value={selectedConsultContent?.name}
+                label="相談内容"
+                onChange={(e) => udpateSelectedConsultContent(e.target.value)}
+              >
+                {consultContentMst.map((r) => (
+                  <MenuItem value={r.id}>{r.name}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControlLabel
+              control={<Checkbox />}
+              label="次アポ取得済み"
+              sx={{
+                margin: "dense",
+              }}
+            />
+          </Stack>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Subscribe</Button>
+          <Button onClick={handleClose}>キャンセル</Button>
+          <Button type="submit">新規登録</Button>
         </DialogActions>
       </Dialog>
     </>
