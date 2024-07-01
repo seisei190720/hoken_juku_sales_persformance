@@ -29,10 +29,6 @@ const MyPage: FC<Props> = ({ user }) => {
     []
   );
 
-  useEffect(() => {
-    console.log(salesResultData);
-  });
-
   const isLoading = useMemo(
     () => salesResultData === undefined,
     [salesResultData]

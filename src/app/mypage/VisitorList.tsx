@@ -22,7 +22,7 @@ type Props = {
   salesResults: IndividualSalesResult[];
   productMst: ProductMst[];
   companyMst: CompanyMst[];
-  updateApplicationsData: (newData: NewApplication[]) => Promise<void>;
+  updateApplicationsData: (newData: IndividualSalesResult) => Promise<void>;
 };
 const VisitorList: FC<Props> = ({
   salesResults,
@@ -102,14 +102,16 @@ const VisitorList: FC<Props> = ({
           </TableBody>
         </Table>
       </TableContainer>
-      <ApplicationFormDialog
-        openFormDialog={openFormDailog}
-        handleClose={handleClose}
-        salesResult={selectedSalesResult}
-        productMst={productMst}
-        companyMst={companyMst}
-        updateApplicationsData={updateApplicationsData}
-      />
+      {openFormDailog && (
+        <ApplicationFormDialog
+          openFormDialog={openFormDailog}
+          handleClose={handleClose}
+          salesResult={selectedSalesResult}
+          productMst={productMst}
+          companyMst={companyMst}
+          updateApplicationsData={updateApplicationsData}
+        />
+      )}
     </>
   );
 };

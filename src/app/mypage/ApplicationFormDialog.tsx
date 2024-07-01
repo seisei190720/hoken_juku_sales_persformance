@@ -1,5 +1,5 @@
 import { IconButton, Typography } from "@mui/material";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   NewApplication,
   CompanyMst,
@@ -7,7 +7,6 @@ import {
   ProductMst,
 } from "../types";
 import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -16,7 +15,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
@@ -30,7 +28,7 @@ type Props = {
   salesResult: IndividualSalesResult | undefined;
   productMst: ProductMst[];
   companyMst: CompanyMst[];
-  updateApplicationsData: (newData: NewApplication[]) => Promise<void>;
+  updateApplicationsData: (newData: IndividualSalesResult) => Promise<void>;
 };
 
 const ApplicationFormDialog: FC<Props> = ({
@@ -41,16 +39,20 @@ const ApplicationFormDialog: FC<Props> = ({
   companyMst,
   updateApplicationsData,
 }) => {
-  const { newApplications, addProduct, submitNewVisitor } = useNewApplications(
+  const {
+    newApplications,
+    updateApplicationDate,
+    updateProduct,
+    updateCompany,
+    addProduct,
+    deleteProduct,
+    submitNewVisitor,
+  } = useNewApplications(
     salesResult,
     productMst,
     companyMst,
     updateApplicationsData
   );
-  useEffect(() => {
-    console.log("newApplications");
-    console.log(newApplications);
-  }, []);
 
   if (!salesResult) return <></>;
   return (
@@ -80,7 +82,7 @@ const ApplicationFormDialog: FC<Props> = ({
                   name={`${idx}_applicationDate`}
                   label="申込日"
                   value={app.applicationDate}
-                  // onChange={(e) => updateFirstVisitDate(e.target.value)}
+                  onChange={(e) => updateApplicationDate(e.target.value, idx)}
                   type="date"
                   fullWidth
                   variant="standard"
@@ -92,7 +94,7 @@ const ApplicationFormDialog: FC<Props> = ({
                     id={`${idx}_company`}
                     value={app.company?.id}
                     label="保険会社"
-                    //   onChange={updateRoute}
+                    onChange={(e) => updateCompany(e, idx)}
                   >
                     {companyMst.map((r) => (
                       <MenuItem value={r.id}>{r.name}</MenuItem>
@@ -106,16 +108,18 @@ const ApplicationFormDialog: FC<Props> = ({
                     id={`${idx}_product`}
                     value={app.product?.id}
                     label="商品"
-                    //   onChange={updateRoute}
+                    onChange={(e) => updateProduct(e, idx)}
                   >
                     {productMst.map((r) => (
                       <MenuItem value={r.id}>{r.name}</MenuItem>
                     ))}
                   </Select>
                 </FormControl>
-                <IconButton>
-                  <DeleteIcon />
-                </IconButton>
+                {newApplications.length > 1 && (
+                  <IconButton onClick={() => deleteProduct(idx)}>
+                    <DeleteIcon />
+                  </IconButton>
+                )}
               </Stack>
             );
           })}
@@ -139,6 +143,7 @@ const ApplicationFormDialog: FC<Props> = ({
             onClick={() => {
               submitNewVisitor();
               handleClose();
+              //申込者一覧画面に移動する(新しく登録した順になっているはずなので、今登録したものが一番上にくる)
             }}
           >
             新規登録

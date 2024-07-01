@@ -71,16 +71,9 @@ export const useSalesResultApi = (userId: string) => {
   );
 
   const updateApplicationsData = useCallback(
-    async (newData: NewApplication[]) => {
+    async (newData: IndividualSalesResult) => {
       try {
-        // const response = await axios.post(url, {
-        //   userId,
-        //   firstVisitDate: newData.firstVisitDate,
-        //   visitRoute: newData.visitRoute?.name,
-        //   name: newData.name,
-        //   nextAppointment: newData.nextAppointment,
-        //   consultContent: newData.consultContent?.name,
-        // });
+        const response = await axios.put(url, newData);
       } catch (error) {
         console.error("Error posting data:", error);
       }
