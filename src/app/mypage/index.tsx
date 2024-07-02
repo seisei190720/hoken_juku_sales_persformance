@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useSalesResultApi } from "../api/useSalesResultApi";
 import { useMockData } from "../mocks";
+import ApplicationList from "./applicationList/applicationList";
 import HeaderArea from "./visitorList/HeaderArea";
 import VisitorList from "./visitorList/VisitorList";
 
@@ -66,7 +67,7 @@ const MyPage: FC<Props> = ({ user }) => {
             />
           </>
         ) : (
-          <Typography>申込者一覧ページ_作成中</Typography>
+          <ApplicationList salesResults={salesResultData || []} />
         )}
       </Stack>
     </>

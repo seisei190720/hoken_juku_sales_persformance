@@ -6,12 +6,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import {
-  NewApplication,
-  CompanyMst,
-  IndividualSalesResult,
-  ProductMst,
-} from "../../types";
+import { CompanyMst, IndividualSalesResult, ProductMst } from "../../types";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
