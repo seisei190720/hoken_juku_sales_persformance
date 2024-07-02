@@ -7,8 +7,8 @@ import Typography from "@mui/material/Typography";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useSalesResultApi } from "../api/useSalesResultApi";
 import { useMockData } from "../mocks";
-import HeaderArea from "./HeaderArea";
-import VisitorList from "./visitorList";
+import HeaderArea from "./visitorList/HeaderArea";
+import VisitorList from "./visitorList/VisitorList";
 
 type Props = {
   user: AuthUser;

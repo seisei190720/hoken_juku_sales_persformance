@@ -19,8 +19,8 @@ import TopBar from "./component/topBar";
 import { MenuItem, MenuKind } from "./types";
 import SideMenu from "./component/SideMenu";
 import { useState } from "react";
-import MyPage from "./mypage";
 import Dashboard from "./dashboard";
+import MyPage from "./mypage";
 
 Amplify.configure({
   Auth: {

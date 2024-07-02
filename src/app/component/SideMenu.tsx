@@ -19,6 +19,7 @@ const drawerWidth = 240;
 const SideMenu: FC<Props> = ({ menuList, selectedMenu, setSelectedMenu }) => {
   return (
     <Drawer
+      // open={false}
       variant="permanent"
       sx={{
         width: drawerWidth,

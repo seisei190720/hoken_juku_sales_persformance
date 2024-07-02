@@ -15,7 +15,7 @@ import Snackbar from "@mui/material/Snackbar";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { FC, useState } from "react";
-import { ConsultContentMst, NewVisitor, RouteMst } from "../types";
+import { ConsultContentMst, NewVisitor, RouteMst } from "../../types";
 import { useNewVisitor } from "./hooks/useNewVisitor";
 
 type Props = {

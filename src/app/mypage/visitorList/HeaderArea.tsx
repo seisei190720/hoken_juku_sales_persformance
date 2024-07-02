@@ -7,7 +7,7 @@ import {
   IndividualSalesResult,
   NewVisitor,
   RouteMst,
-} from "../types";
+} from "../../types";
 import VisitorFormDialog from "./VisitorFormDialog";
 
 type Props = {
