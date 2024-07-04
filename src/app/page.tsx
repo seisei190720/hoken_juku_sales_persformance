@@ -4,14 +4,7 @@ import { withAuthenticator } from "@aws-amplify/ui-react";
 import { useAuthenticator } from "@aws-amplify/ui-react"; //AmplifyでReactのuiを提供するライブラリ
 import "@aws-amplify/ui-react/styles.css"; //css適用
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
 import CssBaseline from "@mui/material/CssBaseline";
-import Link from "@mui/material/Link";
-import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import { useLoginUser } from "./hooks/useLoginUser";
 import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import CoffeeIcon from "@mui/icons-material/Coffee";
@@ -32,7 +25,7 @@ Amplify.configure({
 });
 function Home() {
   const { user, route } = useAuthenticator((context) => [context.user]);
-  const { item } = useLoginUser();
+  const { cognitoUser } = useLoginUser();
   const [selectedMenu, setSelectedMenu] = useState<MenuKind>("mypage");
 
   const menuList: MenuItem[] = [
@@ -56,7 +49,7 @@ function Home() {
             case "mypage":
               return <MyPage user={user} />;
             case "dashboard":
-              return <Dashboard />;
+              return <Dashboard user={user} />;
             default:
               return <></>;
           }
@@ -65,6 +58,9 @@ function Home() {
       {/* <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
       </Box> */}
+      {cognitoUser !== null && (
+        <button onClick={() => cognitoUser.signOut()}>Sign Out</button>
+      )}
     </Box>
   );
 }

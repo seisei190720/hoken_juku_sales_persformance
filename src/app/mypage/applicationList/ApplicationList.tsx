@@ -15,12 +15,17 @@ import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
 import EditApplicationListDialog from "./EditApplicationListDialog";
+import { AuthUser } from "aws-amplify/auth";
+import { useSalesResultApi } from "@/app/api/useSalesResultApi";
 
 type Props = {
-  salesResults: IndividualSalesResult[] | undefined;
+  user: AuthUser;
 };
 
-const ApplicationList: FC<Props> = ({ salesResults }) => {
+const ApplicationList: FC<Props> = ({ user }) => {
+  const { salesResultData, postVisitorData, updateApplicationsData } =
+    useSalesResultApi(user.userId, { status: "未成立" });
+
   const [targetSalesResult, setTargetSalesResult] = useState<
     IndividualSalesResult | undefined
   >(undefined);
@@ -47,11 +52,11 @@ const ApplicationList: FC<Props> = ({ salesResults }) => {
         return <></>;
     }
   };
-  if (!salesResults) return <></>;
+  if (!salesResultData) return <></>;
   return (
     <>
       <Stack gap={2}>
-        {salesResults.map((result) => (
+        {salesResultData.map((result) => (
           <Accordion
             defaultExpanded
             sx={{
@@ -93,18 +98,19 @@ const ApplicationList: FC<Props> = ({ salesResults }) => {
               <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>状態</TableCell>
+                    <TableCell>申込日</TableCell>
                     <TableCell>会社</TableCell>
                     <TableCell>商品</TableCell>
                     <TableCell>成立日</TableCell>
                     <TableCell>初回手数料</TableCell>
+                    <TableCell>状態</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {result.applications.map((app) => (
                     <TableRow hover key={result.name}>
                       <TableCell component="th" scope="row">
-                        {statusChip(app.status)}
+                        {app.applicationDate}
                       </TableCell>
                       <TableCell>{app.company}</TableCell>
                       <TableCell>{app.product}</TableCell>
@@ -118,6 +124,7 @@ const ApplicationList: FC<Props> = ({ salesResults }) => {
                           ? "-"
                           : app.firstYearFee}
                       </TableCell>
+                      <TableCell>{statusChip(app.status)}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

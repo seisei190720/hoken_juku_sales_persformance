@@ -20,7 +20,7 @@ type MyPageMode = "visitor" | "applicator";
 const MyPage: FC<Props> = ({ user }) => {
   const { routeMst, consultContentMst, productMst, companyMst } = useMockData();
   const { salesResultData, postVisitorData, updateApplicationsData } =
-    useSalesResultApi(user.userId);
+    useSalesResultApi(user.userId, { status: null });
   const [viewMode, setViewMode] = useState<MyPageMode>("visitor");
 
   const updateViewMode = useCallback(
@@ -67,7 +67,7 @@ const MyPage: FC<Props> = ({ user }) => {
             />
           </>
         ) : (
-          <ApplicationList salesResults={salesResultData || []} />
+          <ApplicationList user={user} />
         )}
       </Stack>
     </>

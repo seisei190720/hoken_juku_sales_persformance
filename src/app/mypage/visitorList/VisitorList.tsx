@@ -67,7 +67,8 @@ const VisitorList: FC<Props> = ({
                 <TableCell>{row.consultContent}</TableCell>
                 <TableCell>{row.nextAppointment ? "◯" : "-"}</TableCell>
                 <TableCell>
-                  {row.applications.length === 0 ? (
+                  {1 === 1 ? (
+                    // {row.applications.length === 0 ? (
                     <Button
                       variant="outlined"
                       onClick={() => {

@@ -46,6 +46,6 @@ export const useLoginUser = () => {
   // };
 
   return {
-    item: true,
+    cognitoUser,
   };
 };

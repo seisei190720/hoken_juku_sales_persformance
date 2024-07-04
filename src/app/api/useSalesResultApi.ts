@@ -3,6 +3,7 @@ import {
   NewApplication,
   IndividualSalesResult,
   NewVisitor,
+  applicationStatus,
 } from "../types";
 import useSWR from "swr";
 import axios from "axios";
@@ -10,7 +11,12 @@ import { useCallback, useEffect, useState } from "react";
 const url =
   "https://1us1ed23t2.execute-api.ap-northeast-1.amazonaws.com/hoken_juku_sales_result/sales-results";
 
-export const useSalesResultApi = (userId: string) => {
+export const useSalesResultApi = (
+  userId: string,
+  param: {
+    status: applicationStatus;
+  }
+) => {
   const [salesResultData, setSalesResultData] = useState<
     IndividualSalesResult[] | undefined
   >(undefined);
@@ -19,7 +25,7 @@ export const useSalesResultApi = (userId: string) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(url, {
-          params: { userId },
+          params: { userId, status: param.status },
         });
         if (response.data !== undefined) {
           const transformedData = response.data.map(
