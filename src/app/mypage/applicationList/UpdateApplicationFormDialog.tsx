@@ -81,6 +81,7 @@ const UpdateApplicationFormDialog: FC<Props> = ({
                 <TextField
                   // autoFocus
                   required
+                  key={`${idx}_applicationDate`}
                   id={`${idx}_applicationDate`}
                   name={`${idx}_applicationDate`}
                   label="申込日"
@@ -107,6 +108,7 @@ const UpdateApplicationFormDialog: FC<Props> = ({
                 <FormControl required variant="standard" fullWidth>
                   <InputLabel>商品</InputLabel>
                   <Select
+                    key={`${idx}_product`}
                     labelId={`${idx}_product`}
                     id={`${idx}_product`}
                     value={app.product?.id}
@@ -121,6 +123,7 @@ const UpdateApplicationFormDialog: FC<Props> = ({
                 <FormControl required variant="standard" fullWidth>
                   <InputLabel>状態</InputLabel>
                   <Select
+                    key={`${idx}_status`}
                     labelId={`${idx}_status`}
                     id={`${idx}_status`}
                     value={app.status?.id}
@@ -135,6 +138,7 @@ const UpdateApplicationFormDialog: FC<Props> = ({
                 <TextField
                   // autoFocus
                   required
+                  key={`${idx}_firstYearFee`}
                   id={`${idx}_firstYearFee`}
                   name={`${idx}_firstYearFee`}
                   label="初回手数料"

@@ -85,6 +85,7 @@ const VisitorFormDialog: FC<Props> = ({
             </DialogContentText>
             <TextField
               // autoFocus
+              key="visitDate"
               required
               id="visitDate"
               name="visitDate"
@@ -98,6 +99,7 @@ const VisitorFormDialog: FC<Props> = ({
             />
             <TextField
               required
+              key="name"
               id="name"
               name="name"
               label="お名前"
@@ -110,6 +112,7 @@ const VisitorFormDialog: FC<Props> = ({
             <FormControl required variant="standard" fullWidth>
               <InputLabel>経路</InputLabel>
               <Select
+                key="route"
                 labelId="route"
                 id="route"
                 value={newVisitorData.visitRoute?.id}
@@ -124,6 +127,7 @@ const VisitorFormDialog: FC<Props> = ({
             <FormControl required variant="standard" fullWidth>
               <InputLabel>相談内容</InputLabel>
               <Select
+                key="route"
                 labelId="consultContent"
                 id="consultContent"
                 value={newVisitorData.consultContent?.id}

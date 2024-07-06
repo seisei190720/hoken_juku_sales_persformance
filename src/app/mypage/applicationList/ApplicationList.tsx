@@ -114,7 +114,7 @@ const ApplicationList: FC<Props> = ({
               <AccordionDetails>
                 <Table size="small">
                   <TableHead>
-                    <TableRow>
+                    <TableRow key={"visitor_header"}>
                       <TableCell>申込日</TableCell>
                       <TableCell>会社</TableCell>
                       <TableCell>商品</TableCell>

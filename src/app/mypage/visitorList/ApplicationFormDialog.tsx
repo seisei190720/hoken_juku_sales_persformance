@@ -73,6 +73,7 @@ const ApplicationFormDialog: FC<Props> = ({
                 <TextField
                   // autoFocus
                   required
+                  key={`${idx}_applicationDate`}
                   id={`${idx}_applicationDate`}
                   name={`${idx}_applicationDate`}
                   label="申込日"
@@ -85,6 +86,7 @@ const ApplicationFormDialog: FC<Props> = ({
                 <FormControl required variant="standard" fullWidth>
                   <InputLabel>保険会社</InputLabel>
                   <Select
+                    key={`${idx}_company`}
                     labelId={`${idx}_company`}
                     id={`${idx}_company`}
                     value={app.company?.id}
@@ -99,6 +101,7 @@ const ApplicationFormDialog: FC<Props> = ({
                 <FormControl required variant="standard" fullWidth>
                   <InputLabel>商品</InputLabel>
                   <Select
+                    key={`${idx}_product`}
                     labelId={`${idx}_product`}
                     id={`${idx}_product`}
                     value={app.product?.id}
