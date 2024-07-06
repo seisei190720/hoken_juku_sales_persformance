@@ -1,12 +1,7 @@
 import { FC } from "react";
-import {
-  CompanyMst,
-  IndividualSalesResult,
-  ProductMst,
-  StatusMst,
-} from "@/app/types";
+import { CompanyMst, ProductMst, StatusMst } from "@/app/types";
 import { AuthUser } from "aws-amplify/auth";
-import ApplicationList from "./applicationList";
+import ApplicationList from "./ApplicationList";
 import { useSalesResultApi } from "@/app/api/useSalesResultApi";
 
 type Props = {

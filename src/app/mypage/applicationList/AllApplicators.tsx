@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { CompanyMst, ProductMst, StatusMst } from "@/app/types";
 import { AuthUser } from "aws-amplify/auth";
-import ApplicationList from "./applicationList";
+import ApplicationList from "./ApplicationList";
 import { useSalesResultApi } from "@/app/api/useSalesResultApi";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
