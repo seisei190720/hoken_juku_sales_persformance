@@ -76,7 +76,12 @@ const UpdateApplicationFormDialog: FC<Props> = ({
           <DialogContentText>申込情報を更新してください。</DialogContentText>
           {updatedApplications.map((app, idx) => {
             return (
-              <Stack gap={3} direction="row" alignItems="flex-end">
+              <Stack
+                key={`updateApplications_${idx}`}
+                gap={3}
+                direction="row"
+                alignItems="flex-end"
+              >
                 <Typography variant="h6">{`${idx}.`}</Typography>
                 <TextField
                   // autoFocus
@@ -101,7 +106,9 @@ const UpdateApplicationFormDialog: FC<Props> = ({
                     onChange={(e) => updateCompany(e, idx)}
                   >
                     {companyMst.map((r) => (
-                      <MenuItem value={r.id}>{r.name}</MenuItem>
+                      <MenuItem key={`company_${idx}`} value={r.id}>
+                        {r.name}
+                      </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
@@ -116,7 +123,9 @@ const UpdateApplicationFormDialog: FC<Props> = ({
                     onChange={(e) => updateProduct(e, idx)}
                   >
                     {productMst.map((r) => (
-                      <MenuItem value={r.id}>{r.name}</MenuItem>
+                      <MenuItem key={`product_${idx}`} value={r.id}>
+                        {r.name}
+                      </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
@@ -131,7 +140,9 @@ const UpdateApplicationFormDialog: FC<Props> = ({
                     onChange={(e) => updateStatus(e, idx)}
                   >
                     {statusMst.map((r) => (
-                      <MenuItem value={r.id}>{r.name}</MenuItem>
+                      <MenuItem key={`status_${idx}`} value={r.id}>
+                        {r.name}
+                      </MenuItem>
                     ))}
                   </Select>
                 </FormControl>

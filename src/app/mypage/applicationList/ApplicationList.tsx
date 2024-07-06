@@ -73,8 +73,9 @@ const ApplicationList: FC<Props> = ({
       <Stack gap={1}>
         {salesResultData
           .filter((v) => v.applications.length > 0)
-          .map((result) => (
+          .map((result, idx) => (
             <Accordion
+              key={`accordion_${idx}`}
               defaultExpanded
               sx={{
                 borderRadius: "12px",

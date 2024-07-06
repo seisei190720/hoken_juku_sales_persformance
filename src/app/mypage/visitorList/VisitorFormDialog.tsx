@@ -120,7 +120,9 @@ const VisitorFormDialog: FC<Props> = ({
                 onChange={updateRoute}
               >
                 {routeMst.map((r) => (
-                  <MenuItem value={r.id}>{r.name}</MenuItem>
+                  <MenuItem key={`route_${r.id}`} value={r.id}>
+                    {r.name}
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>
@@ -135,7 +137,9 @@ const VisitorFormDialog: FC<Props> = ({
                 onChange={updateConsultContent}
               >
                 {consultContentMst.map((r) => (
-                  <MenuItem value={r.id}>{r.name}</MenuItem>
+                  <MenuItem key={`consult_${r.id}`} value={r.id}>
+                    {r.name}
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>
