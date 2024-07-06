@@ -25,7 +25,7 @@ export const useNewApplications = (
   ]);
   useEffect(() => {
     if (!salesResult) setNewApplications([]);
-  }, [salesResult]);
+  }, []);
 
   const addProduct = useCallback(() => {
     setNewApplications([...newApplications, DEFAULT_APPLICATION_DATA]);
