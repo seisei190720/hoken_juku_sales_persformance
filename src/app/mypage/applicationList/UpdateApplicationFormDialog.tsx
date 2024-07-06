@@ -1,6 +1,11 @@
 import { IconButton, Typography } from "@mui/material";
-import { FC } from "react";
-import { CompanyMst, IndividualSalesResult, ProductMst } from "../../types";
+import { FC, useEffect, useState } from "react";
+import {
+  CompanyMst,
+  IndividualSalesResult,
+  ProductMst,
+  StatusMst,
+} from "../../types";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -15,37 +20,42 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-import { useNewApplications } from "./hooks/useNewApplications";
-
+import { useUpdateApplications } from "./hooks/useUpdateApplications";
 type Props = {
   openFormDialog: boolean;
   handleClose: () => void;
   salesResult: IndividualSalesResult | undefined;
   productMst: ProductMst[];
   companyMst: CompanyMst[];
+  statusMst: StatusMst[];
   updateApplicationsData: (newData: IndividualSalesResult) => Promise<void>;
 };
 
-const ApplicationFormDialog: FC<Props> = ({
+const UpdateApplicationFormDialog: FC<Props> = ({
   openFormDialog,
   handleClose,
   salesResult,
   productMst,
   companyMst,
+  statusMst,
   updateApplicationsData,
 }) => {
   const {
-    newApplications,
+    updatedApplications,
+    addApplication,
+    deleteApplication,
     updateApplicationDate,
     updateProduct,
     updateCompany,
-    addProduct,
-    deleteProduct,
-    submitNewApplications,
-  } = useNewApplications(
+    updateStatus,
+    updateFirstYearFee,
+    updateEstablishDate,
+    submitUpdatedApplications,
+  } = useUpdateApplications(
     salesResult,
     productMst,
     companyMst,
+    statusMst,
     updateApplicationsData
   );
 
@@ -63,10 +73,8 @@ const ApplicationFormDialog: FC<Props> = ({
       <DialogTitle>{`${salesResult.name}さんの申込情報登録`}</DialogTitle>
       <DialogContent>
         <Stack gap={3} direction="column">
-          <DialogContentText>
-            申込情報を入力してください。登録後にも内容を編集できます。
-          </DialogContentText>
-          {newApplications.map((app, idx) => {
+          <DialogContentText>申込情報を更新してください。</DialogContentText>
+          {updatedApplications.map((app, idx) => {
             return (
               <Stack gap={3} direction="row" alignItems="flex-end">
                 <Typography variant="h6">{`${idx}.`}</Typography>
@@ -110,8 +118,48 @@ const ApplicationFormDialog: FC<Props> = ({
                     ))}
                   </Select>
                 </FormControl>
-                {newApplications.length > 1 && (
-                  <IconButton onClick={() => deleteProduct(idx)}>
+                <FormControl required variant="standard" fullWidth>
+                  <InputLabel>状態</InputLabel>
+                  <Select
+                    labelId={`${idx}_status`}
+                    id={`${idx}_status`}
+                    value={app.status?.id}
+                    label="状態"
+                    onChange={(e) => updateStatus(e, idx)}
+                  >
+                    {statusMst.map((r) => (
+                      <MenuItem value={r.id}>{r.name}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <TextField
+                  // autoFocus
+                  required
+                  id={`${idx}_firstYearFee`}
+                  name={`${idx}_firstYearFee`}
+                  label="初回手数料"
+                  value={app.firstYearFee}
+                  onChange={(e) =>
+                    updateFirstYearFee(Number(e.target.value), idx)
+                  }
+                  type="number"
+                  fullWidth
+                  variant="standard"
+                />
+                <TextField
+                  // autoFocus
+                  required
+                  id={`${idx}_establishDate`}
+                  name={`${idx}_establishDate`}
+                  label="契約日"
+                  value={app.establishDate}
+                  onChange={(e) => updateEstablishDate(e.target.value, idx)}
+                  type="date"
+                  fullWidth
+                  variant="standard"
+                />
+                {updatedApplications.length > 1 && (
+                  <IconButton onClick={() => deleteApplication(idx)}>
                     <DeleteIcon />
                   </IconButton>
                 )}
@@ -122,7 +170,7 @@ const ApplicationFormDialog: FC<Props> = ({
             <Button
               variant="text"
               startIcon={<AddIcon />}
-              onClick={addProduct}
+              onClick={addApplication}
               color="inherit"
             >
               追加
@@ -136,7 +184,7 @@ const ApplicationFormDialog: FC<Props> = ({
           <Button
             variant="contained"
             onClick={() => {
-              submitNewApplications();
+              submitUpdatedApplications();
               handleClose();
               //申込者一覧画面に移動する(新しく登録した順になっているはずなので、今登録したものが一番上にくる)
             }}
@@ -149,4 +197,4 @@ const ApplicationFormDialog: FC<Props> = ({
   );
 };
 
-export default ApplicationFormDialog;
+export default UpdateApplicationFormDialog;

@@ -1,26 +1,24 @@
 import { AuthUser } from "@aws-amplify/auth/cognito";
-import CircularProgress from "@mui/material/CircularProgress";
 import Stack from "@mui/material/Stack";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
-import { useSalesResultApi } from "../api/useSalesResultApi";
+import { FC, useCallback, useState } from "react";
 import { useMockData } from "../mocks";
-import ApplicationList from "./applicationList/applicationList";
-import HeaderArea from "./visitorList/HeaderArea";
-import VisitorList from "./visitorList/VisitorList";
+import AllApplicators from "./applicationList/AllApplicators";
+import NotYetEstablished from "./applicationList/NotYetEstablished";
+import Visitor from "./visitorList/Visitor";
 
 type Props = {
   user: AuthUser;
 };
 
-type MyPageMode = "visitor" | "applicator";
+type MyPageMode = "visitor" | "applicator" | "notYetEstablished";
 
 const MyPage: FC<Props> = ({ user }) => {
-  const { routeMst, consultContentMst, productMst, companyMst } = useMockData();
-  const { salesResultData, postVisitorData, updateApplicationsData } =
-    useSalesResultApi(user.userId, { status: null });
+  const { routeMst, consultContentMst, productMst, companyMst, statusMst } =
+    useMockData();
+
   const [viewMode, setViewMode] = useState<MyPageMode>("visitor");
 
   const updateViewMode = useCallback(
@@ -30,12 +28,6 @@ const MyPage: FC<Props> = ({ user }) => {
     []
   );
 
-  const isLoading = useMemo(
-    () => salesResultData === undefined,
-    [salesResultData]
-  );
-
-  if (isLoading) return <CircularProgress />;
   return (
     <>
       <Stack gap={2} sx={{ width: "100%" }}>
@@ -47,28 +39,45 @@ const MyPage: FC<Props> = ({ user }) => {
           onChange={updateViewMode}
           aria-label="Platform"
         >
-          <ToggleButton value="visitor">来店者一覧</ToggleButton>
-          <ToggleButton value="applicator">申込者一覧</ToggleButton>
+          <ToggleButton value="visitor">来店者</ToggleButton>
+          <ToggleButton value="applicator">申込者</ToggleButton>
+          <ToggleButton value="notYetEstablished">未成立者</ToggleButton>
         </ToggleButtonGroup>
 
-        {viewMode === "visitor" ? (
-          <>
-            <HeaderArea
-              salesResultData={salesResultData || []}
-              postVisitorData={postVisitorData}
-              routeMst={routeMst}
-              consultContentMst={consultContentMst}
-            />
-            <VisitorList
-              salesResults={salesResultData || []}
-              productMst={productMst}
-              companyMst={companyMst}
-              updateApplicationsData={updateApplicationsData}
-            />
-          </>
-        ) : (
-          <ApplicationList user={user} />
-        )}
+        {(() => {
+          switch (viewMode) {
+            case "visitor":
+              return (
+                <Visitor
+                  user={user}
+                  routeMst={routeMst}
+                  productMst={productMst}
+                  companyMst={companyMst}
+                  consultContentMst={consultContentMst}
+                />
+              );
+            case "applicator":
+              return (
+                <AllApplicators
+                  user={user}
+                  productMst={productMst}
+                  companyMst={companyMst}
+                  statusMst={statusMst}
+                />
+              );
+            case "notYetEstablished":
+              return (
+                <NotYetEstablished
+                  user={user}
+                  productMst={productMst}
+                  companyMst={companyMst}
+                  statusMst={statusMst}
+                />
+              );
+            default:
+              return <></>;
+          }
+        })()}
       </Stack>
     </>
   );

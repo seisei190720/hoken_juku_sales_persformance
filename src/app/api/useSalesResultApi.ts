@@ -15,6 +15,7 @@ export const useSalesResultApi = (
   userId: string,
   param: {
     status: applicationStatus;
+    firstVisitDate: string | null;
   }
 ) => {
   const [salesResultData, setSalesResultData] = useState<
@@ -25,7 +26,11 @@ export const useSalesResultApi = (
     const fetchData = async () => {
       try {
         const response = await axios.get(url, {
-          params: { userId, status: param.status },
+          params: {
+            userId,
+            status: param.status,
+            firstVisitDate: param.firstVisitDate,
+          },
         });
         if (response.data !== undefined) {
           const transformedData = response.data.map(
@@ -56,7 +61,7 @@ export const useSalesResultApi = (
     };
 
     fetchData();
-  }, [userId]);
+  }, [userId, param.firstVisitDate]);
 
   const postVisitorData = useCallback(
     async (newData: NewVisitor) => {

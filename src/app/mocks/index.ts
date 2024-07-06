@@ -4,6 +4,7 @@ import {
   IndividualSalesResult,
   ProductMst,
   RouteMst,
+  StatusMst,
 } from "../types";
 
 export const useMockData = () => {
@@ -371,5 +372,27 @@ export const useMockData = () => {
       name: "楽天",
     },
   ];
-  return { salesResults, routeMst, consultContentMst, productMst, companyMst };
+
+  const statusMst: StatusMst[] = [
+    {
+      id: "1",
+      name: "未成立",
+    },
+    {
+      id: "2",
+      name: "成立",
+    },
+    {
+      id: "3",
+      name: "不成立",
+    },
+  ];
+  return {
+    salesResults,
+    routeMst,
+    consultContentMst,
+    productMst,
+    companyMst,
+    statusMst,
+  };
 };

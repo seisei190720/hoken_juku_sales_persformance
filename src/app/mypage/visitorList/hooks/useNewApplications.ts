@@ -93,7 +93,7 @@ export const useNewApplications = (
     [companyMst, newApplications, setNewApplications]
   );
 
-  const submitNewVisitor = useCallback(() => {
+  const submitNewApplications = useCallback(() => {
     //TODO: validationを実装する
     console.log(newApplications);
     if (!salesResult) return;
@@ -105,7 +105,7 @@ export const useNewApplications = (
           product: v.product?.name || "",
           company: v.company?.name || "",
           firstYearFee: null,
-          status: "未成立" as applicationStatus,
+          status: "未成立",
           establishDate: null,
         };
       }),
@@ -119,6 +119,6 @@ export const useNewApplications = (
     updateCompany,
     addProduct,
     deleteProduct,
-    submitNewVisitor,
+    submitNewApplications,
   };
 };

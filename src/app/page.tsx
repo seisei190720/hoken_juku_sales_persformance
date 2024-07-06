@@ -37,7 +37,7 @@ function Home() {
     // <button onClick={() => getUserAttribute()}>Sign Out</button>
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <TopBar />
+      <TopBar cognitoUser={cognitoUser} />
       <SideMenu
         menuList={menuList}
         selectedMenu={selectedMenu}
@@ -58,9 +58,6 @@ function Home() {
       {/* <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
       </Box> */}
-      {cognitoUser !== null && (
-        <button onClick={() => cognitoUser.signOut()}>Sign Out</button>
-      )}
     </Box>
   );
 }
