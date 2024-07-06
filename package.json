@@ -1,5 +1,5 @@
 {
-  "name": "hoken_juku_sales_performance",
+  "name": "hoken_juku_sales_performance_nextjs",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,15 +9,22 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-amplify/ui-react": "^6.1.12",
     "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
     "@mui/material-nextjs": "^5.15.11",
+    "amazon-cognito-identity-js": "^6.3.12",
+    "aws-amplify": "^6.3.8",
+    "axios": "^1.7.2",
+    "dayjs": "^1.11.11",
     "next": "14.2.4",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "recharts": "^2.12.7",
+    "swr": "^2.2.5"
   },
   "devDependencies": {
     "@types/node": "^20",
