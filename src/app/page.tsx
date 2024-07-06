@@ -8,7 +8,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { useLoginUser } from "./hooks/useLoginUser";
 import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import CoffeeIcon from "@mui/icons-material/Coffee";
-import TopBar from "./component/topBar";
+import TopBar from "./component/TopBar";
 import { MenuItem, MenuKind } from "./types";
 import SideMenu from "./component/SideMenu";
 import { useState } from "react";
