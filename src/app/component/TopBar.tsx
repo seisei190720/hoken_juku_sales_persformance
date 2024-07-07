@@ -10,9 +10,10 @@ import Button from "@mui/material/Button";
 
 type Props = {
   cognitoUser: CognitoUser | null;
+  handleClickSideMenu: () => void;
 };
 
-const TopBar: FC<Props> = ({ cognitoUser }) => {
+const TopBar: FC<Props> = ({ cognitoUser, handleClickSideMenu }) => {
   return (
     <AppBar
       position="fixed"
@@ -25,6 +26,7 @@ const TopBar: FC<Props> = ({ cognitoUser }) => {
           color="inherit"
           aria-label="menu"
           sx={{ mr: 2 }}
+          onClick={handleClickSideMenu}
         >
           <MenuIcon />
         </IconButton>

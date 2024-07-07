@@ -5,7 +5,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { AuthUser } from "aws-amplify/auth";
 import dayjs from "dayjs";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   CompanyMst,
   ConsultContentMst,
