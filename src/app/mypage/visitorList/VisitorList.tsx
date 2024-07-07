@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -12,6 +12,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import ApplicationFormDialog from "./ApplicationFormDialog";
+import { blue } from "@mui/material/colors";
 
 type Props = {
   salesResults: IndividualSalesResult[];
@@ -43,7 +44,7 @@ const VisitorList: FC<Props> = ({
         {/* componentにライブラリのPaperをつけることで立体感がでてよくなります */}
         <Table>
           <TableHead>
-            <TableRow sx={{ backgroundColor: "#F2F2F2" }}>
+            <TableRow sx={{ backgroundColor: blue[100] }}>
               <TableCell>来店日</TableCell>
               <TableCell>お名前</TableCell>
               <TableCell>経路</TableCell>

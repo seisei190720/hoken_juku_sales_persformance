@@ -43,26 +43,29 @@ const AllApplicators: FC<Props> = ({
 
   return (
     <>
-      <Stack direction="row" spacing={2} alignItems="center">
-        <Button onClick={backToLastMonth}>＜</Button>
-        <Typography>{targetMonth}</Typography>
-        <Button onClick={forwardToNextMonth}>＞</Button>
-        <Button
-          onClick={moveToCurrentMonth}
-          variant="outlined"
-          disabled={targetMonth === dayjs().format("YYYY-MM")}
-        >
-          今月に戻る
-        </Button>
+      <Stack gap={2} p={4}>
+        <Stack direction="row" spacing={2} alignItems="center">
+          <Typography variant="h5">申込者一覧</Typography>
+          <Button onClick={backToLastMonth}>＜</Button>
+          <Typography>{targetMonth}</Typography>
+          <Button onClick={forwardToNextMonth}>＞</Button>
+          <Button
+            onClick={moveToCurrentMonth}
+            variant="outlined"
+            disabled={targetMonth === dayjs().format("YYYY-MM")}
+          >
+            今月に戻る
+          </Button>
+        </Stack>
+        <ApplicationList
+          user={user}
+          productMst={productMst}
+          companyMst={companyMst}
+          statusMst={statusMst}
+          salesResultData={salesResultData}
+          updateApplicationsData={updateApplicationsData}
+        />
       </Stack>
-      <ApplicationList
-        user={user}
-        productMst={productMst}
-        companyMst={companyMst}
-        statusMst={statusMst}
-        salesResultData={salesResultData}
-        updateApplicationsData={updateApplicationsData}
-      />
     </>
   );
 };

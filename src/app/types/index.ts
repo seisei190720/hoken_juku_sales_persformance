@@ -64,9 +64,11 @@ export type ConsultContentMst = {
   name: string;
 };
 
+export type ProductKind = "life" | "nonLife";
 export type ProductMst = {
   id: string;
   name: string;
+  kind: ProductKind;
 };
 
 export type CompanyMst = {

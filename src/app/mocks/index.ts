@@ -189,82 +189,102 @@ export const useMockData = () => {
     {
       id: "1",
       name: "医療保険",
+      kind: "life",
     },
     {
       id: "2",
       name: "がん保険",
+      kind: "life",
     },
     {
       id: "3",
       name: "三大一時金",
+      kind: "life",
     },
     {
       id: "4",
       name: "収入保険",
+      kind: "life",
     },
     {
       id: "5",
       name: "就業不能",
+      kind: "life",
     },
     {
       id: "6",
       name: "定期保険",
+      kind: "life",
     },
     {
       id: "7",
       name: "円終身",
+      kind: "life",
     },
     {
       id: "8",
       name: "ドル終身",
+      kind: "life",
     },
     {
       id: "9",
       name: "変額保険",
+      kind: "life",
     },
     {
       id: "10",
       name: "年金保険",
+      kind: "life",
     },
     {
       id: "11",
       name: "介護保険",
+      kind: "life",
     },
     {
       id: "12",
       name: "一時払い",
+      kind: "life",
     },
     {
       id: "13",
       name: "他生保",
+      kind: "life",
     },
     {
       id: "14",
       name: "火災保険",
+      kind: "nonLife",
     },
     {
       id: "15",
       name: "地震保険",
+      kind: "nonLife",
     },
     {
       id: "16",
       name: "自動車",
+      kind: "nonLife",
     },
     {
       id: "17",
       name: "傷害保険",
+      kind: "nonLife",
     },
     {
       id: "18",
       name: "賠責保険",
+      kind: "nonLife",
     },
     {
       id: "19",
       name: "旅行保険",
+      kind: "nonLife",
     },
     {
       id: "20",
       name: "他損保",
+      kind: "nonLife",
     },
   ];
 

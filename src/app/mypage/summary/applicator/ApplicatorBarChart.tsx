@@ -9,27 +9,44 @@ import {
   Legend,
   ResponsiveContainer,
   Rectangle,
+  Cell,
 } from "recharts";
 import { FC } from "react";
 import Card from "@mui/material/Card";
 import { blue, yellow } from "@mui/material/colors";
-import { ProductMst, RouteMst } from "@/app/types";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress";
 
 type Props = {
-  productMst: ProductMst[];
+  values:
+    | {
+        name: string;
+        "実績(円)": number;
+        color: string;
+      }[]
+    | undefined;
 };
 
-const ApplicatorBarChart: FC<Props> = ({ productMst }) => {
-  const test = productMst.map((p) => {
-    return {
-      name: p.name,
-      "実績(円)": 3000,
-    };
-  });
+const ApplicatorBarChart: FC<Props> = ({ values }) => {
+  if (!values)
+    return (
+      <Card
+        sx={{
+          padding: 2,
+          borderRadius: "12px",
+          flex: 1,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: 400,
+        }}
+      >
+        <CircularProgress />
+      </Card>
+    );
   return (
-    <Card sx={{ padding: 2, borderRadius: "12px", flex: 2 }}>
+    <Card sx={{ padding: 2, borderRadius: "12px", flex: 1 }}>
       <Stack gap={4} padding={1}>
         <Stack direction="row">
           <Typography variant="h6" color={blue[600]}>
@@ -44,7 +61,7 @@ const ApplicatorBarChart: FC<Props> = ({ productMst }) => {
         >
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
-              data={test}
+              data={values}
               margin={{
                 top: 5,
                 right: 50,
@@ -62,7 +79,11 @@ const ApplicatorBarChart: FC<Props> = ({ productMst }) => {
                 dataKey="実績(円)"
                 fill={blue[300]}
                 activeBar={<Rectangle fill={blue[100]} stroke={yellow[300]} />}
-              />
+              >
+                {values.map((v, index) => (
+                  <Cell key={`cell-${index}`} cursor="pointer" fill={v.color} />
+                ))}
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </Stack>

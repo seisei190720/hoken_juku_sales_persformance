@@ -59,25 +59,27 @@ const Visitor: FC<Props> = ({
   if (!salesResultData) return <CircularProgress />;
   return (
     <>
-      <Stack direction="row" spacing={2} justifyContent="space-between">
-        <Stack direction="row" spacing={2} alignItems="center">
-          <Button onClick={backToLastMonth}>＜</Button>
-          <Typography>{targetMonth}</Typography>
-          <Button onClick={forwardToNextMonth}>＞</Button>
+      <Stack gap={2} p={4}>
+        <Stack direction="row" gap={2} justifyContent="space-between">
+          <Stack direction="row" gap={2} alignItems="center">
+            <Typography variant="h5">来店者一覧</Typography>
+            <Button onClick={backToLastMonth}>＜</Button>
+            <Typography>{targetMonth}</Typography>
+            <Button onClick={forwardToNextMonth}>＞</Button>
+          </Stack>
+          <Stack direction="row" gap={2}>
+            <Button variant="contained" onClick={handleClickOpen}>
+              来店記録を追加する
+            </Button>
+          </Stack>
         </Stack>
-        <Stack direction="row" spacing={2}>
-          <Button variant="outlined">レポートを確認する</Button>
-          <Button variant="contained" onClick={handleClickOpen}>
-            来店記録を追加する
-          </Button>
-        </Stack>
+        <VisitorList
+          salesResults={salesResultData || []}
+          productMst={productMst}
+          companyMst={companyMst}
+          updateApplicationsData={updateApplicationsData}
+        />
       </Stack>
-      <VisitorList
-        salesResults={salesResultData || []}
-        productMst={productMst}
-        companyMst={companyMst}
-        updateApplicationsData={updateApplicationsData}
-      />
       <VisitorFormDialog
         openFormDialog={openFormDialog}
         handleClose={handleClose}

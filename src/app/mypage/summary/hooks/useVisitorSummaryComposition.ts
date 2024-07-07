@@ -1,19 +1,16 @@
-import { IndividualSalesResult, RouteKind, RouteMst } from "@/app/types";
+import { IndividualSalesResult, RouteMst } from "@/app/types";
 import {
   amber,
-  blue,
-  cyan,
   deepOrange,
   green,
   lightGreen,
   orange,
   teal,
-  yellow,
 } from "@mui/material/colors";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { VisitorBarChartType } from "../visitor/VisitorBarChart";
 
-export const useSummaryComposition = (
+export const useVisitorSummaryComposition = (
   results: IndividualSalesResult[] | undefined,
   routeMst: RouteMst[]
 ) => {
@@ -58,8 +55,9 @@ export const useSummaryComposition = (
     ).length;
     const nextAppointmentPercent =
       (nextAppointmentCount / salesData?.length) * 100;
+    const resultPercent = Math.round(nextAppointmentPercent * 10) / 10;
     return {
-      pecent: Math.round(nextAppointmentPercent * 10) / 10, //小数点第1位まで四捨五入
+      pecent: isNaN(resultPercent) ? 0 : resultPercent,
       count: nextAppointmentCount,
     };
   }, [salesData]);
@@ -95,7 +93,7 @@ export const useSummaryComposition = (
         color: r.kind === "new" ? green[400] : orange[400],
       };
     });
-  }, [getRouteCountByName]);
+  }, [salesData, getRouteCountByName, routeMst]);
 
   const consultContentPieChartData = useMemo(() => {
     if (!consultContent || !newVisitor || !existVisitor) return;
@@ -129,11 +127,26 @@ export const useSummaryComposition = (
     ];
   }, [consultContent, newVisitor, existVisitor]);
 
+  const closedConstractData = useMemo(() => {
+    if (!newVisitor) return;
+    const constractCount = newVisitor.filter(
+      (v) => v.applications.length > 0
+    ).length;
+    const constractPercent = (constractCount / newVisitor.length) * 100;
+    const resultPercent = Math.round(constractPercent * 10) / 10;
+    return {
+      percent: isNaN(resultPercent) ? 0 : resultPercent,
+      count: constractCount,
+      all: newVisitor.length,
+    };
+  }, [newVisitor]);
+
   return {
     visitorCount,
     nextAppointment,
     consultContent,
     routeBarChartData,
     consultContentPieChartData,
+    closedConstractData,
   };
 };
