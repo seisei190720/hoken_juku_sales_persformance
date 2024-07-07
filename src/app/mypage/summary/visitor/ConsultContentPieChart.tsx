@@ -12,20 +12,19 @@ import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { blue } from "@mui/material/colors";
+import CircularProgress from "@mui/material/CircularProgress";
 
-type Props = {};
+type Props = {
+  values:
+    | {
+        name: string;
+        value: number;
+        color: string;
+      }[]
+    | undefined;
+};
 
-const ConsultContentPieChart: FC<Props> = ({}) => {
-  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
-  const data = [
-    { name: "[新規]生保", value: 3 },
-    { name: "[新規]損保", value: 4 },
-    { name: "[新規]その他", value: 2 },
-    { name: "[既契約]生保", value: 1 },
-    { name: "[既契約]損保", value: 4 },
-    { name: "[既契約]その他", value: 2 },
-  ];
-
+const ConsultContentPieChart: FC<Props> = ({ values }) => {
   const RADIAN = Math.PI / 180;
   // カスタムラベル描画関数のプロパティ型定義
   interface CustomizedLabelProps {
@@ -58,10 +57,27 @@ const ConsultContentPieChart: FC<Props> = ({}) => {
         textAnchor={x > cx ? "start" : "end"}
         dominantBaseline="central"
       >
-        {`${(percent * 100).toFixed(0)}%`}
+        {values ? values[index].value : 0}
+        {/* {`${(percent * 100).toFixed(0)}%`} */}
       </text>
     );
   };
+
+  if (!values)
+    return (
+      <Card
+        sx={{
+          borderRadius: "12px",
+          flex: 1,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: 400,
+        }}
+      >
+        <CircularProgress />
+      </Card>
+    );
   return (
     <Card sx={{ padding: 2, borderRadius: "12px", flex: 1 }}>
       <Stack gap={2} padding={1}>
@@ -82,18 +98,15 @@ const ConsultContentPieChart: FC<Props> = ({}) => {
               <Pie
                 dataKey="value"
                 isAnimationActive={true}
-                data={data}
+                data={values}
                 cx="50%"
                 cy="50%"
                 labelLine={false}
                 label={renderCustomizedLabel}
-                fill="#8884d8"
+                fill={blue[300]}
               >
-                {data.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
+                {values.map((v, index) => (
+                  <Cell key={`cell-${index}`} fill={v.color} />
                 ))}
               </Pie>
               <Tooltip />

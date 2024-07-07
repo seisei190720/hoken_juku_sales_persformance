@@ -9,8 +9,8 @@ import Chip from "@mui/material/Chip";
 
 type Props = {
   title: string;
-  newValue: string;
-  existingValue: string;
+  newValue: number;
+  existingValue: number;
 };
 
 const ConsultCategoryCard: FC<Props> = ({ title, newValue, existingValue }) => {

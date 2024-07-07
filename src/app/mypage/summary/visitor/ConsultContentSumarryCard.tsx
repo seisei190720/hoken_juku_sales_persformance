@@ -6,10 +6,39 @@ import { blue } from "@mui/material/colors";
 import React from "react";
 import { FC } from "react";
 import ConsultCategoryCard from "./ConsultCategoryCard";
+import CircularProgress from "@mui/material/CircularProgress";
 
-type Props = {};
+type Props = {
+  consultContent:
+    | {
+        life: {
+          new: number;
+          exist: number;
+        };
+        nonLife: {
+          new: number;
+          exist: number;
+        };
+      }
+    | undefined;
+};
 
-const ConsultContentSumarryCard: FC<Props> = ({}) => {
+const ConsultContentSumarryCard: FC<Props> = ({ consultContent }) => {
+  if (!consultContent)
+    return (
+      <Card
+        sx={{
+          borderRadius: "12px",
+          flex: 2,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: 215,
+        }}
+      >
+        <CircularProgress />
+      </Card>
+    );
   return (
     <Card sx={{ padding: 2, borderRadius: "12px", flex: 2 }}>
       <Stack height="100%">
@@ -18,13 +47,20 @@ const ConsultContentSumarryCard: FC<Props> = ({}) => {
         </Typography>
         <Stack
           direction="row"
-          alignItems="center"
           justifyContent="center"
           flex={1}
           divider={<Divider orientation="vertical" />}
         >
-          <ConsultCategoryCard title="生保" newValue="48" existingValue="65" />
-          <ConsultCategoryCard title="損保" newValue="92" existingValue="53" />
+          <ConsultCategoryCard
+            title="生保"
+            newValue={consultContent.life.new}
+            existingValue={consultContent.life.exist}
+          />
+          <ConsultCategoryCard
+            title="損保"
+            newValue={consultContent.nonLife.new}
+            existingValue={consultContent.nonLife.exist}
+          />
         </Stack>
       </Stack>
     </Card>

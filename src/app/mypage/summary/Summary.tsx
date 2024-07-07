@@ -11,13 +11,23 @@ import VisitorBarChart from "./visitor/VisitorBarChart";
 import SimpleSummaryCard from "./component/SimpleSummaryCard";
 import ThreeCompartmentSummaryCard from "./component/ThreeCompartmentSummaryCard";
 import ApplicatorBarChart from "./applicator/ApplicatorBarChart";
+import { AuthUser } from "aws-amplify/auth";
+import { useSummaryComposition } from "./hooks/useSummaryComposition";
+import dayjs from "dayjs";
+import { useSalesResultApi } from "@/app/api/useSalesResultApi";
 
 type SummaryMode = "visitor" | "applicator";
 type Props = {
+  user: AuthUser;
   routeMst: RouteMst[];
   productMst: ProductMst[];
 };
-const Summary: FC<Props> = ({ routeMst, productMst }) => {
+const Summary: FC<Props> = ({ user, routeMst, productMst }) => {
+  const { salesResultData } = useSalesResultApi(user.userId, {
+    status: null,
+    firstVisitDate: dayjs().format("YYYY-MM"),
+  });
+  const data = useSummaryComposition(salesResultData, routeMst);
   const [summaryMode, setSummaryMode] = useState<SummaryMode>("visitor");
   const updateSummaryMode = useCallback(
     (event: React.MouseEvent<HTMLElement>, nextMode: string) => {
@@ -52,26 +62,38 @@ const Summary: FC<Props> = ({ routeMst, productMst }) => {
                 <Stack direction="column" gap={2} ml="2vw">
                   <Stack direction="row" gap={2}>
                     <ThreeCompartmentSummaryCard
+                      values={
+                        data.visitorCount && {
+                          mainValue: data.visitorCount.all,
+                          sub1Value: `${data.visitorCount.new}人`,
+                          sub2Value: `${data.visitorCount.exist}人`,
+                        }
+                      }
                       title={"来店者数"}
-                      mainValue={32}
                       mainUnit={"人"}
-                      sub1Value={"20人"}
                       sub1ChipName={"新規"}
-                      sub2Value={"12人"}
                       sub2ChipName={"既契約"}
                       cardFlex={1}
                     />
                     <SimpleSummaryCard
+                      values={
+                        data.nextAppointment && {
+                          mainValue: data.nextAppointment.pecent,
+                          subValue: `( ${data.nextAppointment.count}件 )`,
+                        }
+                      }
                       title={"次アポ取得率"}
-                      mainValue={67}
                       mainUnit={"%"}
-                      subValue={"( 21件 )"}
                     />
-                    <ConsultContentSumarryCard />
+                    <ConsultContentSumarryCard
+                      consultContent={data.consultContent}
+                    />
                   </Stack>
                   <Stack direction="row" gap={2}>
-                    <VisitorBarChart routeMst={routeMst} />
-                    <ConsultContentPieChart />
+                    <VisitorBarChart values={data.routeBarChartData} />
+                    <ConsultContentPieChart
+                      values={data.consultContentPieChartData}
+                    />
                   </Stack>
                 </Stack>
               );
@@ -80,42 +102,43 @@ const Summary: FC<Props> = ({ routeMst, productMst }) => {
                 <Stack direction="column" gap={2} ml="2vw">
                   <Stack direction="row" gap={2}>
                     <ThreeCompartmentSummaryCard
+                      values={{
+                        mainValue: 210000,
+                        sub1Value: `${sampleNum1.toLocaleString()}円`,
+                        sub2Value: `${sampleNum2.toLocaleString()}円`,
+                      }}
                       title={"実績AC"}
-                      mainValue={210000}
                       mainUnit={"円"}
-                      sub1Value={`${sampleNum1.toLocaleString()}円`}
                       sub1ChipName={"生保"}
-                      sub2Value={`${sampleNum2.toLocaleString()}円`}
                       sub2ChipName={"損保"}
                       cardFlex={1.8}
                     />
                     <ThreeCompartmentSummaryCard
+                      values={{
+                        mainValue: 23,
+                        sub1Value: "10件",
+                        sub2Value: "12件",
+                      }}
                       title={"契約件数"}
-                      mainValue={23}
                       mainUnit={"件"}
-                      sub1Value={"10件"}
                       sub1ChipName={"生保"}
-                      sub2Value={"12件"}
                       sub2ChipName={"損保"}
                       cardFlex={1.5}
                     />
                     <SimpleSummaryCard
+                      values={{ mainValue: 54, subValue: "( 9/18件 )" }}
                       title={"成約率"}
-                      mainValue={54}
                       mainUnit={"%"}
-                      subValue={"( 9/18件 )"}
                     />
                     <SimpleSummaryCard
+                      values={{ mainValue: 67, subValue: "( 11/18件 )" }}
                       title={"ありがとう率"}
-                      mainValue={67}
                       mainUnit={"%"}
-                      subValue={"( 11/18件 )"}
                     />
                     <SimpleSummaryCard
+                      values={{ mainValue: 3, subValue: "" }}
                       title={"申込残"}
-                      mainValue={3}
                       mainUnit={"件"}
-                      subValue={""}
                     />
                   </Stack>
                   <Stack direction="row" gap={2}>

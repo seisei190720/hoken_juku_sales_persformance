@@ -6,27 +6,45 @@ import { blue } from "@mui/material/colors";
 import { FC } from "react";
 import React from "react";
 import Chip from "@mui/material/Chip";
+import CircularProgress from "@mui/material/CircularProgress";
 
 type Props = {
+  values:
+    | {
+        mainValue: number;
+        sub1Value: string;
+        sub2Value: string;
+      }
+    | undefined;
   title: string;
-  mainValue: number;
   mainUnit: string;
-  sub1Value: string;
   sub1ChipName: string;
-  sub2Value: string;
   sub2ChipName: string;
   cardFlex: number;
 };
 const ThreeCompartmentSummaryCard: FC<Props> = ({
+  values,
   title,
-  mainValue,
   mainUnit,
-  sub1Value,
   sub1ChipName,
-  sub2Value,
   sub2ChipName,
   cardFlex,
 }) => {
+  if (!values)
+    return (
+      <Card
+        sx={{
+          borderRadius: "12px",
+          flex: cardFlex,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: 215,
+        }}
+      >
+        <CircularProgress />
+      </Card>
+    );
   return (
     <Card
       sx={{
@@ -48,7 +66,7 @@ const ThreeCompartmentSummaryCard: FC<Props> = ({
             mb={1}
           >
             <Typography variant="h2" fontWeight={"Medium"}>
-              {mainValue.toLocaleString()}
+              {values.mainValue.toLocaleString()}
             </Typography>
             <Typography variant="h6">{mainUnit}</Typography>
           </Stack>
@@ -66,7 +84,7 @@ const ThreeCompartmentSummaryCard: FC<Props> = ({
             pr={2}
             pl={2}
           >
-            <Typography variant="h5">{sub1Value}</Typography>
+            <Typography variant="h5">{values.sub1Value}</Typography>
             <Chip
               size="small"
               label={sub1ChipName}
@@ -82,7 +100,7 @@ const ThreeCompartmentSummaryCard: FC<Props> = ({
             pr={2}
             pl={2}
           >
-            <Typography variant="h5">{sub2Value}</Typography>
+            <Typography variant="h5">{values.sub2Value}</Typography>
             <Chip
               size="small"
               label={sub2ChipName}

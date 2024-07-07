@@ -121,42 +121,52 @@ export const useMockData = () => {
     {
       id: "1",
       name: "ネット・電話",
+      kind: "new",
     },
     {
       id: "2",
       name: "直来",
+      kind: "new",
     },
     {
       id: "3",
       name: "セミナー",
+      kind: "new",
     },
     {
       id: "4",
       name: "ご紹介",
+      kind: "new",
     },
     {
       id: "5",
       name: "家族",
+      kind: "new",
     },
     {
       id: "6",
       name: "募集人関連",
+      kind: "new",
     },
     {
       id: "7",
       name: "その他",
+      kind: "new",
     },
     {
       id: "8",
       name: "更改",
+      kind: "exist",
     },
     {
       id: "9",
       name: "自発的",
+      kind: "exist",
     },
     {
       id: "10",
       name: "フォロー",
+      kind: "exist",
     },
   ];
 

@@ -79,7 +79,11 @@ const MyPage: FC<Props> = ({ user }) => {
               switch (viewMode) {
                 case "summary":
                   return (
-                    <Summary routeMst={routeMst} productMst={productMst} />
+                    <Summary
+                      user={user}
+                      routeMst={routeMst}
+                      productMst={productMst}
+                    />
                   );
                 case "visitor":
                   return (

@@ -1,6 +1,5 @@
 import {
   Application,
-  NewApplication,
   IndividualSalesResult,
   NewVisitor,
   applicationStatus,
