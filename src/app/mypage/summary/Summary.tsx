@@ -17,6 +17,8 @@ import dayjs from "dayjs";
 import { useSalesResultApi } from "@/app/api/useSalesResultApi";
 import Button from "@mui/material/Button";
 import { useApplicatorSummaryComposition } from "./hooks/useApplicatorSummaryComposition";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 type SummaryMode = "visitor" | "applicator";
 type Props = {
@@ -50,6 +52,7 @@ const Summary: FC<Props> = ({ user, routeMst, productMst }) => {
   const [summaryMode, setSummaryMode] = useState<SummaryMode>("visitor");
   const updateSummaryMode = useCallback(
     (event: React.MouseEvent<HTMLElement>, nextMode: string) => {
+      if (nextMode == null) return;
       setSummaryMode(nextMode as SummaryMode);
     },
     []
@@ -61,9 +64,13 @@ const Summary: FC<Props> = ({ user, routeMst, productMst }) => {
         <Stack direction="row" gap={3} ml={2} alignItems="flex-end">
           <Typography variant="h5">レポート</Typography>
           <Stack direction="row" ml={2} alignItems="center">
-            <Button onClick={backToLastMonth}>＜</Button>
+            <Button onClick={backToLastMonth}>
+              <ArrowBackIosIcon />
+            </Button>
             <Typography>{targetMonth}</Typography>
-            <Button onClick={forwardToNextMonth}>＞</Button>
+            <Button onClick={forwardToNextMonth}>
+              <ArrowForwardIosIcon />
+            </Button>
           </Stack>
           <ToggleButtonGroup
             size="small"

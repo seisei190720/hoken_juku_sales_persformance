@@ -19,6 +19,7 @@ export const useUpdateApplications = (
   const [updatedApplications, setUpdatedApplications] = useState<
     UpdateApplication[]
   >([]);
+  const [thankyouState, setThankyouState] = useState<boolean>(false);
 
   useEffect(() => {
     if (salesResult) {
@@ -34,8 +35,9 @@ export const useUpdateApplications = (
           };
         })
       );
+      setThankyouState(salesResult.thankyou);
     }
-  }, [salesResult]);
+  }, [salesResult, setUpdatedApplications, setThankyouState]);
 
   const addApplication = useCallback(() => {
     setUpdatedApplications([
@@ -166,25 +168,9 @@ export const useUpdateApplications = (
     //TODO: validationを実装する
     console.log(updatedApplications);
     if (!salesResult) return;
-    const updatedSample = {
-      ...salesResult,
-      applications: updatedApplications.map((v) => {
-        return {
-          applicationDate: v.applicationDate,
-          product: v.product || "",
-          company: v.company || "",
-          firstYearFee: v.firstYearFee,
-          status: v.status,
-          establishDate: v.establishDate,
-        };
-      }),
-    };
-
-    console.log("updatedSample");
-    console.log(updatedSample);
-
     updateApplicationsData({
       ...salesResult,
+      thankyou: thankyouState,
       applications: updatedApplications.map((v) => {
         return {
           applicationDate: v.applicationDate,
@@ -196,7 +182,7 @@ export const useUpdateApplications = (
         };
       }),
     });
-  }, [updatedApplications, updateApplicationsData]);
+  }, [updatedApplications, updateApplicationsData, thankyouState]);
 
   return {
     updatedApplications,
@@ -208,6 +194,8 @@ export const useUpdateApplications = (
     updateStatus,
     updateFirstYearFee,
     updateEstablishDate,
+    thankyouState,
+    setThankyouState,
     submitUpdatedApplications,
   };
 };

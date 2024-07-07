@@ -14,6 +14,8 @@ import {
 } from "../../types";
 import VisitorFormDialog from "./VisitorFormDialog";
 import VisitorList from "./VisitorList";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 type Props = {
   user: AuthUser;
@@ -63,9 +65,13 @@ const Visitor: FC<Props> = ({
         <Stack direction="row" gap={2} justifyContent="space-between">
           <Stack direction="row" gap={2} alignItems="center">
             <Typography variant="h5">来店者一覧</Typography>
-            <Button onClick={backToLastMonth}>＜</Button>
+            <Button onClick={backToLastMonth}>
+              <ArrowBackIosIcon />
+            </Button>
             <Typography>{targetMonth}</Typography>
-            <Button onClick={forwardToNextMonth}>＞</Button>
+            <Button onClick={forwardToNextMonth}>
+              <ArrowForwardIosIcon />
+            </Button>
           </Stack>
           <Stack direction="row" gap={2}>
             <Button variant="contained" onClick={handleClickOpen}>

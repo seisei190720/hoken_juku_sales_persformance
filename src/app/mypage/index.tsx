@@ -15,7 +15,7 @@ type Props = {
   user: AuthUser;
 };
 
-type MyPageMode = "summary" | "visitor" | "applicator" | "notYetEstablished";
+type MyPageMode = "summary" | "visitor" | "applicator";
 
 const MyPage: FC<Props> = ({ user }) => {
   const { routeMst, consultContentMst, productMst, companyMst, statusMst } =
@@ -60,11 +60,6 @@ const MyPage: FC<Props> = ({ user }) => {
             <Tab label="サマリ" value="summary" {...a11yProps(0)} />
             <Tab label="来店者" value="visitor" {...a11yProps(1)} />
             <Tab label="申込者" value="applicator" {...a11yProps(2)} />
-            <Tab
-              label="申込者(未成立)"
-              value="notYetEstablished"
-              {...a11yProps(3)}
-            />
           </Tabs>
 
           <Box
@@ -98,15 +93,6 @@ const MyPage: FC<Props> = ({ user }) => {
                 case "applicator":
                   return (
                     <AllApplicators
-                      user={user}
-                      productMst={productMst}
-                      companyMst={companyMst}
-                      statusMst={statusMst}
-                    />
-                  );
-                case "notYetEstablished":
-                  return (
-                    <NotYetEstablished
                       user={user}
                       productMst={productMst}
                       companyMst={companyMst}

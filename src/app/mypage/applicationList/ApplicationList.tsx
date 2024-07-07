@@ -22,7 +22,8 @@ import Button from "@mui/material/Button";
 import { AuthUser } from "aws-amplify/auth";
 import UpdateApplicationFormDialog from "./UpdateApplicationFormDialog";
 import CircularProgress from "@mui/material/CircularProgress";
-import { green, orange } from "@mui/material/colors";
+import { green, grey, orange, red } from "@mui/material/colors";
+import { styled } from "@mui/material/styles";
 
 type Props = {
   user: AuthUser;
@@ -55,9 +56,6 @@ const ApplicationList: FC<Props> = ({
     setOpenEditDailog(false);
   };
   const existsInProgressConstract = (target: IndividualSalesResult) => {
-    console.log("target.applications");
-    console.log(target.applications);
-    console.log(target.applications.some((v) => v.status === "未達成"));
     return target.applications.some((v) => v.status === "未成立");
   };
 
@@ -72,6 +70,14 @@ const ApplicationList: FC<Props> = ({
       case null:
         return <></>;
     }
+  };
+
+  const getAccordionHeaderColor = (
+    thankyou: boolean,
+    showInProgressApp: boolean
+  ) => {
+    if (thankyou) return red[200];
+    return showInProgressApp ? orange[100] : green[100];
   };
 
   if (!salesResultData) return <CircularProgress />;
@@ -93,10 +99,12 @@ const ApplicationList: FC<Props> = ({
                 aria-controls={`accordion_${result.name}`}
                 id={`accordion_${result.name}`}
                 sx={{
+                  height: "64px",
                   borderRadius: "12px ",
-                  backgroundColor: existsInProgressConstract(result)
-                    ? orange[100]
-                    : green[100],
+                  backgroundColor: getAccordionHeaderColor(
+                    result.thankyou,
+                    existsInProgressConstract(result)
+                  ),
                 }}
               >
                 <Stack
@@ -136,7 +144,7 @@ const ApplicationList: FC<Props> = ({
                   </TableHead>
                   <TableBody>
                     {result.applications.map((app) => (
-                      <TableRow hover key={result.name}>
+                      <StyledTableRow hover key={result.name}>
                         <TableCell component="th" scope="row">
                           {app.applicationDate}
                         </TableCell>
@@ -153,7 +161,7 @@ const ApplicationList: FC<Props> = ({
                             : app.firstYearFee}
                         </TableCell>
                         <TableCell>{statusChip(app.status)}</TableCell>
-                      </TableRow>
+                      </StyledTableRow>
                     ))}
                   </TableBody>
                 </Table>
@@ -189,3 +197,13 @@ const ApplicationList: FC<Props> = ({
 };
 
 export default ApplicationList;
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: grey[50],
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));

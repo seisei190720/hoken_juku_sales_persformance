@@ -12,7 +12,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import ApplicationFormDialog from "./ApplicationFormDialog";
-import { blue } from "@mui/material/colors";
+import { blue, grey } from "@mui/material/colors";
+import { styled } from "@mui/material/styles";
 
 type Props = {
   salesResults: IndividualSalesResult[];
@@ -58,7 +59,7 @@ const VisitorList: FC<Props> = ({
           <TableBody>
             {salesResults.map((row) => (
               //ページ切り替えの要素を取得
-              <TableRow hover key={`${row.firstVisitDate}_${row.name}`}>
+              <StyledTableRow hover key={`${row.firstVisitDate}_${row.name}`}>
                 {/* hoverを入れることでマウスポイントが表の上に乗った時に色が変わるアクションがつきます */}
                 <TableCell component="th" scope="row">
                   {row.firstVisitDate}
@@ -93,7 +94,7 @@ const VisitorList: FC<Props> = ({
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>
-              </TableRow>
+              </StyledTableRow>
             ))}
           </TableBody>
         </Table>
@@ -113,3 +114,13 @@ const VisitorList: FC<Props> = ({
 };
 
 export default VisitorList;
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: grey[50],
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));

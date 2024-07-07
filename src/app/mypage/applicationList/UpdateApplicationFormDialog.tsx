@@ -1,5 +1,4 @@
-import { IconButton, Typography } from "@mui/material";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import {
   CompanyMst,
   IndividualSalesResult,
@@ -21,6 +20,13 @@ import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { useUpdateApplications } from "./hooks/useUpdateApplications";
+import IconButton from "@mui/material/IconButton";
+import Checkbox from "@mui/material/Checkbox";
+import Typography from "@mui/material/Typography";
+import Favorite from "@mui/icons-material/Favorite";
+import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
+import FormControlLabel from "@mui/material/FormControlLabel";
+
 type Props = {
   openFormDialog: boolean;
   handleClose: () => void;
@@ -50,6 +56,8 @@ const UpdateApplicationFormDialog: FC<Props> = ({
     updateStatus,
     updateFirstYearFee,
     updateEstablishDate,
+    thankyouState,
+    setThankyouState,
     submitUpdatedApplications,
   } = useUpdateApplications(
     salesResult,
@@ -181,7 +189,7 @@ const UpdateApplicationFormDialog: FC<Props> = ({
               </Stack>
             );
           })}
-          <Stack direction="row" justifyContent="flex-start">
+          <Stack direction="row" justifyContent="space-between">
             <Button
               variant="text"
               startIcon={<AddIcon />}
@@ -190,6 +198,17 @@ const UpdateApplicationFormDialog: FC<Props> = ({
             >
               追加
             </Button>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={thankyouState}
+                  onChange={(e) => setThankyouState(e.target.checked)}
+                  icon={<FavoriteBorder />}
+                  checkedIcon={<Favorite color="error" />}
+                />
+              }
+              label="ありがとう完了済み"
+            />
           </Stack>
         </Stack>
       </DialogContent>
