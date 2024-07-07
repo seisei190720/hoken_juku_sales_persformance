@@ -22,6 +22,7 @@ import Button from "@mui/material/Button";
 import { AuthUser } from "aws-amplify/auth";
 import UpdateApplicationFormDialog from "./UpdateApplicationFormDialog";
 import CircularProgress from "@mui/material/CircularProgress";
+import { green, orange } from "@mui/material/colors";
 
 type Props = {
   user: AuthUser;
@@ -52,6 +53,12 @@ const ApplicationList: FC<Props> = ({
 
   const handleClose = () => {
     setOpenEditDailog(false);
+  };
+  const existsInProgressConstract = (target: IndividualSalesResult) => {
+    console.log("target.applications");
+    console.log(target.applications);
+    console.log(target.applications.some((v) => v.status === "未達成"));
+    return target.applications.some((v) => v.status === "未成立");
   };
 
   const statusChip = (status: string) => {
@@ -86,7 +93,10 @@ const ApplicationList: FC<Props> = ({
                 aria-controls={`accordion_${result.name}`}
                 id={`accordion_${result.name}`}
                 sx={{
-                  backgroundColor: "#E6FFE9",
+                  borderRadius: "12px ",
+                  backgroundColor: existsInProgressConstract(result)
+                    ? orange[100]
+                    : green[100],
                 }}
               >
                 <Stack
@@ -95,7 +105,7 @@ const ApplicationList: FC<Props> = ({
                   alignItems="center"
                   gap={3}
                 >
-                  <Typography variant="subtitle1" color="#1976d2">
+                  <Typography variant="subtitle1" fontWeight="bold">
                     {result.name}
                   </Typography>
                   <Typography

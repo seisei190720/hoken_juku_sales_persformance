@@ -10,17 +10,25 @@ import Drawer from "@mui/material/Drawer";
 import Toolbar from "@mui/material/Toolbar";
 
 type Props = {
+  openSideMenu: boolean;
+  handleClickSideMenu: () => void;
   menuList: MenuItem[];
   selectedMenu: MenuKind;
   setSelectedMenu: Dispatch<SetStateAction<MenuKind>>;
 };
 
 const drawerWidth = 240;
-const SideMenu: FC<Props> = ({ menuList, selectedMenu, setSelectedMenu }) => {
+const SideMenu: FC<Props> = ({
+  openSideMenu,
+  handleClickSideMenu,
+  menuList,
+  selectedMenu,
+  setSelectedMenu,
+}) => {
   return (
     <Drawer
-      // open={false}
-      variant="permanent"
+      open={openSideMenu}
+      variant="temporary"
       sx={{
         width: drawerWidth,
         flexShrink: 0,
@@ -29,6 +37,7 @@ const SideMenu: FC<Props> = ({ menuList, selectedMenu, setSelectedMenu }) => {
           boxSizing: "border-box",
         },
       }}
+      onClose={handleClickSideMenu}
     >
       <Toolbar />
       <Box sx={{ overflow: "auto" }}>
@@ -37,7 +46,10 @@ const SideMenu: FC<Props> = ({ menuList, selectedMenu, setSelectedMenu }) => {
             <ListItem key={name} disablePadding>
               {/* <ListItemButton selected={}> */}
               <ListItemButton
-                onClick={() => setSelectedMenu(menuKind)}
+                onClick={() => {
+                  setSelectedMenu(menuKind);
+                  handleClickSideMenu();
+                }}
                 selected={menuKind === selectedMenu}
               >
                 <ListItemIcon>{icon}</ListItemIcon>

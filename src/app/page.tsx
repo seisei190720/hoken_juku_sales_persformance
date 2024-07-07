@@ -27,7 +27,11 @@ function Home() {
   const { user, route } = useAuthenticator((context) => [context.user]);
   const { cognitoUser } = useLoginUser();
   const [selectedMenu, setSelectedMenu] = useState<MenuKind>("mypage");
+  const [openSideMenu, setOpenSideMenu] = useState<boolean>(false);
 
+  const handleClickSideMenu = () => {
+    setOpenSideMenu((p) => !p);
+  };
   const menuList: MenuItem[] = [
     { name: "マイページ", menuKind: "mypage", icon: <BeachAccessIcon /> },
     { name: "ダッシュボード", menuKind: "dashboard", icon: <CoffeeIcon /> },
@@ -37,8 +41,13 @@ function Home() {
     // <button onClick={() => getUserAttribute()}>Sign Out</button>
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <TopBar cognitoUser={cognitoUser} />
+      <TopBar
+        cognitoUser={cognitoUser}
+        handleClickSideMenu={handleClickSideMenu}
+      />
       <SideMenu
+        openSideMenu={openSideMenu}
+        handleClickSideMenu={handleClickSideMenu}
         menuList={menuList}
         selectedMenu={selectedMenu}
         setSelectedMenu={setSelectedMenu}

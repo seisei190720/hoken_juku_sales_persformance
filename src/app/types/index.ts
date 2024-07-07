@@ -52,9 +52,11 @@ export type NewVisitor = {
   consultContent: ConsultContentMst | null;
 };
 
+export type RouteKind = "new" | "exist";
 export type RouteMst = {
   id: string;
   name: string;
+  kind: RouteKind;
 };
 
 export type ConsultContentMst = {
@@ -62,9 +64,11 @@ export type ConsultContentMst = {
   name: string;
 };
 
+export type ProductKind = "life" | "nonLife";
 export type ProductMst = {
   id: string;
   name: string;
+  kind: ProductKind;
 };
 
 export type CompanyMst = {
