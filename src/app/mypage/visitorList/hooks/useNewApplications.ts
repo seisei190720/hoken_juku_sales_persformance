@@ -1,5 +1,4 @@
 import {
-  applicationStatus,
   CompanyMst,
   IndividualSalesResult,
   NewApplication,
@@ -33,8 +32,8 @@ export const useNewApplications = (
 
   const deleteProduct = useCallback(
     (targetIdx: number) => {
-      setNewApplications(
-        newApplications.filter((app, index) => index !== targetIdx)
+      setNewApplications((pre) =>
+        pre.filter((app, index) => index !== targetIdx)
       );
     },
     [newApplications, setNewApplications]

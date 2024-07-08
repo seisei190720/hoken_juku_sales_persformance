@@ -137,9 +137,9 @@ const ApplicationList: FC<Props> = ({
                       <TableCell>申込日</TableCell>
                       <TableCell>会社</TableCell>
                       <TableCell>商品</TableCell>
+                      <TableCell>状態</TableCell>
                       <TableCell>成立日</TableCell>
                       <TableCell>初回手数料</TableCell>
-                      <TableCell>状態</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -150,13 +150,13 @@ const ApplicationList: FC<Props> = ({
                         </TableCell>
                         <TableCell>{app.company}</TableCell>
                         <TableCell>{app.product}</TableCell>
+                        <TableCell>{statusChip(app.status)}</TableCell>
                         <TableCell>
                           {app.establishDate === null ? "-" : app.establishDate}
                         </TableCell>
                         <TableCell>
                           {app.firstYearFee === null ? "-" : app.firstYearFee}
                         </TableCell>
-                        <TableCell>{statusChip(app.status)}</TableCell>
                       </StyledTableRow>
                     ))}
                   </TableBody>

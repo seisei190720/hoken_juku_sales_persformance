@@ -29,9 +29,9 @@ export const useUpdateApplications = (
             applicationDate: a.applicationDate,
             product: productMst.find((p) => p.name === a.product) || null,
             company: companyMst.find((c) => c.name === a.company) || null,
-            firstYearFee: null,
+            firstYearFee: a.firstYearFee,
             status: statusMst.find((s) => s.name === a.status) || null,
-            establishDate: null,
+            establishDate: a.establishDate,
           };
         })
       );
@@ -53,11 +53,11 @@ export const useUpdateApplications = (
 
   const deleteApplication = useCallback(
     (targetIdx: number) => {
-      setUpdatedApplications(
-        updatedApplications.filter((app, index) => index !== targetIdx)
+      setUpdatedApplications((pre) =>
+        pre.filter((app, index) => index !== targetIdx)
       );
     },
-    [updatedApplications, setUpdatedApplications]
+    [setUpdatedApplications]
   );
 
   const updateApplicationDate = useCallback(

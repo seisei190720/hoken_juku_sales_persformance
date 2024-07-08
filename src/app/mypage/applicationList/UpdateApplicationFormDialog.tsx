@@ -80,37 +80,36 @@ const UpdateApplicationFormDialog: FC<Props> = ({
     >
       <DialogTitle>{`${salesResult.name}さんの申込情報登録`}</DialogTitle>
       <DialogContent>
-        <Stack gap={3} direction="column">
+        <Stack ml={2} gap={3} direction="column">
           <DialogContentText>申込情報を更新してください。</DialogContentText>
           {updatedApplications.map((app, idx) => {
             return (
               <Stack
                 key={`updateApplications_${idx}`}
-                gap={3}
+                gap={2}
                 direction="row"
                 alignItems="flex-end"
               >
                 <Typography variant="h6">{`${idx}.`}</Typography>
                 <TextField
-                  // autoFocus
-                  required
+                  required={idx === 0}
                   key={`${idx}_applicationDate`}
                   id={`${idx}_applicationDate`}
                   name={`${idx}_applicationDate`}
-                  label="申込日"
+                  label={idx === 0 && "申込日"}
                   value={app.applicationDate}
                   onChange={(e) => updateApplicationDate(e.target.value, idx)}
                   type="date"
                   fullWidth
                   variant="standard"
                 />
-                <FormControl required variant="standard" fullWidth>
-                  <InputLabel>保険会社</InputLabel>
+                <FormControl required={idx === 0} variant="standard" fullWidth>
+                  {idx === 0 && <InputLabel>保険会社</InputLabel>}
                   <Select
                     labelId={`${idx}_company`}
                     id={`${idx}_company`}
                     value={app.company?.id}
-                    label="保険会社"
+                    label={"保険会社"}
                     onChange={(e) => updateCompany(e, idx)}
                   >
                     {companyMst.map((r) => (
@@ -120,14 +119,14 @@ const UpdateApplicationFormDialog: FC<Props> = ({
                     ))}
                   </Select>
                 </FormControl>
-                <FormControl required variant="standard" fullWidth>
-                  <InputLabel>商品</InputLabel>
+                <FormControl required={idx === 0} variant="standard" fullWidth>
+                  {idx === 0 && <InputLabel>商品</InputLabel>}
                   <Select
                     key={`${idx}_product`}
                     labelId={`${idx}_product`}
                     id={`${idx}_product`}
                     value={app.product?.id}
-                    label="商品"
+                    label={"商品"}
                     onChange={(e) => updateProduct(e, idx)}
                   >
                     {productMst.map((r) => (
@@ -137,14 +136,14 @@ const UpdateApplicationFormDialog: FC<Props> = ({
                     ))}
                   </Select>
                 </FormControl>
-                <FormControl required variant="standard" fullWidth>
-                  <InputLabel>状態</InputLabel>
+                <FormControl required={idx === 0} variant="standard" fullWidth>
+                  {idx === 0 && <InputLabel>状態</InputLabel>}
                   <Select
                     key={`${idx}_status`}
                     labelId={`${idx}_status`}
                     id={`${idx}_status`}
                     value={app.status?.id}
-                    label="状態"
+                    label={"状態"}
                     onChange={(e) => updateStatus(e, idx)}
                   >
                     {statusMst.map((r) => (
@@ -155,29 +154,28 @@ const UpdateApplicationFormDialog: FC<Props> = ({
                   </Select>
                 </FormControl>
                 <TextField
-                  // autoFocus
-                  required
+                  autoFocus
+                  required={idx === 0}
+                  id={`${idx}_establishDate`}
+                  name={`${idx}_establishDate`}
+                  label={idx === 0 && "契約日"}
+                  value={app.establishDate === null ? "" : app.establishDate}
+                  onChange={(e) => updateEstablishDate(e.target.value, idx)}
+                  type="date"
+                  fullWidth
+                  variant="standard"
+                />
+                <TextField
+                  required={idx === 0}
                   key={`${idx}_firstYearFee`}
                   id={`${idx}_firstYearFee`}
                   name={`${idx}_firstYearFee`}
-                  label="初回手数料"
+                  label={idx === 0 && "初回手数料"}
                   value={app.firstYearFee}
                   onChange={(e) =>
                     updateFirstYearFee(Number(e.target.value), idx)
                   }
                   type="number"
-                  fullWidth
-                  variant="standard"
-                />
-                <TextField
-                  // autoFocus
-                  required
-                  id={`${idx}_establishDate`}
-                  name={`${idx}_establishDate`}
-                  label="契約日"
-                  value={app.establishDate}
-                  onChange={(e) => updateEstablishDate(e.target.value, idx)}
-                  type="date"
                   fullWidth
                   variant="standard"
                 />
