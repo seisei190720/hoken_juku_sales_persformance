@@ -61,10 +61,9 @@ const Visitor: FC<Props> = ({
   if (!salesResultData) return <CircularProgress />;
   return (
     <>
-      <Stack gap={2} p={4}>
+      <Stack gap={2} p={2} pt={3} ml={2} mr={2}>
         <Stack direction="row" gap={2} justifyContent="space-between">
-          <Stack direction="row" gap={2} alignItems="center">
-            <Typography variant="h5">来店者一覧</Typography>
+          <Stack direction="row" alignItems="center">
             <Button onClick={backToLastMonth}>
               <ArrowBackIosIcon />
             </Button>

@@ -76,7 +76,7 @@ export const useSalesResultApi = (
           nextAppointment: newData.nextAppointment,
           consultContent: newData.consultContent?.name,
         });
-        await mutate();
+        await mutate(); //uuidが必要になるため、ローカルデータでmutateができない。
       } catch (error) {
         console.error("Error posting data:", error);
       }
@@ -88,7 +88,13 @@ export const useSalesResultApi = (
     async (newData: IndividualSalesResult) => {
       try {
         await axios.put(url, newData);
-        await mutate();
+        await mutate((d: IndividualSalesResult[]) => {
+          if (!d) return;
+          const updatedSalesResultData = d.map((item) =>
+            item.uuid === newData.uuid ? newData : item
+          );
+          return updatedSalesResultData;
+        }, false);
       } catch (error) {
         console.error("Error updating data:", error);
       }

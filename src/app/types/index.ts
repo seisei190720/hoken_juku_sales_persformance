@@ -4,7 +4,7 @@ export type MenuItem = {
   icon: React.ReactNode;
 };
 
-export type MenuKind = "mypage" | "search" | "dashboard";
+export type MenuKind = "mypage" | "member" | "dashboard";
 
 export type applicationStatus = "未成立" | "成立" | "不成立" | null;
 

@@ -4,7 +4,6 @@ import Typography from "@mui/material/Typography";
 import { FC, useCallback, useState } from "react";
 import { useMockData } from "../mocks";
 import AllApplicators from "./applicationList/AllApplicators";
-import NotYetEstablished from "./applicationList/NotYetEstablished";
 import Visitor from "./visitorList/Visitor";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -40,14 +39,7 @@ const MyPage: FC<Props> = ({ user }) => {
     <>
       <Stack gap={2} sx={{ width: "100%" }}>
         <Typography variant="h4">{user.username}さんの営業成績</Typography>
-        <Box
-          ml="15px"
-          mr="15px"
-          sx={{
-            borderBottom: 1,
-            borderColor: "divider",
-          }}
-        >
+        <Box ml="10px" mr="10px">
           <Tabs
             sx={{
               marginLeft: "10px",
@@ -64,8 +56,6 @@ const MyPage: FC<Props> = ({ user }) => {
 
           <Box
             sx={{
-              borderBottom: 1,
-              borderColor: "divider",
               background: "#f5f5f5",
             }}
             borderRadius={"12px"}

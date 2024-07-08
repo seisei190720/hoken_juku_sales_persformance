@@ -62,8 +62,7 @@ const Summary: FC<Props> = ({ user, routeMst, productMst }) => {
     <>
       <Stack direction="column" gap={2} p={2} pt={3} borderColor={grey[300]}>
         <Stack direction="row" gap={3} ml={2} alignItems="flex-end">
-          <Typography variant="h5">レポート</Typography>
-          <Stack direction="row" ml={2} alignItems="center">
+          <Stack direction="row" alignItems="center">
             <Button onClick={backToLastMonth}>
               <ArrowBackIosIcon />
             </Button>
@@ -143,7 +142,7 @@ const Summary: FC<Props> = ({ user, routeMst, productMst }) => {
                       mainUnit={"円"}
                       sub1ChipName={"生保"}
                       sub2ChipName={"損保"}
-                      cardFlex={1.8}
+                      cardFlex={2}
                     />
                     <ThreeCompartmentSummaryCard
                       values={

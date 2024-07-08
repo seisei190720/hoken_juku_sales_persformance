@@ -6,14 +6,14 @@ import "@aws-amplify/ui-react/styles.css"; //css適用
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useLoginUser } from "./hooks/useLoginUser";
-import BeachAccessIcon from "@mui/icons-material/BeachAccess";
-import CoffeeIcon from "@mui/icons-material/Coffee";
-import TopBar from "./component/TopBar";
 import { MenuItem, MenuKind } from "./types";
-import SideMenu from "./component/SideMenu";
 import { useState } from "react";
 import Dashboard from "./dashboard";
 import MyPage from "./mypage";
+import TopAndSideBar from "./component/TopAndSideBar";
+import PersonIcon from "@mui/icons-material/Person";
+import TimelineIcon from "@mui/icons-material/Timeline";
+import PeopleIcon from "@mui/icons-material/People";
 
 Amplify.configure({
   Auth: {
@@ -33,19 +33,17 @@ function Home() {
     setOpenSideMenu((p) => !p);
   };
   const menuList: MenuItem[] = [
-    { name: "マイページ", menuKind: "mypage", icon: <BeachAccessIcon /> },
-    { name: "ダッシュボード", menuKind: "dashboard", icon: <CoffeeIcon /> },
+    { name: "マイページ", menuKind: "mypage", icon: <PersonIcon /> },
+    { name: "メンバーページ", menuKind: "member", icon: <PeopleIcon /> },
+    { name: "ダッシュボード", menuKind: "dashboard", icon: <TimelineIcon /> },
   ];
   return (
     // <button onClick={() => cognitoUser.signOut()}>Sign Out</button>
     // <button onClick={() => getUserAttribute()}>Sign Out</button>
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <TopBar
+      <TopAndSideBar
         cognitoUser={cognitoUser}
-        handleClickSideMenu={handleClickSideMenu}
-      />
-      <SideMenu
         openSideMenu={openSideMenu}
         handleClickSideMenu={handleClickSideMenu}
         menuList={menuList}

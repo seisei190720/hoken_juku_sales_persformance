@@ -151,14 +151,10 @@ const ApplicationList: FC<Props> = ({
                         <TableCell>{app.company}</TableCell>
                         <TableCell>{app.product}</TableCell>
                         <TableCell>
-                          {app.status === "未成立" && app.establishDate === null
-                            ? "-"
-                            : app.establishDate}
+                          {app.establishDate === null ? "-" : app.establishDate}
                         </TableCell>
                         <TableCell>
-                          {app.status === "未成立" && app.firstYearFee === null
-                            ? "-"
-                            : app.firstYearFee}
+                          {app.firstYearFee === null ? "-" : app.firstYearFee}
                         </TableCell>
                         <TableCell>{statusChip(app.status)}</TableCell>
                       </StyledTableRow>

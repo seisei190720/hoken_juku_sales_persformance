@@ -48,14 +48,13 @@ const AllApplicators: FC<Props> = ({
 
   return (
     <>
-      <Stack gap={2} p={4}>
+      <Stack gap={2} p={2} pt={3} ml={2} mr={2}>
         <Stack
           direction="row"
           alignItems="center"
           justifyContent="space-between"
         >
-          <Stack direction="row" spacing={2} alignItems="center">
-            <Typography variant="h5">申込者一覧</Typography>
+          <Stack direction="row" alignItems="center">
             <Button onClick={backToLastMonth} disabled={showInProgressApp}>
               <ArrowBackIosIcon />
             </Button>
