@@ -84,7 +84,7 @@ export const useSalesResultApi = (
     [userId, mutate]
   );
 
-  const updateApplicationsData = useCallback(
+  const updateSalesResultData = useCallback(
     async (newData: IndividualSalesResult) => {
       try {
         await axios.put(url, newData);
@@ -102,5 +102,35 @@ export const useSalesResultApi = (
     [userId, mutate]
   );
 
-  return { salesResultData, postVisitorData, updateApplicationsData, error };
+  const deleteSalesResultData = useCallback(
+    async (deleteTarget: IndividualSalesResult) => {
+      try {
+        await axios.delete(url, {
+          params: {
+            userId: deleteTarget.userId,
+            uuid: deleteTarget.uuid,
+            firstVisitDate: deleteTarget.firstVisitDate,
+          },
+        });
+        await mutate((d: IndividualSalesResult[]) => {
+          if (!d) return;
+          const updatedSalesResultData = d.filter(
+            (item) => item.uuid !== deleteTarget.uuid
+          );
+          return updatedSalesResultData;
+        }, false);
+      } catch (error) {
+        console.error("Error deleting data:", error);
+      }
+    },
+    [mutate]
+  );
+
+  return {
+    salesResultData,
+    postVisitorData,
+    updateSalesResultData,
+    deleteSalesResultData,
+    error,
+  };
 };

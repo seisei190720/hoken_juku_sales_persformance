@@ -8,6 +8,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Stack from "@mui/material/Stack";
 import { FC, useState } from "react";
@@ -24,6 +25,9 @@ import UpdateApplicationFormDialog from "./UpdateApplicationFormDialog";
 import CircularProgress from "@mui/material/CircularProgress";
 import { green, grey, orange, red } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
+import DeleteApplicationDialog from "../../component/DeleteApplicationDialog";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 type Props = {
   user: AuthUser;
@@ -47,14 +51,35 @@ const ApplicationList: FC<Props> = ({
   >(undefined);
 
   const [openEditDailog, setOpenEditDailog] = useState(false);
-
-  const handleClickOpen = () => {
+  const handleEditClickOpen = () => {
     setOpenEditDailog(true);
   };
-
-  const handleClose = () => {
+  const handleEditClose = () => {
     setOpenEditDailog(false);
   };
+
+  const [openDeleteDailog, setOpenDeleteDailog] = useState(false);
+  const handleDeleteClickOpen = () => {
+    setOpenDeleteDailog(true);
+  };
+  const handleDeleteClose = () => {
+    setOpenDeleteDailog(false);
+  };
+
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+  const handleClickSnacBar = () => {
+    setOpenSnackBar(true);
+  };
+  const handleCloseSnacBar = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackBar(false);
+  };
+
   const existsInProgressConstract = (target: IndividualSalesResult) => {
     return target.applications.some((v) => v.status === "未成立");
   };
@@ -133,7 +158,7 @@ const ApplicationList: FC<Props> = ({
               <AccordionDetails>
                 <Table size="small">
                   <TableHead>
-                    <TableRow key={"visitor_header"}>
+                    <TableRow key={"applicator_header"}>
                       <TableCell>申込日</TableCell>
                       <TableCell>会社</TableCell>
                       <TableCell>商品</TableCell>
@@ -143,8 +168,8 @@ const ApplicationList: FC<Props> = ({
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {result.applications.map((app) => (
-                      <StyledTableRow hover key={result.name}>
+                    {result.applications.map((app, idx) => (
+                      <StyledTableRow hover key={`${result.name}_${idx}`}>
                         <TableCell component="th" scope="row">
                           {app.applicationDate}
                         </TableCell>
@@ -161,16 +186,26 @@ const ApplicationList: FC<Props> = ({
                     ))}
                   </TableBody>
                 </Table>
-                <Stack mt={1} direction="row" justifyContent="flex-end">
+                <Stack mt={1} gap={1} direction="row" justifyContent="flex-end">
                   <Button
                     variant="outlined"
                     startIcon={<EditIcon />}
                     onClick={() => {
                       setTargetSalesResult(result);
-                      handleClickOpen();
+                      handleEditClickOpen();
                     }}
                   >
                     編集
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    startIcon={<DeleteIcon />}
+                    onClick={() => {
+                      setTargetSalesResult(result);
+                      handleDeleteClickOpen();
+                    }}
+                  >
+                    削除
                   </Button>
                 </Stack>
               </AccordionDetails>
@@ -182,12 +217,37 @@ const ApplicationList: FC<Props> = ({
           salesResult={targetSalesResult}
           statusMst={statusMst}
           openFormDialog={openEditDailog}
-          handleClose={handleClose}
+          handleClose={handleEditClose}
           productMst={productMst}
           companyMst={companyMst}
           updateApplicationsData={updateApplicationsData}
         />
       )}
+      {openDeleteDailog && (
+        <DeleteApplicationDialog
+          salesResult={targetSalesResult}
+          openDialog={openDeleteDailog}
+          titleDeleteTarget={"申込情報"}
+          dialogMessage="削除した申込情報は元に戻すことはできません。本当によろしいですか？"
+          handleClose={handleDeleteClose}
+          updateApplicationsData={updateApplicationsData}
+          handleClickSnacBar={handleClickSnacBar}
+        />
+      )}
+      <Snackbar
+        open={openSnackBar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnacBar}
+      >
+        <Alert
+          onClose={handleCloseSnacBar}
+          severity="success"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          保存が完了しました
+        </Alert>
+      </Snackbar>
     </>
   );
 };

@@ -166,7 +166,6 @@ export const useUpdateApplications = (
 
   const submitUpdatedApplications = useCallback(() => {
     //TODO: validationを実装する
-    console.log(updatedApplications);
     if (!salesResult) return;
     updateApplicationsData({
       ...salesResult,

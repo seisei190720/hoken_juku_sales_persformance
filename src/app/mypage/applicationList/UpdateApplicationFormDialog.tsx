@@ -108,12 +108,12 @@ const UpdateApplicationFormDialog: FC<Props> = ({
                   <Select
                     labelId={`${idx}_company`}
                     id={`${idx}_company`}
-                    value={app.company?.id}
+                    value={app.company === null ? undefined : app.company.id}
                     label={"保険会社"}
                     onChange={(e) => updateCompany(e, idx)}
                   >
-                    {companyMst.map((r) => (
-                      <MenuItem key={`company_${idx}`} value={r.id}>
+                    {companyMst.map((r, i) => (
+                      <MenuItem key={`company_${idx}_${i}`} value={r.id}>
                         {r.name}
                       </MenuItem>
                     ))}
@@ -125,12 +125,12 @@ const UpdateApplicationFormDialog: FC<Props> = ({
                     key={`${idx}_product`}
                     labelId={`${idx}_product`}
                     id={`${idx}_product`}
-                    value={app.product?.id}
+                    value={app.product === null ? undefined : app.product.id}
                     label={"商品"}
                     onChange={(e) => updateProduct(e, idx)}
                   >
-                    {productMst.map((r) => (
-                      <MenuItem key={`product_${idx}`} value={r.id}>
+                    {productMst.map((r, i) => (
+                      <MenuItem key={`product_${idx}_${i}`} value={r.id}>
                         {r.name}
                       </MenuItem>
                     ))}
@@ -146,8 +146,8 @@ const UpdateApplicationFormDialog: FC<Props> = ({
                     label={"状態"}
                     onChange={(e) => updateStatus(e, idx)}
                   >
-                    {statusMst.map((r) => (
-                      <MenuItem key={`status_${idx}`} value={r.id}>
+                    {statusMst.map((r, i) => (
+                      <MenuItem key={`status_${idx}_${i}`} value={r.id}>
                         {r.name}
                       </MenuItem>
                     ))}
@@ -171,7 +171,7 @@ const UpdateApplicationFormDialog: FC<Props> = ({
                   id={`${idx}_firstYearFee`}
                   name={`${idx}_firstYearFee`}
                   label={idx === 0 && "初回手数料"}
-                  value={app.firstYearFee}
+                  value={app.firstYearFee || ""}
                   onChange={(e) =>
                     updateFirstYearFee(Number(e.target.value), idx)
                   }
@@ -218,10 +218,9 @@ const UpdateApplicationFormDialog: FC<Props> = ({
             onClick={() => {
               submitUpdatedApplications();
               handleClose();
-              //申込者一覧画面に移動する(新しく登録した順になっているはずなので、今登録したものが一番上にくる)
             }}
           >
-            新規登録
+            完了
           </Button>
         </Stack>
       </DialogActions>

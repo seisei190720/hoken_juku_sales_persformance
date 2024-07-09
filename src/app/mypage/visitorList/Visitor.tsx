@@ -1,3 +1,5 @@
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 import { useSalesResultApi } from "@/app/api/useSalesResultApi";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -34,11 +36,15 @@ const Visitor: FC<Props> = ({
 }) => {
   const [targetMonth, setTargetMonth] = useState<string | null>(null);
   const [openFormDialog, setOpenFormDialog] = useState(false);
-  const { salesResultData, postVisitorData, updateApplicationsData } =
-    useSalesResultApi(user.userId, {
-      status: null,
-      firstVisitDate: targetMonth,
-    });
+  const {
+    salesResultData,
+    postVisitorData,
+    updateSalesResultData,
+    deleteSalesResultData,
+  } = useSalesResultApi(user.userId, {
+    status: null,
+    firstVisitDate: targetMonth,
+  });
 
   const forwardToNextMonth = () => {
     setTargetMonth((v) => dayjs(v).add(1, "month").format("YYYY-MM"));
@@ -52,6 +58,20 @@ const Visitor: FC<Props> = ({
   };
   const handleClose = () => {
     setOpenFormDialog(false);
+  };
+
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+  const handleClickSnacBar = () => {
+    setOpenSnackBar(true);
+  };
+  const handleCloseSnacBar = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackBar(false);
   };
 
   useEffect(() => {
@@ -82,16 +102,36 @@ const Visitor: FC<Props> = ({
           salesResults={salesResultData || []}
           productMst={productMst}
           companyMst={companyMst}
-          updateApplicationsData={updateApplicationsData}
+          routeMst={routeMst}
+          consultContentMst={consultContentMst}
+          updateSalesResultData={updateSalesResultData}
+          deleteSalesResultData={deleteSalesResultData}
         />
       </Stack>
-      <VisitorFormDialog
-        openFormDialog={openFormDialog}
-        handleClose={handleClose}
-        routeMst={routeMst}
-        consultContentMst={consultContentMst}
-        postVisitorData={postVisitorData}
-      />
+      {openFormDialog && (
+        <VisitorFormDialog
+          openFormDialog={openFormDialog}
+          handleClose={handleClose}
+          routeMst={routeMst}
+          consultContentMst={consultContentMst}
+          postVisitorData={postVisitorData}
+          handleClickSnacBar={handleClickSnacBar}
+        />
+      )}
+      <Snackbar
+        open={openSnackBar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnacBar}
+      >
+        <Alert
+          onClose={handleCloseSnacBar}
+          severity="success"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          保存が完了しました
+        </Alert>
+      </Snackbar>
     </>
   );
 };

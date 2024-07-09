@@ -17,7 +17,7 @@ const NotYetEstablished: FC<Props> = ({
   companyMst,
   statusMst,
 }) => {
-  const { salesResultData, updateApplicationsData } = useSalesResultApi(
+  const { salesResultData, updateSalesResultData } = useSalesResultApi(
     user.userId,
     { status: "未成立", firstVisitDate: null }
   );
@@ -29,7 +29,7 @@ const NotYetEstablished: FC<Props> = ({
         companyMst={companyMst}
         statusMst={statusMst}
         salesResultData={salesResultData}
-        updateApplicationsData={updateApplicationsData}
+        updateApplicationsData={updateSalesResultData}
       />
     </>
   );

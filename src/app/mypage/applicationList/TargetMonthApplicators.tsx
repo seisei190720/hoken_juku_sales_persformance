@@ -19,10 +19,11 @@ const TargetMonthApplicators: FC<Props> = ({
   companyMst,
   statusMst,
 }) => {
-  const { salesResultData, updateApplicationsData } = useSalesResultApi(
-    user.userId,
-    { status: null, firstVisitDate: targetMonth }
-  );
+  const { salesResultData, updateSalesResultData: updateSalesResultData } =
+    useSalesResultApi(user.userId, {
+      status: null,
+      firstVisitDate: targetMonth,
+    });
   return (
     <>
       <ApplicationList
@@ -31,7 +32,7 @@ const TargetMonthApplicators: FC<Props> = ({
         companyMst={companyMst}
         statusMst={statusMst}
         salesResultData={salesResultData}
-        updateApplicationsData={updateApplicationsData}
+        updateApplicationsData={updateSalesResultData}
       />
     </>
   );
