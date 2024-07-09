@@ -8,6 +8,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Stack from "@mui/material/Stack";
 import { FC, useState } from "react";
@@ -22,7 +23,11 @@ import Button from "@mui/material/Button";
 import { AuthUser } from "aws-amplify/auth";
 import UpdateApplicationFormDialog from "./UpdateApplicationFormDialog";
 import CircularProgress from "@mui/material/CircularProgress";
-import { green, orange } from "@mui/material/colors";
+import { green, grey, orange, red } from "@mui/material/colors";
+import { styled } from "@mui/material/styles";
+import DeleteApplicationDialog from "../../component/DeleteApplicationDialog";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 type Props = {
   user: AuthUser;
@@ -46,18 +51,36 @@ const ApplicationList: FC<Props> = ({
   >(undefined);
 
   const [openEditDailog, setOpenEditDailog] = useState(false);
-
-  const handleClickOpen = () => {
+  const handleEditClickOpen = () => {
     setOpenEditDailog(true);
   };
-
-  const handleClose = () => {
+  const handleEditClose = () => {
     setOpenEditDailog(false);
   };
+
+  const [openDeleteDailog, setOpenDeleteDailog] = useState(false);
+  const handleDeleteClickOpen = () => {
+    setOpenDeleteDailog(true);
+  };
+  const handleDeleteClose = () => {
+    setOpenDeleteDailog(false);
+  };
+
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+  const handleClickSnacBar = () => {
+    setOpenSnackBar(true);
+  };
+  const handleCloseSnacBar = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackBar(false);
+  };
+
   const existsInProgressConstract = (target: IndividualSalesResult) => {
-    console.log("target.applications");
-    console.log(target.applications);
-    console.log(target.applications.some((v) => v.status === "未達成"));
     return target.applications.some((v) => v.status === "未成立");
   };
 
@@ -72,6 +95,14 @@ const ApplicationList: FC<Props> = ({
       case null:
         return <></>;
     }
+  };
+
+  const getAccordionHeaderColor = (
+    thankyou: boolean,
+    showInProgressApp: boolean
+  ) => {
+    if (thankyou) return red[200];
+    return showInProgressApp ? orange[100] : green[100];
   };
 
   if (!salesResultData) return <CircularProgress />;
@@ -93,10 +124,12 @@ const ApplicationList: FC<Props> = ({
                 aria-controls={`accordion_${result.name}`}
                 id={`accordion_${result.name}`}
                 sx={{
+                  height: "64px",
                   borderRadius: "12px ",
-                  backgroundColor: existsInProgressConstract(result)
-                    ? orange[100]
-                    : green[100],
+                  backgroundColor: getAccordionHeaderColor(
+                    result.thankyou,
+                    existsInProgressConstract(result)
+                  ),
                 }}
               >
                 <Stack
@@ -125,48 +158,54 @@ const ApplicationList: FC<Props> = ({
               <AccordionDetails>
                 <Table size="small">
                   <TableHead>
-                    <TableRow key={"visitor_header"}>
+                    <TableRow key={"applicator_header"}>
                       <TableCell>申込日</TableCell>
                       <TableCell>会社</TableCell>
                       <TableCell>商品</TableCell>
+                      <TableCell>状態</TableCell>
                       <TableCell>成立日</TableCell>
                       <TableCell>初回手数料</TableCell>
-                      <TableCell>状態</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {result.applications.map((app) => (
-                      <TableRow hover key={result.name}>
+                    {result.applications.map((app, idx) => (
+                      <StyledTableRow hover key={`${result.name}_${idx}`}>
                         <TableCell component="th" scope="row">
                           {app.applicationDate}
                         </TableCell>
                         <TableCell>{app.company}</TableCell>
                         <TableCell>{app.product}</TableCell>
-                        <TableCell>
-                          {app.status === "未成立" && app.establishDate === null
-                            ? "-"
-                            : app.establishDate}
-                        </TableCell>
-                        <TableCell>
-                          {app.status === "未成立" && app.firstYearFee === null
-                            ? "-"
-                            : app.firstYearFee}
-                        </TableCell>
                         <TableCell>{statusChip(app.status)}</TableCell>
-                      </TableRow>
+                        <TableCell>
+                          {app.establishDate === null ? "-" : app.establishDate}
+                        </TableCell>
+                        <TableCell>
+                          {app.firstYearFee === null ? "-" : app.firstYearFee}
+                        </TableCell>
+                      </StyledTableRow>
                     ))}
                   </TableBody>
                 </Table>
-                <Stack mt={1} direction="row" justifyContent="flex-end">
+                <Stack mt={1} gap={1} direction="row" justifyContent="flex-end">
                   <Button
                     variant="outlined"
                     startIcon={<EditIcon />}
                     onClick={() => {
                       setTargetSalesResult(result);
-                      handleClickOpen();
+                      handleEditClickOpen();
                     }}
                   >
                     編集
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    startIcon={<DeleteIcon />}
+                    onClick={() => {
+                      setTargetSalesResult(result);
+                      handleDeleteClickOpen();
+                    }}
+                  >
+                    削除
                   </Button>
                 </Stack>
               </AccordionDetails>
@@ -178,14 +217,49 @@ const ApplicationList: FC<Props> = ({
           salesResult={targetSalesResult}
           statusMst={statusMst}
           openFormDialog={openEditDailog}
-          handleClose={handleClose}
+          handleClose={handleEditClose}
           productMst={productMst}
           companyMst={companyMst}
           updateApplicationsData={updateApplicationsData}
         />
       )}
+      {openDeleteDailog && (
+        <DeleteApplicationDialog
+          salesResult={targetSalesResult}
+          openDialog={openDeleteDailog}
+          titleDeleteTarget={"申込情報"}
+          dialogMessage="削除した申込情報は元に戻すことはできません。本当によろしいですか？"
+          handleClose={handleDeleteClose}
+          updateApplicationsData={updateApplicationsData}
+          handleClickSnacBar={handleClickSnacBar}
+        />
+      )}
+      <Snackbar
+        open={openSnackBar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnacBar}
+      >
+        <Alert
+          onClose={handleCloseSnacBar}
+          severity="success"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          保存が完了しました
+        </Alert>
+      </Snackbar>
     </>
   );
 };
 
 export default ApplicationList;
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: grey[50],
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));

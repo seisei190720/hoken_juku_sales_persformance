@@ -89,12 +89,15 @@ export const useApplicatorSummaryComposition = (
   const thankyouData = useMemo(() => {
     if (!salesData) return;
     const thankyouCount = salesData.filter((r) => r.thankyou).length;
-    const thankyouPercent = (thankyouCount / salesData.length) * 100;
+    const applicatorCount = salesData.filter(
+      (r) => r.applications.length !== 0
+    ).length;
+    const thankyouPercent = (thankyouCount / applicatorCount) * 100;
     const resultPercent = Math.round(thankyouPercent * 10) / 10;
     return {
       percent: isNaN(resultPercent) ? 0 : resultPercent,
       count: thankyouCount,
-      all: salesData.length,
+      all: applicatorCount,
     };
   }, [salesData]);
 

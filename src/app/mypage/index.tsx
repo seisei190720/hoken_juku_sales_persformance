@@ -4,7 +4,6 @@ import Typography from "@mui/material/Typography";
 import { FC, useCallback, useState } from "react";
 import { useMockData } from "../mocks";
 import AllApplicators from "./applicationList/AllApplicators";
-import NotYetEstablished from "./applicationList/NotYetEstablished";
 import Visitor from "./visitorList/Visitor";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -15,7 +14,7 @@ type Props = {
   user: AuthUser;
 };
 
-type MyPageMode = "summary" | "visitor" | "applicator" | "notYetEstablished";
+type MyPageMode = "summary" | "visitor" | "applicator";
 
 const MyPage: FC<Props> = ({ user }) => {
   const { routeMst, consultContentMst, productMst, companyMst, statusMst } =
@@ -40,14 +39,7 @@ const MyPage: FC<Props> = ({ user }) => {
     <>
       <Stack gap={2} sx={{ width: "100%" }}>
         <Typography variant="h4">{user.username}さんの営業成績</Typography>
-        <Box
-          ml="15px"
-          mr="15px"
-          sx={{
-            borderBottom: 1,
-            borderColor: "divider",
-          }}
-        >
+        <Box ml="10px" mr="10px">
           <Tabs
             sx={{
               marginLeft: "10px",
@@ -60,17 +52,10 @@ const MyPage: FC<Props> = ({ user }) => {
             <Tab label="サマリ" value="summary" {...a11yProps(0)} />
             <Tab label="来店者" value="visitor" {...a11yProps(1)} />
             <Tab label="申込者" value="applicator" {...a11yProps(2)} />
-            <Tab
-              label="申込者(未成立)"
-              value="notYetEstablished"
-              {...a11yProps(3)}
-            />
           </Tabs>
 
           <Box
             sx={{
-              borderBottom: 1,
-              borderColor: "divider",
               background: "#f5f5f5",
             }}
             borderRadius={"12px"}
@@ -98,15 +83,6 @@ const MyPage: FC<Props> = ({ user }) => {
                 case "applicator":
                   return (
                     <AllApplicators
-                      user={user}
-                      productMst={productMst}
-                      companyMst={companyMst}
-                      statusMst={statusMst}
-                    />
-                  );
-                case "notYetEstablished":
-                  return (
-                    <NotYetEstablished
                       user={user}
                       productMst={productMst}
                       companyMst={companyMst}

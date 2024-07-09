@@ -1,5 +1,4 @@
-import { IconButton, Typography } from "@mui/material";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import {
   CompanyMst,
   IndividualSalesResult,
@@ -21,6 +20,13 @@ import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { useUpdateApplications } from "./hooks/useUpdateApplications";
+import IconButton from "@mui/material/IconButton";
+import Checkbox from "@mui/material/Checkbox";
+import Typography from "@mui/material/Typography";
+import Favorite from "@mui/icons-material/Favorite";
+import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
+import FormControlLabel from "@mui/material/FormControlLabel";
+
 type Props = {
   openFormDialog: boolean;
   handleClose: () => void;
@@ -50,6 +56,8 @@ const UpdateApplicationFormDialog: FC<Props> = ({
     updateStatus,
     updateFirstYearFee,
     updateEstablishDate,
+    thankyouState,
+    setThankyouState,
     submitUpdatedApplications,
   } = useUpdateApplications(
     salesResult,
@@ -72,104 +80,102 @@ const UpdateApplicationFormDialog: FC<Props> = ({
     >
       <DialogTitle>{`${salesResult.name}さんの申込情報登録`}</DialogTitle>
       <DialogContent>
-        <Stack gap={3} direction="column">
+        <Stack ml={2} gap={3} direction="column">
           <DialogContentText>申込情報を更新してください。</DialogContentText>
           {updatedApplications.map((app, idx) => {
             return (
               <Stack
                 key={`updateApplications_${idx}`}
-                gap={3}
+                gap={2}
                 direction="row"
                 alignItems="flex-end"
               >
                 <Typography variant="h6">{`${idx}.`}</Typography>
                 <TextField
-                  // autoFocus
-                  required
+                  required={idx === 0}
                   key={`${idx}_applicationDate`}
                   id={`${idx}_applicationDate`}
                   name={`${idx}_applicationDate`}
-                  label="申込日"
+                  label={idx === 0 && "申込日"}
                   value={app.applicationDate}
                   onChange={(e) => updateApplicationDate(e.target.value, idx)}
                   type="date"
                   fullWidth
                   variant="standard"
                 />
-                <FormControl required variant="standard" fullWidth>
-                  <InputLabel>保険会社</InputLabel>
+                <FormControl required={idx === 0} variant="standard" fullWidth>
+                  {idx === 0 && <InputLabel>保険会社</InputLabel>}
                   <Select
                     labelId={`${idx}_company`}
                     id={`${idx}_company`}
-                    value={app.company?.id}
-                    label="保険会社"
+                    value={app.company === null ? undefined : app.company.id}
+                    label={"保険会社"}
                     onChange={(e) => updateCompany(e, idx)}
                   >
-                    {companyMst.map((r) => (
-                      <MenuItem key={`company_${idx}`} value={r.id}>
+                    {companyMst.map((r, i) => (
+                      <MenuItem key={`company_${idx}_${i}`} value={r.id}>
                         {r.name}
                       </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
-                <FormControl required variant="standard" fullWidth>
-                  <InputLabel>商品</InputLabel>
+                <FormControl required={idx === 0} variant="standard" fullWidth>
+                  {idx === 0 && <InputLabel>商品</InputLabel>}
                   <Select
                     key={`${idx}_product`}
                     labelId={`${idx}_product`}
                     id={`${idx}_product`}
-                    value={app.product?.id}
-                    label="商品"
+                    value={app.product === null ? undefined : app.product.id}
+                    label={"商品"}
                     onChange={(e) => updateProduct(e, idx)}
                   >
-                    {productMst.map((r) => (
-                      <MenuItem key={`product_${idx}`} value={r.id}>
+                    {productMst.map((r, i) => (
+                      <MenuItem key={`product_${idx}_${i}`} value={r.id}>
                         {r.name}
                       </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
-                <FormControl required variant="standard" fullWidth>
-                  <InputLabel>状態</InputLabel>
+                <FormControl required={idx === 0} variant="standard" fullWidth>
+                  {idx === 0 && <InputLabel>状態</InputLabel>}
                   <Select
                     key={`${idx}_status`}
                     labelId={`${idx}_status`}
                     id={`${idx}_status`}
                     value={app.status?.id}
-                    label="状態"
+                    label={"状態"}
                     onChange={(e) => updateStatus(e, idx)}
                   >
-                    {statusMst.map((r) => (
-                      <MenuItem key={`status_${idx}`} value={r.id}>
+                    {statusMst.map((r, i) => (
+                      <MenuItem key={`status_${idx}_${i}`} value={r.id}>
                         {r.name}
                       </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
                 <TextField
-                  // autoFocus
-                  required
-                  key={`${idx}_firstYearFee`}
-                  id={`${idx}_firstYearFee`}
-                  name={`${idx}_firstYearFee`}
-                  label="初回手数料"
-                  value={app.firstYearFee}
-                  onChange={(e) =>
-                    updateFirstYearFee(Number(e.target.value), idx)
-                  }
-                  type="number"
+                  autoFocus
+                  required={idx === 0}
+                  id={`${idx}_establishDate`}
+                  name={`${idx}_establishDate`}
+                  label={idx === 0 && "契約日"}
+                  value={app.establishDate === null ? "" : app.establishDate}
+                  onChange={(e) => updateEstablishDate(e.target.value, idx)}
+                  type="date"
                   fullWidth
                   variant="standard"
                 />
                 <TextField
-                  // autoFocus
-                  required
-                  id={`${idx}_establishDate`}
-                  name={`${idx}_establishDate`}
-                  label="契約日"
-                  value={app.establishDate}
-                  onChange={(e) => updateEstablishDate(e.target.value, idx)}
-                  type="date"
+                  required={idx === 0}
+                  key={`${idx}_firstYearFee`}
+                  id={`${idx}_firstYearFee`}
+                  name={`${idx}_firstYearFee`}
+                  label={idx === 0 && "初回手数料"}
+                  value={app.firstYearFee || ""}
+                  onChange={(e) =>
+                    updateFirstYearFee(Number(e.target.value), idx)
+                  }
+                  type="number"
                   fullWidth
                   variant="standard"
                 />
@@ -181,7 +187,7 @@ const UpdateApplicationFormDialog: FC<Props> = ({
               </Stack>
             );
           })}
-          <Stack direction="row" justifyContent="flex-start">
+          <Stack direction="row" justifyContent="space-between">
             <Button
               variant="text"
               startIcon={<AddIcon />}
@@ -190,6 +196,17 @@ const UpdateApplicationFormDialog: FC<Props> = ({
             >
               追加
             </Button>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={thankyouState}
+                  onChange={(e) => setThankyouState(e.target.checked)}
+                  icon={<FavoriteBorder />}
+                  checkedIcon={<Favorite color="error" />}
+                />
+              }
+              label="ありがとう完了済み"
+            />
           </Stack>
         </Stack>
       </DialogContent>
@@ -201,10 +218,9 @@ const UpdateApplicationFormDialog: FC<Props> = ({
             onClick={() => {
               submitUpdatedApplications();
               handleClose();
-              //申込者一覧画面に移動する(新しく登録した順になっているはずなので、今登録したものが一番上にくる)
             }}
           >
-            新規登録
+            完了
           </Button>
         </Stack>
       </DialogActions>

@@ -1,5 +1,6 @@
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
+import CircularProgress from "@mui/material/CircularProgress";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -13,36 +14,47 @@ import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { FC } from "react";
-import { ConsultContentMst, NewVisitor, RouteMst } from "../../types";
-import { useNewVisitor } from "./hooks/useNewVisitor";
+import {
+  ConsultContentMst,
+  IndividualSalesResult,
+  RouteMst,
+} from "../../types";
+import { useUpdateVisitor } from "./hooks/useUpdateVisitors";
 
 type Props = {
   openFormDialog: boolean;
   handleClose: () => void;
+  salesResult: IndividualSalesResult | undefined;
   routeMst: RouteMst[];
   consultContentMst: ConsultContentMst[];
-  postVisitorData: (newData: NewVisitor) => Promise<void>;
+  updateSalesResultData: (newData: IndividualSalesResult) => Promise<void>;
   handleClickSnacBar: () => void;
 };
 
-const VisitorFormDialog: FC<Props> = ({
+const UpdateVisitorFormDialog: FC<Props> = ({
   openFormDialog,
   handleClose,
+  salesResult,
   routeMst,
   consultContentMst,
-  postVisitorData,
+  updateSalesResultData,
   handleClickSnacBar,
 }) => {
   const {
-    newVisitorData,
-    updateFirstVisitDate,
+    updatedVisitorData,
     updateName,
     updateRoute,
     updateConsultContent,
     updateNextAppointment,
-    submitNewVisitor,
-  } = useNewVisitor(postVisitorData, routeMst, consultContentMst);
+    submitUpdatedVisitor,
+  } = useUpdateVisitor(
+    salesResult,
+    updateSalesResultData,
+    routeMst,
+    consultContentMst
+  );
 
+  if (!updatedVisitorData) return <CircularProgress />;
   return (
     <>
       <Dialog
@@ -54,21 +66,22 @@ const VisitorFormDialog: FC<Props> = ({
           component: "form",
         }}
       >
-        <DialogTitle>来店記録の新規登録</DialogTitle>
+        <DialogTitle>来店記録の編集</DialogTitle>
         <DialogContent>
           <Stack gap={3}>
             <DialogContentText>
-              来店されたお客様の情報を入力してください。登録後にも内容を編集できます。
+              来店されたお客様の情報を編集・更新してください。来店日を編集する場合は、一度本記録を削除してから作り直してください。
             </DialogContentText>
             <TextField
-              // autoFocus
+              InputProps={{
+                readOnly: true,
+              }}
               key="visitDate"
               required
               id="visitDate"
               name="visitDate"
-              label="来店日"
-              value={newVisitorData.firstVisitDate || ""}
-              onChange={(e) => updateFirstVisitDate(e.target.value)}
+              label="来店日(編集不可)"
+              value={updatedVisitorData.firstVisitDate || ""}
               type="date"
               fullWidth
               variant="standard"
@@ -82,7 +95,7 @@ const VisitorFormDialog: FC<Props> = ({
               type="text"
               fullWidth
               variant="standard"
-              value={newVisitorData.name || ""}
+              value={updatedVisitorData.name || ""}
               onChange={(e) => updateName(e.target.value)}
             />
             <FormControl required variant="standard" fullWidth>
@@ -92,9 +105,9 @@ const VisitorFormDialog: FC<Props> = ({
                 labelId="route"
                 id="route"
                 value={
-                  newVisitorData.visitRoute === null
+                  updatedVisitorData.visitRoute === null
                     ? ""
-                    : newVisitorData.visitRoute.id
+                    : updatedVisitorData.visitRoute.id
                 }
                 label="経路"
                 onChange={updateRoute}
@@ -113,9 +126,9 @@ const VisitorFormDialog: FC<Props> = ({
                 labelId="consultContent"
                 id="consultContent"
                 value={
-                  newVisitorData.consultContent === null
+                  updatedVisitorData.consultContent === null
                     ? ""
-                    : newVisitorData.consultContent.id
+                    : updatedVisitorData.consultContent.id
                 }
                 label="相談内容"
                 onChange={updateConsultContent}
@@ -130,7 +143,7 @@ const VisitorFormDialog: FC<Props> = ({
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={newVisitorData.nextAppointment}
+                  checked={updatedVisitorData.nextAppointment}
                   onChange={(e) => updateNextAppointment(e.target.checked)}
                 />
               }
@@ -143,12 +156,12 @@ const VisitorFormDialog: FC<Props> = ({
           <Button
             variant="contained"
             onClick={() => {
-              submitNewVisitor();
-              handleClose();
+              submitUpdatedVisitor();
               handleClickSnacBar();
+              handleClose();
             }}
           >
-            新規登録
+            更新
           </Button>
         </DialogActions>
       </Dialog>
@@ -156,4 +169,4 @@ const VisitorFormDialog: FC<Props> = ({
   );
 };
 
-export default VisitorFormDialog;
+export default UpdateVisitorFormDialog;

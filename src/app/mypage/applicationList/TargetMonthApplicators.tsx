@@ -6,21 +6,24 @@ import { useSalesResultApi } from "@/app/api/useSalesResultApi";
 
 type Props = {
   user: AuthUser;
+  targetMonth: string | null;
   productMst: ProductMst[];
   companyMst: CompanyMst[];
   statusMst: StatusMst[];
 };
 
-const NotYetEstablished: FC<Props> = ({
+const TargetMonthApplicators: FC<Props> = ({
   user,
+  targetMonth,
   productMst,
   companyMst,
   statusMst,
 }) => {
-  const { salesResultData, updateSalesResultData } = useSalesResultApi(
-    user.userId,
-    { status: "未成立", firstVisitDate: null }
-  );
+  const { salesResultData, updateSalesResultData: updateSalesResultData } =
+    useSalesResultApi(user.userId, {
+      status: null,
+      firstVisitDate: targetMonth,
+    });
   return (
     <>
       <ApplicationList
@@ -35,4 +38,4 @@ const NotYetEstablished: FC<Props> = ({
   );
 };
 
-export default NotYetEstablished;
+export default TargetMonthApplicators;

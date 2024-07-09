@@ -1,12 +1,16 @@
 import { FC, useEffect, useState } from "react";
 import { CompanyMst, ProductMst, StatusMst } from "@/app/types";
 import { AuthUser } from "aws-amplify/auth";
-import ApplicationList from "./ApplicationList";
-import { useSalesResultApi } from "@/app/api/useSalesResultApi";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
+import Switch from "@mui/material/Switch";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import NotYetEstablished from "./NotYetEstablished";
+import TargetMonthApplicators from "./TargetMonthApplicators";
 
 type Props = {
   user: AuthUser;
@@ -22,10 +26,7 @@ const AllApplicators: FC<Props> = ({
   statusMst,
 }) => {
   const [targetMonth, setTargetMonth] = useState<string | null>(null);
-  const { salesResultData, updateApplicationsData } = useSalesResultApi(
-    user.userId,
-    { status: null, firstVisitDate: targetMonth }
-  );
+  const [showInProgressApp, setShowInProgressApp] = useState<boolean>(false);
 
   useEffect(() => {
     setTargetMonth(dayjs().format("YYYY-MM"));
@@ -41,30 +42,64 @@ const AllApplicators: FC<Props> = ({
     setTargetMonth(dayjs().format("YYYY-MM"));
   };
 
+  const toggleShowInProgressApp = () => {
+    setShowInProgressApp((pre) => !pre);
+  };
+
   return (
     <>
-      <Stack gap={2} p={4}>
-        <Stack direction="row" spacing={2} alignItems="center">
-          <Typography variant="h5">申込者一覧</Typography>
-          <Button onClick={backToLastMonth}>＜</Button>
-          <Typography>{targetMonth}</Typography>
-          <Button onClick={forwardToNextMonth}>＞</Button>
-          <Button
-            onClick={moveToCurrentMonth}
-            variant="outlined"
-            disabled={targetMonth === dayjs().format("YYYY-MM")}
-          >
-            今月に戻る
-          </Button>
+      <Stack gap={2} p={2} pt={3} ml={2} mr={2}>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Stack direction="row" alignItems="center">
+            <Button onClick={backToLastMonth} disabled={showInProgressApp}>
+              <ArrowBackIosIcon />
+            </Button>
+            <Typography color={showInProgressApp ? "grey" : "black"}>
+              {targetMonth}
+            </Typography>
+            <Button onClick={forwardToNextMonth} disabled={showInProgressApp}>
+              <ArrowForwardIosIcon />
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={moveToCurrentMonth}
+              disabled={
+                targetMonth === dayjs().format("YYYY-MM") || showInProgressApp
+              }
+            >
+              今月に戻る
+            </Button>
+          </Stack>
+          <FormControlLabel
+            control={
+              <Switch
+                value={showInProgressApp}
+                onClick={toggleShowInProgressApp}
+              />
+            }
+            label="未成立のみ表示する"
+          />
         </Stack>
-        <ApplicationList
-          user={user}
-          productMst={productMst}
-          companyMst={companyMst}
-          statusMst={statusMst}
-          salesResultData={salesResultData}
-          updateApplicationsData={updateApplicationsData}
-        />
+        {showInProgressApp ? (
+          <NotYetEstablished
+            user={user}
+            productMst={productMst}
+            companyMst={companyMst}
+            statusMst={statusMst}
+          />
+        ) : (
+          <TargetMonthApplicators
+            user={user}
+            targetMonth={targetMonth}
+            productMst={productMst}
+            companyMst={companyMst}
+            statusMst={statusMst}
+          />
+        )}
       </Stack>
     </>
   );

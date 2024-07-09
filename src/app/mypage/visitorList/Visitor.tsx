@@ -1,3 +1,5 @@
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 import { useSalesResultApi } from "@/app/api/useSalesResultApi";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -14,6 +16,8 @@ import {
 } from "../../types";
 import VisitorFormDialog from "./VisitorFormDialog";
 import VisitorList from "./VisitorList";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 type Props = {
   user: AuthUser;
@@ -32,11 +36,15 @@ const Visitor: FC<Props> = ({
 }) => {
   const [targetMonth, setTargetMonth] = useState<string | null>(null);
   const [openFormDialog, setOpenFormDialog] = useState(false);
-  const { salesResultData, postVisitorData, updateApplicationsData } =
-    useSalesResultApi(user.userId, {
-      status: null,
-      firstVisitDate: targetMonth,
-    });
+  const {
+    salesResultData,
+    postVisitorData,
+    updateSalesResultData,
+    deleteSalesResultData,
+  } = useSalesResultApi(user.userId, {
+    status: null,
+    firstVisitDate: targetMonth,
+  });
 
   const forwardToNextMonth = () => {
     setTargetMonth((v) => dayjs(v).add(1, "month").format("YYYY-MM"));
@@ -52,6 +60,20 @@ const Visitor: FC<Props> = ({
     setOpenFormDialog(false);
   };
 
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+  const handleClickSnacBar = () => {
+    setOpenSnackBar(true);
+  };
+  const handleCloseSnacBar = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackBar(false);
+  };
+
   useEffect(() => {
     setTargetMonth(dayjs().format("YYYY-MM"));
   }, [setTargetMonth]);
@@ -59,13 +81,16 @@ const Visitor: FC<Props> = ({
   if (!salesResultData) return <CircularProgress />;
   return (
     <>
-      <Stack gap={2} p={4}>
+      <Stack gap={2} p={2} pt={3} ml={2} mr={2}>
         <Stack direction="row" gap={2} justifyContent="space-between">
-          <Stack direction="row" gap={2} alignItems="center">
-            <Typography variant="h5">来店者一覧</Typography>
-            <Button onClick={backToLastMonth}>＜</Button>
+          <Stack direction="row" alignItems="center">
+            <Button onClick={backToLastMonth}>
+              <ArrowBackIosIcon />
+            </Button>
             <Typography>{targetMonth}</Typography>
-            <Button onClick={forwardToNextMonth}>＞</Button>
+            <Button onClick={forwardToNextMonth}>
+              <ArrowForwardIosIcon />
+            </Button>
           </Stack>
           <Stack direction="row" gap={2}>
             <Button variant="contained" onClick={handleClickOpen}>
@@ -77,16 +102,36 @@ const Visitor: FC<Props> = ({
           salesResults={salesResultData || []}
           productMst={productMst}
           companyMst={companyMst}
-          updateApplicationsData={updateApplicationsData}
+          routeMst={routeMst}
+          consultContentMst={consultContentMst}
+          updateSalesResultData={updateSalesResultData}
+          deleteSalesResultData={deleteSalesResultData}
         />
       </Stack>
-      <VisitorFormDialog
-        openFormDialog={openFormDialog}
-        handleClose={handleClose}
-        routeMst={routeMst}
-        consultContentMst={consultContentMst}
-        postVisitorData={postVisitorData}
-      />
+      {openFormDialog && (
+        <VisitorFormDialog
+          openFormDialog={openFormDialog}
+          handleClose={handleClose}
+          routeMst={routeMst}
+          consultContentMst={consultContentMst}
+          postVisitorData={postVisitorData}
+          handleClickSnacBar={handleClickSnacBar}
+        />
+      )}
+      <Snackbar
+        open={openSnackBar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnacBar}
+      >
+        <Alert
+          onClose={handleCloseSnacBar}
+          severity="success"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          保存が完了しました
+        </Alert>
+      </Snackbar>
     </>
   );
 };

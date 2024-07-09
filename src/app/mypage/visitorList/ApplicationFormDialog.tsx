@@ -24,6 +24,7 @@ type Props = {
   productMst: ProductMst[];
   companyMst: CompanyMst[];
   updateApplicationsData: (newData: IndividualSalesResult) => Promise<void>;
+  handleClickSnacBar: () => void;
 };
 
 const ApplicationFormDialog: FC<Props> = ({
@@ -33,6 +34,7 @@ const ApplicationFormDialog: FC<Props> = ({
   productMst,
   companyMst,
   updateApplicationsData,
+  handleClickSnacBar,
 }) => {
   const {
     newApplications,
@@ -94,7 +96,7 @@ const ApplicationFormDialog: FC<Props> = ({
                     key={`${idx}_company`}
                     labelId={`${idx}_company`}
                     id={`${idx}_company`}
-                    value={app.company?.id}
+                    value={app.company === null ? "" : app.company.id}
                     label="保険会社"
                     onChange={(e) => updateCompany(e, idx)}
                   >
@@ -111,7 +113,7 @@ const ApplicationFormDialog: FC<Props> = ({
                     key={`${idx}_product`}
                     labelId={`${idx}_product`}
                     id={`${idx}_product`}
-                    value={app.product?.id}
+                    value={app.product === null ? "" : app.product.id}
                     label="商品"
                     onChange={(e) => updateProduct(e, idx)}
                   >
@@ -149,6 +151,7 @@ const ApplicationFormDialog: FC<Props> = ({
             variant="contained"
             onClick={() => {
               submitNewApplications();
+              handleClickSnacBar();
               handleClose();
               //申込者一覧画面に移動する(新しく登録した順になっているはずなので、今登録したものが一番上にくる)
             }}

@@ -6,38 +6,87 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { CompanyMst, IndividualSalesResult, ProductMst } from "../../types";
+import {
+  CompanyMst,
+  ConsultContentMst,
+  IndividualSalesResult,
+  ProductMst,
+  RouteMst,
+} from "../../types";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import ApplicationFormDialog from "./ApplicationFormDialog";
-import { blue } from "@mui/material/colors";
+import { blue, grey } from "@mui/material/colors";
+import { styled } from "@mui/material/styles";
+import DeleteApplicationDialog from "@/app/component/DeleteApplicationDialog";
+import CircularProgress from "@mui/material/CircularProgress";
+import UpdateVisitorFormDialog from "./UpdateVisitorFormDialog";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 type Props = {
   salesResults: IndividualSalesResult[];
   productMst: ProductMst[];
   companyMst: CompanyMst[];
-  updateApplicationsData: (newData: IndividualSalesResult) => Promise<void>;
+  routeMst: RouteMst[];
+  consultContentMst: ConsultContentMst[];
+  updateSalesResultData: (newData: IndividualSalesResult) => Promise<void>;
+  deleteSalesResultData: (deleteTarget: IndividualSalesResult) => Promise<void>;
 };
 const VisitorList: FC<Props> = ({
   salesResults,
   productMst,
   companyMst,
-  updateApplicationsData,
+  routeMst,
+  consultContentMst,
+  updateSalesResultData,
+  deleteSalesResultData,
 }) => {
-  const [openFormDailog, setOpenFormDailog] = useState(false);
   const [selectedSalesResult, setSelectedSalesResult] = useState<
     IndividualSalesResult | undefined
   >(undefined);
 
-  const handleClickOpen = () => {
-    setOpenFormDailog(true);
+  const [openFormDialog, setOpenFormDialog] = useState(false);
+  const handleFormClickOpen = () => {
+    setOpenFormDialog(true);
+  };
+  const handleFormClose = () => {
+    setOpenFormDialog(false);
   };
 
-  const handleClose = () => {
-    setOpenFormDailog(false);
+  const [openUpdateFormDialog, setOpenUpdateFormDialog] = useState(false);
+  const handleUpdateFormClickOpen = () => {
+    setOpenUpdateFormDialog(true);
   };
+  const handleUpdateFormClose = () => {
+    setOpenUpdateFormDialog(false);
+  };
+
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const handleDeleteClickOpen = () => {
+    setOpenDeleteDialog(true);
+  };
+  const handleDeleteClose = () => {
+    setOpenDeleteDialog(false);
+  };
+
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+  const handleClickSnacBar = () => {
+    setOpenSnackBar(true);
+  };
+  const handleCloseSnacBar = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackBar(false);
+  };
+
+  if (!selectedSalesResult) <CircularProgress />;
   return (
     <>
       <TableContainer component={Paper} style={{ marginBottom: 30 }}>
@@ -51,14 +100,14 @@ const VisitorList: FC<Props> = ({
               <TableCell>相談内容</TableCell>
               <TableCell>次アポ</TableCell>
               <TableCell>申込件数</TableCell>
-              <TableCell sx={{ width: 20 }}>編集</TableCell>
-              <TableCell sx={{ width: 20 }}>削除</TableCell>
+              <TableCell sx={{ width: 70 }}>編集</TableCell>
+              <TableCell sx={{ width: 70 }}>削除</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {salesResults.map((row) => (
               //ページ切り替えの要素を取得
-              <TableRow hover key={`${row.firstVisitDate}_${row.name}`}>
+              <StyledTableRow hover key={`${row.firstVisitDate}_${row.name}`}>
                 {/* hoverを入れることでマウスポイントが表の上に乗った時に色が変わるアクションがつきます */}
                 <TableCell component="th" scope="row">
                   {row.firstVisitDate}
@@ -73,7 +122,7 @@ const VisitorList: FC<Props> = ({
                       variant="outlined"
                       onClick={() => {
                         setSelectedSalesResult(row);
-                        handleClickOpen();
+                        handleFormClickOpen();
                       }}
                     >
                       新規申込
@@ -85,31 +134,88 @@ const VisitorList: FC<Props> = ({
                 {/* FIXME: 最悪menuアイコンにしてアンカーで「編集・削除」を選択できるようにする  */}
                 <TableCell>
                   <IconButton>
-                    <EditIcon />
+                    <EditIcon
+                      onClick={() => {
+                        setSelectedSalesResult(row);
+                        handleUpdateFormClickOpen();
+                      }}
+                    />
                   </IconButton>
                 </TableCell>
                 <TableCell>
-                  <IconButton>
+                  <IconButton
+                    onClick={() => {
+                      setSelectedSalesResult(row);
+                      handleDeleteClickOpen();
+                    }}
+                  >
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>
-              </TableRow>
+              </StyledTableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-      {openFormDailog && (
+      {openFormDialog && (
         <ApplicationFormDialog
-          openFormDialog={openFormDailog}
-          handleClose={handleClose}
+          openFormDialog={openFormDialog}
+          handleClose={handleFormClose}
           salesResult={selectedSalesResult}
           productMst={productMst}
           companyMst={companyMst}
-          updateApplicationsData={updateApplicationsData}
+          updateApplicationsData={updateSalesResultData}
+          handleClickSnacBar={handleClickSnacBar}
         />
       )}
+      {openUpdateFormDialog && (
+        <UpdateVisitorFormDialog
+          openFormDialog={openUpdateFormDialog}
+          handleClose={handleUpdateFormClose}
+          salesResult={selectedSalesResult}
+          routeMst={routeMst}
+          consultContentMst={consultContentMst}
+          updateSalesResultData={updateSalesResultData}
+          handleClickSnacBar={handleClickSnacBar}
+        />
+      )}
+      {openDeleteDialog && (
+        <DeleteApplicationDialog
+          openDialog={openDeleteDialog}
+          handleClose={handleDeleteClose}
+          titleDeleteTarget={"来店記録"}
+          dialogMessage={`${selectedSalesResult?.name}さんに紐づく情報(申込情報も含む)は全て削除されます。削除後は元に戻すことができません。本当によろしいですか？`}
+          salesResult={selectedSalesResult}
+          updateApplicationsData={deleteSalesResultData}
+          handleClickSnacBar={handleClickSnacBar}
+        />
+      )}
+      <Snackbar
+        open={openSnackBar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnacBar}
+      >
+        <Alert
+          onClose={handleCloseSnacBar}
+          severity="success"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          保存が完了しました
+        </Alert>
+      </Snackbar>
     </>
   );
 };
 
 export default VisitorList;
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: grey[50],
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
