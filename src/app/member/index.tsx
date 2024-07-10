@@ -46,8 +46,12 @@ const MemberPage: FC<Props> = ({ user }) => {
                 label="Member"
                 onChange={handleMemberSelector}
               >
-                {members.map((member) => {
-                  return <MenuItem value={member.id}>{member.name}</MenuItem>;
+                {members.map((member, idx) => {
+                  return (
+                    <MenuItem value={member.id} key={`${idx}_${member.name}`}>
+                      {member.name}
+                    </MenuItem>
+                  );
                 })}
               </Select>
             </FormControl>
