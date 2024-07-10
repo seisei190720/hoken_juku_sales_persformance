@@ -5,31 +5,33 @@ import ApplicationList from "./ApplicationList";
 import { useSalesResultApi } from "@/app/api/useSalesResultApi";
 
 type Props = {
-  user: AuthUser;
+  userId: string;
   productMst: ProductMst[];
   companyMst: CompanyMst[];
   statusMst: StatusMst[];
+  canEdit: boolean;
 };
 
 const NotYetEstablished: FC<Props> = ({
-  user,
+  userId,
   productMst,
   companyMst,
   statusMst,
+  canEdit,
 }) => {
-  const { salesResultData, updateSalesResultData } = useSalesResultApi(
-    user.userId,
-    { status: "未成立", firstVisitDate: null }
-  );
+  const { salesResultData, updateSalesResultData } = useSalesResultApi(userId, {
+    status: "未成立",
+    firstVisitDate: null,
+  });
   return (
     <>
       <ApplicationList
-        user={user}
         productMst={productMst}
         companyMst={companyMst}
         statusMst={statusMst}
         salesResultData={salesResultData}
         updateApplicationsData={updateSalesResultData}
+        canEdit={canEdit}
       />
     </>
   );

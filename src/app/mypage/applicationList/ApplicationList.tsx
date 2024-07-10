@@ -20,7 +20,6 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
-import { AuthUser } from "aws-amplify/auth";
 import UpdateApplicationFormDialog from "./UpdateApplicationFormDialog";
 import CircularProgress from "@mui/material/CircularProgress";
 import { green, grey, orange, red } from "@mui/material/colors";
@@ -30,21 +29,21 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 
 type Props = {
-  user: AuthUser;
   productMst: ProductMst[];
   companyMst: CompanyMst[];
   statusMst: StatusMst[];
   salesResultData: IndividualSalesResult[] | undefined;
   updateApplicationsData: (newData: IndividualSalesResult) => Promise<void>;
+  canEdit: boolean;
 };
 
 const ApplicationList: FC<Props> = ({
-  user,
   productMst,
   companyMst,
   statusMst,
   salesResultData,
   updateApplicationsData,
+  canEdit,
 }) => {
   const [targetSalesResult, setTargetSalesResult] = useState<
     IndividualSalesResult | undefined
@@ -186,28 +185,35 @@ const ApplicationList: FC<Props> = ({
                     ))}
                   </TableBody>
                 </Table>
-                <Stack mt={1} gap={1} direction="row" justifyContent="flex-end">
-                  <Button
-                    variant="outlined"
-                    startIcon={<EditIcon />}
-                    onClick={() => {
-                      setTargetSalesResult(result);
-                      handleEditClickOpen();
-                    }}
+                {canEdit && (
+                  <Stack
+                    mt={1}
+                    gap={1}
+                    direction="row"
+                    justifyContent="flex-end"
                   >
-                    編集
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    startIcon={<DeleteIcon />}
-                    onClick={() => {
-                      setTargetSalesResult(result);
-                      handleDeleteClickOpen();
-                    }}
-                  >
-                    削除
-                  </Button>
-                </Stack>
+                    <Button
+                      variant="outlined"
+                      startIcon={<EditIcon />}
+                      onClick={() => {
+                        setTargetSalesResult(result);
+                        handleEditClickOpen();
+                      }}
+                    >
+                      編集
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      startIcon={<DeleteIcon />}
+                      onClick={() => {
+                        setTargetSalesResult(result);
+                        handleDeleteClickOpen();
+                      }}
+                    >
+                      削除
+                    </Button>
+                  </Stack>
+                )}
               </AccordionDetails>
             </Accordion>
           ))}

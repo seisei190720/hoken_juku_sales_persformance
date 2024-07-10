@@ -17,6 +17,7 @@ const fetcher = async ([url, userId, status, firstVisitDate]: [
   applicationStatus,
   string | null
 ]) => {
+  if (userId === "") return;
   const response = await axios.get(url, {
     params: {
       userId,

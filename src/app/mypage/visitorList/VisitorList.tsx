@@ -22,9 +22,9 @@ import { blue, grey } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
 import DeleteApplicationDialog from "@/app/component/DeleteApplicationDialog";
 import CircularProgress from "@mui/material/CircularProgress";
-import UpdateVisitorFormDialog from "./UpdateVisitorFormDialog";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import UpdateVisitorFormDialog from "./UpdateVisitorFormDialog";
 
 type Props = {
   salesResults: IndividualSalesResult[];
@@ -34,6 +34,7 @@ type Props = {
   consultContentMst: ConsultContentMst[];
   updateSalesResultData: (newData: IndividualSalesResult) => Promise<void>;
   deleteSalesResultData: (deleteTarget: IndividualSalesResult) => Promise<void>;
+  canEdit: boolean;
 };
 const VisitorList: FC<Props> = ({
   salesResults,
@@ -43,6 +44,7 @@ const VisitorList: FC<Props> = ({
   consultContentMst,
   updateSalesResultData,
   deleteSalesResultData,
+  canEdit,
 }) => {
   const [selectedSalesResult, setSelectedSalesResult] = useState<
     IndividualSalesResult | undefined
@@ -100,8 +102,16 @@ const VisitorList: FC<Props> = ({
               <TableCell>相談内容</TableCell>
               <TableCell>次アポ</TableCell>
               <TableCell>申込件数</TableCell>
-              <TableCell sx={{ width: 70 }}>編集</TableCell>
-              <TableCell sx={{ width: 70 }}>削除</TableCell>
+              <TableCell
+                sx={{ width: 70, ...(!canEdit && { display: "none" }) }}
+              >
+                編集
+              </TableCell>
+              <TableCell
+                sx={{ width: 70, ...(!canEdit && { display: "none" }) }}
+              >
+                削除
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -117,7 +127,7 @@ const VisitorList: FC<Props> = ({
                 <TableCell>{row.consultContent}</TableCell>
                 <TableCell>{row.nextAppointment ? "◯" : "-"}</TableCell>
                 <TableCell>
-                  {row.applications.length === 0 ? (
+                  {canEdit && row.applications.length === 0 ? (
                     <Button
                       variant="outlined"
                       onClick={() => {
@@ -132,7 +142,7 @@ const VisitorList: FC<Props> = ({
                   )}
                 </TableCell>
                 {/* FIXME: 最悪menuアイコンにしてアンカーで「編集・削除」を選択できるようにする  */}
-                <TableCell>
+                <TableCell sx={{ ...(!canEdit && { display: "none" }) }}>
                   <IconButton>
                     <EditIcon
                       onClick={() => {
@@ -142,7 +152,7 @@ const VisitorList: FC<Props> = ({
                     />
                   </IconButton>
                 </TableCell>
-                <TableCell>
+                <TableCell sx={{ ...(!canEdit && { display: "none" }) }}>
                   <IconButton
                     onClick={() => {
                       setSelectedSalesResult(row);

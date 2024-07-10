@@ -1,6 +1,5 @@
 import { FC, useEffect, useState } from "react";
 import { CompanyMst, ProductMst, StatusMst } from "@/app/types";
-import { AuthUser } from "aws-amplify/auth";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -13,17 +12,19 @@ import NotYetEstablished from "./NotYetEstablished";
 import TargetMonthApplicators from "./TargetMonthApplicators";
 
 type Props = {
-  user: AuthUser;
+  userId: string;
   productMst: ProductMst[];
   companyMst: CompanyMst[];
   statusMst: StatusMst[];
+  canEdit: boolean;
 };
 
 const AllApplicators: FC<Props> = ({
-  user,
+  userId,
   productMst,
   companyMst,
   statusMst,
+  canEdit,
 }) => {
   const [targetMonth, setTargetMonth] = useState<string | null>(null);
   const [showInProgressApp, setShowInProgressApp] = useState<boolean>(false);
@@ -86,18 +87,20 @@ const AllApplicators: FC<Props> = ({
         </Stack>
         {showInProgressApp ? (
           <NotYetEstablished
-            user={user}
+            userId={userId}
             productMst={productMst}
             companyMst={companyMst}
             statusMst={statusMst}
+            canEdit={canEdit}
           />
         ) : (
           <TargetMonthApplicators
-            user={user}
+            userId={userId}
             targetMonth={targetMonth}
             productMst={productMst}
             companyMst={companyMst}
             statusMst={statusMst}
+            canEdit={canEdit}
           />
         )}
       </Stack>
