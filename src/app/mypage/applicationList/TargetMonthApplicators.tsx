@@ -1,38 +1,39 @@
 import { FC } from "react";
 import { CompanyMst, ProductMst, StatusMst } from "@/app/types";
-import { AuthUser } from "aws-amplify/auth";
 import ApplicationList from "./ApplicationList";
 import { useSalesResultApi } from "@/app/api/useSalesResultApi";
 
 type Props = {
-  user: AuthUser;
+  userId: string;
   targetMonth: string | null;
   productMst: ProductMst[];
   companyMst: CompanyMst[];
   statusMst: StatusMst[];
+  canEdit: boolean;
 };
 
 const TargetMonthApplicators: FC<Props> = ({
-  user,
+  userId,
   targetMonth,
   productMst,
   companyMst,
   statusMst,
+  canEdit,
 }) => {
   const { salesResultData, updateSalesResultData: updateSalesResultData } =
-    useSalesResultApi(user.userId, {
+    useSalesResultApi(userId, {
       status: null,
       firstVisitDate: targetMonth,
     });
   return (
     <>
       <ApplicationList
-        user={user}
         productMst={productMst}
         companyMst={companyMst}
         statusMst={statusMst}
         salesResultData={salesResultData}
         updateApplicationsData={updateSalesResultData}
+        canEdit={canEdit}
       />
     </>
   );

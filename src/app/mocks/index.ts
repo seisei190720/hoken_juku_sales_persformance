@@ -2,6 +2,7 @@ import {
   CompanyMst,
   ConsultContentMst,
   IndividualSalesResult,
+  Member,
   ProductMst,
   RouteMst,
   StatusMst,
@@ -417,6 +418,17 @@ export const useMockData = () => {
       name: "不成立",
     },
   ];
+
+  const members: Member[] = [
+    {
+      id: "4a3ef7b6-f6bb-4502-876b-ca81b1313811",
+      name: "江澤誠哉",
+    },
+    {
+      id: "85588ef2-4f3f-44d5-9636-a3b4cb6985e0",
+      name: "江澤宏直",
+    },
+  ];
   return {
     salesResults,
     routeMst,
@@ -424,5 +436,6 @@ export const useMockData = () => {
     productMst,
     companyMst,
     statusMst,
+    members,
   };
 };

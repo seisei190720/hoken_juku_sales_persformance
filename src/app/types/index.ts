@@ -80,3 +80,8 @@ export type StatusMst = {
   id: string;
   name: string;
 };
+
+export type Member = {
+  id: string;
+  name: string;
+};

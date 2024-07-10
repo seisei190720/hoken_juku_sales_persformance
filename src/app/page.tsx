@@ -14,6 +14,7 @@ import TopAndSideBar from "./component/TopAndSideBar";
 import PersonIcon from "@mui/icons-material/Person";
 import TimelineIcon from "@mui/icons-material/Timeline";
 import PeopleIcon from "@mui/icons-material/People";
+import MemberPage from "./member";
 
 Amplify.configure({
   Auth: {
@@ -55,6 +56,8 @@ function Home() {
           switch (selectedMenu) {
             case "mypage":
               return <MyPage user={user} />;
+            case "member":
+              return <MemberPage user={user} />;
             case "dashboard":
               return <Dashboard user={user} />;
             default:

@@ -22,11 +22,11 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 type SummaryMode = "visitor" | "applicator";
 type Props = {
-  user: AuthUser;
+  userId: string;
   routeMst: RouteMst[];
   productMst: ProductMst[];
 };
-const Summary: FC<Props> = ({ user, routeMst, productMst }) => {
+const Summary: FC<Props> = ({ userId, routeMst, productMst }) => {
   const [targetMonth, setTargetMonth] = useState<string | null>(null);
 
   const forwardToNextMonth = () => {
@@ -40,7 +40,7 @@ const Summary: FC<Props> = ({ user, routeMst, productMst }) => {
     setTargetMonth(dayjs().format("YYYY-MM"));
   }, [setTargetMonth]);
 
-  const { salesResultData } = useSalesResultApi(user.userId, {
+  const { salesResultData } = useSalesResultApi(userId, {
     status: null,
     firstVisitDate: targetMonth,
   });

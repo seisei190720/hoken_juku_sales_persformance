@@ -20,19 +20,21 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 type Props = {
-  user: AuthUser;
+  userId: string;
   routeMst: RouteMst[];
   productMst: ProductMst[];
   companyMst: CompanyMst[];
   consultContentMst: ConsultContentMst[];
+  canEdit: boolean;
 };
 
 const Visitor: FC<Props> = ({
-  user,
+  userId,
   routeMst,
   productMst,
   companyMst,
   consultContentMst,
+  canEdit,
 }) => {
   const [targetMonth, setTargetMonth] = useState<string | null>(null);
   const [openFormDialog, setOpenFormDialog] = useState(false);
@@ -41,7 +43,7 @@ const Visitor: FC<Props> = ({
     postVisitorData,
     updateSalesResultData,
     deleteSalesResultData,
-  } = useSalesResultApi(user.userId, {
+  } = useSalesResultApi(userId, {
     status: null,
     firstVisitDate: targetMonth,
   });
@@ -92,11 +94,11 @@ const Visitor: FC<Props> = ({
               <ArrowForwardIosIcon />
             </Button>
           </Stack>
-          <Stack direction="row" gap={2}>
+          {canEdit && (
             <Button variant="contained" onClick={handleClickOpen}>
               来店記録を追加する
             </Button>
-          </Stack>
+          )}
         </Stack>
         <VisitorList
           salesResults={salesResultData || []}
@@ -106,6 +108,7 @@ const Visitor: FC<Props> = ({
           consultContentMst={consultContentMst}
           updateSalesResultData={updateSalesResultData}
           deleteSalesResultData={deleteSalesResultData}
+          canEdit={canEdit}
         />
       </Stack>
       {openFormDialog && (
