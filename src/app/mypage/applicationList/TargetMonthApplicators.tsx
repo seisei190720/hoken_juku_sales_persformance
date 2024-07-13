@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { CompanyMst, ProductMst, StatusMst } from "@/app/types";
 import ApplicationList from "./ApplicationList";
-import { useSalesResultApi } from "@/app/api/useSalesResultApi";
+import { resolveYear, useSalesResultApi } from "@/app/api/useSalesResultApi";
 
 type Props = {
   userId: string;
@@ -23,6 +23,7 @@ const TargetMonthApplicators: FC<Props> = ({
   const { salesResultData, updateSalesResultData: updateSalesResultData } =
     useSalesResultApi(userId, {
       status: null,
+      year: resolveYear(targetMonth),
       firstVisitDate: targetMonth,
     });
   return (

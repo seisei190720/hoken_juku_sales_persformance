@@ -21,6 +21,7 @@ export type IndividualSalesResult = {
 };
 
 export type Application = {
+  userId: string;
   applicationDate: string; //申込日
   product: string | null; //mst
   company: string | null; //mst

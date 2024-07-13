@@ -22,12 +22,12 @@ export const useUpdateVisitor = (
     setUpdatedVisitorData({
       firstVisitDate: salesResultData.firstVisitDate,
       visitRoute:
-        routeMst.find((r) => r.name === salesResultData.visitRoute) || null,
+        routeMst.find((r) => r.id === salesResultData.visitRoute) || null,
       name: salesResultData.name,
       nextAppointment: salesResultData.nextAppointment,
       consultContent:
         consultContentMst.find(
-          (c) => c.name === salesResultData.consultContent
+          (c) => c.id === salesResultData.consultContent
         ) || null,
     });
   }, [salesResultData, setUpdatedVisitorData, routeMst, consultContentMst]);
@@ -83,10 +83,10 @@ export const useUpdateVisitor = (
     updateSalesResultData({
       ...salesResultData,
       firstVisitDate: updatedVisitorData.firstVisitDate || "",
-      visitRoute: updatedVisitorData.visitRoute?.name || "",
+      visitRoute: updatedVisitorData.visitRoute?.id || "",
       name: updatedVisitorData.name || "",
       nextAppointment: updatedVisitorData.nextAppointment,
-      consultContent: updatedVisitorData.consultContent?.name || "",
+      consultContent: updatedVisitorData.consultContent?.id || "",
     });
   }, [updateSalesResultData, updatedVisitorData, salesResultData]);
 

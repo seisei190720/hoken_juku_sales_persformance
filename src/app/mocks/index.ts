@@ -20,6 +20,7 @@ export const useMockData = () => {
       consultContent: "生保",
       applications: [
         {
+          userId: "userId001",
           applicationDate: "2024-06-07",
           product: "医療保険",
           company: "ソニー損保",
@@ -28,6 +29,7 @@ export const useMockData = () => {
           establishDate: "2024-06-13",
         },
         {
+          userId: "userId001",
           applicationDate: "2024-06-07",
           product: "がん保険",
           company: "東京海上日動",
@@ -36,6 +38,7 @@ export const useMockData = () => {
           establishDate: null,
         },
         {
+          userId: "userId001",
           applicationDate: "2024-06-07",
           product: "収入保障",
           company: "第一生命",
@@ -67,6 +70,7 @@ export const useMockData = () => {
       consultContent: "損保",
       applications: [
         {
+          userId: "userId001",
           applicationDate: "2024-06-07",
           product: "医療保険",
           company: "ソニー損保",
@@ -75,6 +79,7 @@ export const useMockData = () => {
           establishDate: "2024-06-13",
         },
         {
+          userId: "userId001",
           applicationDate: "2024-06-07",
           product: "がん保険",
           company: "東京海上日動",
@@ -106,6 +111,7 @@ export const useMockData = () => {
       consultContent: "その他",
       applications: [
         {
+          userId: "userId005",
           applicationDate: "2024-07-07",
           product: "医療保険",
           company: "ソニー損保",

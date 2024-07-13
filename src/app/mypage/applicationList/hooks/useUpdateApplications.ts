@@ -27,10 +27,10 @@ export const useUpdateApplications = (
         salesResult.applications.map((a) => {
           return {
             applicationDate: a.applicationDate,
-            product: productMst.find((p) => p.name === a.product) || null,
-            company: companyMst.find((c) => c.name === a.company) || null,
+            product: productMst.find((p) => p.id === a.product) || null,
+            company: companyMst.find((c) => c.id === a.company) || null,
             firstYearFee: a.firstYearFee,
-            status: statusMst.find((s) => s.name === a.status) || null,
+            status: statusMst.find((s) => s.id === a.status) || null,
             establishDate: a.establishDate,
           };
         })
@@ -172,11 +172,12 @@ export const useUpdateApplications = (
       thankyou: thankyouState,
       applications: updatedApplications.map((v) => {
         return {
+          userId: salesResult.userId,
           applicationDate: v.applicationDate,
-          product: v.product?.name || "",
-          company: v.company?.name || "",
+          product: v.product?.id || "",
+          company: v.company?.id || "",
           firstYearFee: v.firstYearFee,
-          status: v.status?.name || "",
+          status: v.status?.id || "",
           establishDate: v.establishDate,
         };
       }),

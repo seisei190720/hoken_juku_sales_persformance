@@ -1,6 +1,6 @@
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
-import { useSalesResultApi } from "@/app/api/useSalesResultApi";
+import { resolveYear, useSalesResultApi } from "@/app/api/useSalesResultApi";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import Stack from "@mui/material/Stack";
@@ -45,6 +45,7 @@ const Visitor: FC<Props> = ({
     deleteSalesResultData,
   } = useSalesResultApi(userId, {
     status: null,
+    year: resolveYear(targetMonth),
     firstVisitDate: targetMonth,
   });
 

@@ -15,18 +15,18 @@ const MyPage: FC<Props> = ({ user }) => {
 
   return (
     <>
-      <Stack gap={1} sx={{ width: "100%" }}>
-        <Typography variant="h5">{user.username}さんの営業成績</Typography>
-        <IndividualSalesResults
-          userId={user.userId}
-          routeMst={routeMst}
-          productMst={productMst}
-          companyMst={companyMst}
-          consultContentMst={consultContentMst}
-          statusMst={statusMst}
-          canEdit={true}
-        />
-      </Stack>
+      {/* <Stack gap={1} sx={{ width: "100%" }}> */}
+      {/* <Typography variant="h5">{user.username}さんの営業成績</Typography> */}
+      <IndividualSalesResults
+        userId={user.userId}
+        routeMst={routeMst}
+        productMst={productMst}
+        companyMst={companyMst}
+        consultContentMst={consultContentMst}
+        statusMst={statusMst}
+        canEdit={true}
+      />
+      {/* </Stack> */}
     </>
   );
 };

@@ -14,11 +14,13 @@ import ApplicatorBarChart from "./applicator/ApplicatorBarChart";
 import { AuthUser } from "aws-amplify/auth";
 import { useVisitorSummaryComposition } from "./hooks/useVisitorSummaryComposition";
 import dayjs from "dayjs";
-import { useSalesResultApi } from "@/app/api/useSalesResultApi";
+import { resolveYear, useSalesResultApi } from "@/app/api/useSalesResultApi";
 import Button from "@mui/material/Button";
 import { useApplicatorSummaryComposition } from "./hooks/useApplicatorSummaryComposition";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { useApplicationApi } from "@/app/api/useApplicationApi";
+import { useLastApplicationsComposition } from "./hooks/useLastApplicationsComposition";
 
 type SummaryMode = "visitor" | "applicator";
 type Props = {
@@ -42,13 +44,20 @@ const Summary: FC<Props> = ({ userId, routeMst, productMst }) => {
 
   const { salesResultData } = useSalesResultApi(userId, {
     status: null,
+    year: resolveYear(targetMonth),
     firstVisitDate: targetMonth,
+  });
+  const { applicationData } = useApplicationApi({
+    userId: userId,
+    year: resolveYear(targetMonth),
+    establishDate: targetMonth,
   });
   const visitorData = useVisitorSummaryComposition(salesResultData, routeMst);
   const applicatorData = useApplicatorSummaryComposition(
-    salesResultData,
+    applicationData,
     productMst
   );
+  const lastApplicationData = useLastApplicationsComposition(userId);
   const [summaryMode, setSummaryMode] = useState<SummaryMode>("visitor");
   const updateSummaryMode = useCallback(
     (event: React.MouseEvent<HTMLElement>, nextMode: string) => {
@@ -114,12 +123,32 @@ const Summary: FC<Props> = ({ userId, routeMst, productMst }) => {
                       title={"次アポ取得率"}
                       mainUnit={"%"}
                     />
-                    <ConsultContentSumarryCard
-                      consultContent={visitorData.consultContent}
+                    <SimpleSummaryCard
+                      values={
+                        visitorData.closedConstractData && {
+                          mainValue: visitorData.closedConstractData.percent,
+                          subValue: `( ${visitorData.closedConstractData.count}/${visitorData.closedConstractData.all}人 )`,
+                        }
+                      }
+                      title={"新規成約率"}
+                      mainUnit={"%"}
+                    />
+                    <SimpleSummaryCard
+                      values={
+                        visitorData.thankyouData && {
+                          mainValue: visitorData.thankyouData.percent,
+                          subValue: `( ${visitorData.thankyouData.count}/${visitorData.thankyouData.all}人 )`,
+                        }
+                      }
+                      title={"ありがとう率"}
+                      mainUnit={"%"}
                     />
                   </Stack>
                   <Stack direction="row" gap={2}>
                     <VisitorBarChart values={visitorData.routeBarChartData} />
+                    {/* <ConsultContentSumarryCard
+                      consultContent={visitorData.consultContent}
+                    /> */}
                     <ConsultContentPieChart
                       values={visitorData.consultContentPieChartData}
                     />
@@ -160,29 +189,9 @@ const Summary: FC<Props> = ({ userId, routeMst, productMst }) => {
                     />
                     <SimpleSummaryCard
                       values={
-                        visitorData.closedConstractData && {
-                          mainValue: visitorData.closedConstractData.percent,
-                          subValue: `( ${visitorData.closedConstractData.count}/${visitorData.closedConstractData.all}件 )`,
-                        }
-                      }
-                      title={"新規成約率"}
-                      mainUnit={"%"}
-                    />
-                    <SimpleSummaryCard
-                      values={
-                        applicatorData.thankyouData && {
-                          mainValue: applicatorData.thankyouData.percent,
-                          subValue: `( ${applicatorData.thankyouData.count}/${applicatorData.thankyouData.all}件 )`,
-                        }
-                      }
-                      title={"ありがとう率"}
-                      mainUnit={"%"}
-                    />
-                    <SimpleSummaryCard
-                      values={
-                        applicatorData.lastApplicationCount !== undefined
+                        lastApplicationData !== undefined
                           ? {
-                              mainValue: applicatorData.lastApplicationCount,
+                              mainValue: lastApplicationData.count,
                               subValue: "",
                             }
                           : undefined

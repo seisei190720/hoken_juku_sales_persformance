@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { CompanyMst, ProductMst, StatusMst } from "@/app/types";
-import { AuthUser } from "aws-amplify/auth";
 import ApplicationList from "./ApplicationList";
 import { useSalesResultApi } from "@/app/api/useSalesResultApi";
 
@@ -20,7 +19,8 @@ const NotYetEstablished: FC<Props> = ({
   canEdit,
 }) => {
   const { salesResultData, updateSalesResultData } = useSalesResultApi(userId, {
-    status: "未成立",
+    status: "1",
+    year: null,
     firstVisitDate: null,
   });
   return (

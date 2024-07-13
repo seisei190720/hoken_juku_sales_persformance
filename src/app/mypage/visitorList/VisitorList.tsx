@@ -123,8 +123,14 @@ const VisitorList: FC<Props> = ({
                   {row.firstVisitDate}
                 </TableCell>
                 <TableCell>{row.name}</TableCell>
-                <TableCell>{row.visitRoute}</TableCell>
-                <TableCell>{row.consultContent}</TableCell>
+                <TableCell>
+                  {routeMst.find((r) => r.id === row.visitRoute)?.name ||
+                    "マスタが見つかりません"}
+                </TableCell>
+                <TableCell>
+                  {consultContentMst.find((r) => r.id === row.consultContent)
+                    ?.name || "マスタが見つかりません"}
+                </TableCell>
                 <TableCell>{row.nextAppointment ? "◯" : "-"}</TableCell>
                 <TableCell>
                   {canEdit && row.applications.length === 0 ? (

@@ -7,21 +7,26 @@ import {
 import useSWR from "swr";
 import axios from "axios";
 import { useCallback } from "react";
+import IndividualSalesResults from "../mypage/visitorList/IndividualSalesResults";
 
-const url =
+const devUrl =
   "https://1us1ed23t2.execute-api.ap-northeast-1.amazonaws.com/hoken_juku_sales_result/sales-results";
 
-const fetcher = async ([url, userId, status, firstVisitDate]: [
+const prodUrl =
+  "https://jiv06b7gz7.execute-api.ap-northeast-1.amazonaws.com/prod_hoken_juku/sales-results";
+
+const fetcher = async ([url, userId, status, year, firstVisitDate]: [
   string,
-  string,
-  applicationStatus,
+  string | null,
+  string | null,
+  string | null,
   string | null
 ]) => {
-  if (userId === "") return;
   const response = await axios.get(url, {
     params: {
       userId,
       status,
+      year,
       firstVisitDate,
     },
   });
@@ -36,6 +41,7 @@ const fetcher = async ([url, userId, status, firstVisitDate]: [
       nextAppointment: v.nextAppointment,
       consultContent: v.consultContent,
       applications: v.applications.map((a: Application) => ({
+        userId: userId,
         product: a.product || null,
         company: a.company || null,
         firstYearFee: a.firstYearFee || null,
@@ -48,11 +54,19 @@ const fetcher = async ([url, userId, status, firstVisitDate]: [
   }
 };
 
+export const resolveYear = (date: string | null) => {
+  //TODO: 年度を計算する
+  if (date === null) return null;
+
+  return "2024";
+};
+
 export const useSalesResultApi = (
   userId: string,
   param: {
-    status: applicationStatus;
+    status: string | null;
     firstVisitDate: string | null;
+    year: string | null;
   }
 ) => {
   const {
@@ -62,20 +76,21 @@ export const useSalesResultApi = (
   } = useSWR(
     param.status === null && param.firstVisitDate === null
       ? null
-      : [url, userId, param.status, param.firstVisitDate],
+      : [prodUrl, userId, param.status, param.year, param.firstVisitDate],
     fetcher
   );
 
   const postVisitorData = useCallback(
     async (newData: NewVisitor) => {
       try {
-        await axios.post(url, {
+        await axios.post(prodUrl, {
           userId,
+          year: resolveYear(newData.firstVisitDate),
           firstVisitDate: newData.firstVisitDate,
-          visitRoute: newData.visitRoute?.name,
+          visitRoute: newData.visitRoute?.id,
           name: newData.name,
           nextAppointment: newData.nextAppointment,
-          consultContent: newData.consultContent?.name,
+          consultContent: newData.consultContent?.id,
         });
         await mutate(); //uuidが必要になるため、ローカルデータでmutateができない。
       } catch (error) {
@@ -88,11 +103,24 @@ export const useSalesResultApi = (
   const updateSalesResultData = useCallback(
     async (newData: IndividualSalesResult) => {
       try {
-        await axios.put(url, newData);
+        const updatedData = {
+          ...newData,
+          year: resolveYear(newData.firstVisitDate),
+          applications: newData.applications.map((v) => {
+            if (v.establishDate === null || v.establishDate === "") {
+              return v;
+            }
+            return {
+              ...v,
+              year: resolveYear(v.establishDate),
+            };
+          }),
+        };
+        await axios.put(prodUrl, updatedData);
         await mutate((d: IndividualSalesResult[]) => {
           if (!d) return;
           const updatedSalesResultData = d.map((item) =>
-            item.uuid === newData.uuid ? newData : item
+            item.uuid === newData.uuid ? updatedData : item
           );
           return updatedSalesResultData;
         }, false);
@@ -106,10 +134,11 @@ export const useSalesResultApi = (
   const deleteSalesResultData = useCallback(
     async (deleteTarget: IndividualSalesResult) => {
       try {
-        await axios.delete(url, {
+        await axios.delete(prodUrl, {
           params: {
             userId: deleteTarget.userId,
             uuid: deleteTarget.uuid,
+            year: resolveYear(deleteTarget.firstVisitDate),
             firstVisitDate: deleteTarget.firstVisitDate,
           },
         });

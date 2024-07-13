@@ -23,7 +23,7 @@ export const useVisitorSummaryComposition = (
 
   const resolveRouteKind = useCallback(
     (v: string) => {
-      return routeMst.find((r) => r.name == v)?.kind;
+      return routeMst.find((r) => r.id == v)?.kind;
     },
     [routeMst]
   );
@@ -66,20 +66,20 @@ export const useVisitorSummaryComposition = (
     if (!newVisitor || !existVisitor) return;
     return {
       life: {
-        new: newVisitor.filter((v) => v.consultContent === "生保").length,
-        exist: existVisitor.filter((v) => v.consultContent === "生保").length,
+        new: newVisitor.filter((v) => v.consultContent === "1").length,
+        exist: existVisitor.filter((v) => v.consultContent === "1").length,
       },
       nonLife: {
-        new: newVisitor.filter((v) => v.consultContent === "損保").length,
-        exist: existVisitor.filter((v) => v.consultContent === "損保").length,
+        new: newVisitor.filter((v) => v.consultContent === "2").length,
+        exist: existVisitor.filter((v) => v.consultContent === "2").length,
       },
     };
   }, [newVisitor, existVisitor]);
 
   const getRouteCountByName = useCallback(
-    (name: string) => {
+    (routeId: string) => {
       if (!salesData) return;
-      return salesData.filter((v) => v.visitRoute === name).length;
+      return salesData.filter((v) => v.visitRoute === routeId).length;
     },
     [salesData]
   );
@@ -89,7 +89,7 @@ export const useVisitorSummaryComposition = (
     return routeMst.map((r) => {
       return {
         name: r.name,
-        人数: getRouteCountByName(r.name) || 0,
+        人数: getRouteCountByName(r.id) || 0,
         color: r.kind === "new" ? green[400] : orange[400],
       };
     });
@@ -106,7 +106,7 @@ export const useVisitorSummaryComposition = (
       },
       {
         name: "[新規]その他",
-        value: newVisitor.filter((v) => v.consultContent === "その他").length,
+        value: newVisitor.filter((v) => v.consultContent === "3").length,
         color: teal[400],
       },
       {
@@ -121,7 +121,7 @@ export const useVisitorSummaryComposition = (
       },
       {
         name: "[既契約]その他",
-        value: existVisitor.filter((v) => v.consultContent === "その他").length,
+        value: existVisitor.filter((v) => v.consultContent === "3").length,
         color: amber[400],
       },
     ];
@@ -141,6 +141,21 @@ export const useVisitorSummaryComposition = (
     };
   }, [newVisitor]);
 
+  const thankyouData = useMemo(() => {
+    if (!salesData) return;
+    const thankyouCount = salesData.filter((r) => r.thankyou).length;
+    const applicatorCount = salesData.filter(
+      (r) => r.applications.length !== 0
+    ).length;
+    const thankyouPercent = (thankyouCount / applicatorCount) * 100;
+    const resultPercent = Math.round(thankyouPercent * 10) / 10;
+    return {
+      percent: isNaN(resultPercent) ? 0 : resultPercent,
+      count: thankyouCount,
+      all: applicatorCount,
+    };
+  }, [salesData]);
+
   return {
     visitorCount,
     nextAppointment,
@@ -148,5 +163,6 @@ export const useVisitorSummaryComposition = (
     routeBarChartData,
     consultContentPieChartData,
     closedConstractData,
+    thankyouData,
   };
 };
