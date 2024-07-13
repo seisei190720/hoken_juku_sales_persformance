@@ -52,7 +52,7 @@ const SimpleSummaryCard: FC<Props> = ({ values, title, mainUnit }) => {
             justifyContent="center"
           >
             <Typography variant="h2" fontWeight={"Medium"}>
-              {values.mainValue}
+              {values.mainValue.toLocaleString()}
             </Typography>
             <Typography variant="h6">{mainUnit}</Typography>
           </Stack>

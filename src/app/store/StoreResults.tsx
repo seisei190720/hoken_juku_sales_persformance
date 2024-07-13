@@ -96,6 +96,7 @@ const StoreResults: FC<Props> = ({
             case "contract":
               return (
                 <StoreConstract
+                  salesResultData={salesResultData}
                   applicationData={applicationData}
                   members={members}
                 />
