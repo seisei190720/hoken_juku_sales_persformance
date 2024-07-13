@@ -10,9 +10,6 @@ type Props = {
   user: AuthUser;
 };
 const Dashboard: FC<Props> = ({ user }) => {
-  const applicationDate = useApplicationApi(user.userId, {
-    applicationDate: "2024-07",
-  });
   const data = [
     { name: "page A", uv: 4000 },
     { name: "Page B", uv: 3000 },

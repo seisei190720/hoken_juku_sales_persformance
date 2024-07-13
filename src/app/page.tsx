@@ -55,7 +55,7 @@ function Home() {
         {(() => {
           switch (selectedMenu) {
             case "mypage":
-              return <MyPage userId={user.userId} />;
+              return <MyPage userId={user.userId} canEdit={true} />;
             case "member":
               return <MemberPage user={user} />;
             case "dashboard":

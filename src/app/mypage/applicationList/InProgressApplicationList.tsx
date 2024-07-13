@@ -1,4 +1,4 @@
-import { FC, useCallback } from "react";
+import { FC, useCallback, useMemo } from "react";
 import {
   CompanyMst,
   IndividualSalesResult,
@@ -39,9 +39,16 @@ const InProgressApplicationList: FC<Props> = ({
     [updateSalesResultData, mutateSalesResultData]
   );
 
+  const filteredSalesResultData = useMemo(() => {
+    if (!salesResultData) return;
+    return salesResultData.filter((v: IndividualSalesResult) =>
+      v.applications.some((a) => a.status === "1")
+    );
+  }, [salesResultData]);
+
   return (
     <ApplicationList
-      salesResultData={salesResultData}
+      salesResultData={filteredSalesResultData}
       updateApplicationsData={updateSalesResultDataAndMutate}
       productMst={productMst}
       companyMst={companyMst}

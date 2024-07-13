@@ -12,9 +12,10 @@ import Button from "@mui/material/Button";
 
 type Props = {
   userId: string;
+  canEdit: boolean;
 };
 
-const MyPage: FC<Props> = ({ userId }) => {
+const MyPage: FC<Props> = ({ userId, canEdit }) => {
   const { routeMst, consultContentMst, productMst, companyMst, statusMst } =
     useMockData();
   const [targetMonth, setTargetMonth] = useState<string | null>(null);
@@ -79,7 +80,7 @@ const MyPage: FC<Props> = ({ userId }) => {
           companyMst={companyMst}
           consultContentMst={consultContentMst}
           statusMst={statusMst}
-          canEdit={true}
+          canEdit={canEdit}
         />
       </Stack>
     </>

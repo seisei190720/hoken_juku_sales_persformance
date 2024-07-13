@@ -54,7 +54,10 @@ const MemberPage: FC<Props> = ({ user }) => {
         {selecetedMember === null ? (
           <Typography>表示したいメンバーを選択してください。</Typography>
         ) : (
-          <MyPage userId={selecetedMember.id} />
+          <MyPage
+            userId={selecetedMember.id}
+            canEdit={selecetedMember.id === user.userId}
+          />
         )}
       </Stack>
     </>
