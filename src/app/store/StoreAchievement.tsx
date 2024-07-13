@@ -9,7 +9,7 @@ import {
   StatusMst,
 } from "@/app/types";
 import Stack from "@mui/material/Stack";
-import VisitorAndAppointmentBarChart from "./components/visitorAndAppointmentBarChart";
+import VisitorAndAppointmentBarChart from "./components/VisitorAndAppointmentBarChart";
 import { useStoreAchievementData } from "./hooks/useStoreAchievementData";
 import CountAndPercentBarChart from "./components/CountAndPercentBarChart";
 import VisitorAndAppointmentSourceDataList from "./components/VisitorAndAppointmentSourceDataList";

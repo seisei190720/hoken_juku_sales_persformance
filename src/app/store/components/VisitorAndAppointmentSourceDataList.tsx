@@ -42,7 +42,6 @@ const VisitorAndAppointmentSourceDataList: FC<Props> = ({ title, values }) => {
         paddingTop: 2,
         flex: 1,
         height: 400,
-        // overflow: "auto",
       }}
     >
       <Stack
@@ -81,21 +80,25 @@ const VisitorAndAppointmentSourceDataList: FC<Props> = ({ title, values }) => {
             </TableHead>
             <TableBody>
               {values.map((v, idx) => (
-                <TableRow key={`${idx}_${v.name}_row`}>
-                  <TableCell component="th" scope="row">
+                <TableRow key={`${idx}_row`}>
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    key={`${idx}_name_${v.name}`}
+                  >
                     {v.name}
                   </TableCell>
-                  <TableCell key={`${idx}_${v.name}_${v.新規数}`}>
+                  <TableCell key={`${idx}_newCount_${v.新規数}`}>
                     {v.新規数}
                   </TableCell>
-                  <TableCell key={`${idx}_${v.name}_${v.既契約数}`}>
+                  <TableCell key={`${idx}_existCount_${v.既契約数}`}>
                     {v.既契約数}
                   </TableCell>
-                  <TableCell key={`${idx}_${v.name}_${v.次アポ取得数}`}>
+                  <TableCell key={`${idx}_appointmentCount_${v.次アポ取得数}`}>
                     {v.次アポ取得数}
                   </TableCell>
                   <TableCell
-                    key={`${idx}_${v.name}_${v.nextAppointMentPercent}`}
+                    key={`${idx}_appointmentPercent_${v.nextAppointMentPercent}`}
                   >
                     {v.nextAppointMentPercent}
                   </TableCell>
