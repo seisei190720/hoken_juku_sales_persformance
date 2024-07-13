@@ -56,7 +56,7 @@ export const resolveYear = (date: string | null) => {
 };
 
 export const useSalesResultApi = (
-  userId: string,
+  userId: string | null,
   param: {
     status: string | null;
     firstVisitDate: string | null;
