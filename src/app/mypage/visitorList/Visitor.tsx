@@ -1,26 +1,27 @@
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
-import { useSalesResultApi } from "@/app/api/useSalesResultApi";
-import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import { AuthUser } from "aws-amplify/auth";
-import dayjs from "dayjs";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import {
   CompanyMst,
   ConsultContentMst,
+  IndividualSalesResult,
+  NewVisitor,
   ProductMst,
   RouteMst,
 } from "../../types";
 import VisitorFormDialog from "./VisitorFormDialog";
 import VisitorList from "./VisitorList";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
 
 type Props = {
   userId: string;
+  salesResultData: IndividualSalesResult[] | undefined;
+  postVisitorData: (newData: NewVisitor) => Promise<void>;
+  updateSalesResultData: (newData: IndividualSalesResult) => Promise<void>;
+  deleteSalesResultData: (deleteTarget: IndividualSalesResult) => Promise<void>;
   routeMst: RouteMst[];
   productMst: ProductMst[];
   companyMst: CompanyMst[];
@@ -30,30 +31,17 @@ type Props = {
 
 const Visitor: FC<Props> = ({
   userId,
+  salesResultData,
+  postVisitorData,
+  updateSalesResultData,
+  deleteSalesResultData,
   routeMst,
   productMst,
   companyMst,
   consultContentMst,
   canEdit,
 }) => {
-  const [targetMonth, setTargetMonth] = useState<string | null>(null);
   const [openFormDialog, setOpenFormDialog] = useState(false);
-  const {
-    salesResultData,
-    postVisitorData,
-    updateSalesResultData,
-    deleteSalesResultData,
-  } = useSalesResultApi(userId, {
-    status: null,
-    firstVisitDate: targetMonth,
-  });
-
-  const forwardToNextMonth = () => {
-    setTargetMonth((v) => dayjs(v).add(1, "month").format("YYYY-MM"));
-  };
-  const backToLastMonth = () => {
-    setTargetMonth((v) => dayjs(v).subtract(1, "month").format("YYYY-MM"));
-  };
 
   const handleClickOpen = () => {
     setOpenFormDialog(true);
@@ -76,28 +64,22 @@ const Visitor: FC<Props> = ({
     setOpenSnackBar(false);
   };
 
-  useEffect(() => {
-    setTargetMonth(dayjs().format("YYYY-MM"));
-  }, [setTargetMonth]);
-
   if (!salesResultData) return <CircularProgress />;
   return (
     <>
-      <Stack gap={2} p={2} pt={3} ml={2} mr={2}>
-        <Stack direction="row" gap={2} justifyContent="space-between">
-          <Stack direction="row" alignItems="center">
-            <Button onClick={backToLastMonth}>
-              <ArrowBackIosIcon />
-            </Button>
-            <Typography>{targetMonth}</Typography>
-            <Button onClick={forwardToNextMonth}>
-              <ArrowForwardIosIcon />
-            </Button>
-          </Stack>
+      <Stack gap={2} p={2} ml={2} mr={2}>
+        <Stack direction="row" gap={2} justifyContent="flex-end">
           {canEdit && (
-            <Button variant="contained" onClick={handleClickOpen}>
-              来店記録を追加する
-            </Button>
+            <Fab
+              variant="extended"
+              size="medium"
+              color="primary"
+              onClick={handleClickOpen}
+              sx={{ position: "fixed", bottom: 72, right: 56 }}
+            >
+              <AddIcon sx={{ mr: 1 }} />
+              新規追加
+            </Fab>
           )}
         </Stack>
         <VisitorList

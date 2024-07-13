@@ -99,11 +99,12 @@ export const useNewApplications = (
       ...salesResult,
       applications: newApplications.map((v) => {
         return {
+          userId: salesResult.userId,
           applicationDate: v.applicationDate,
-          product: v.product?.name || "",
-          company: v.company?.name || "",
+          product: v.product?.id || "",
+          company: v.company?.id || "",
           firstYearFee: null,
-          status: "未成立",
+          status: "1",
           establishDate: null,
         };
       }),

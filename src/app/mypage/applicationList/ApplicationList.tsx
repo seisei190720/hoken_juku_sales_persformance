@@ -29,11 +29,11 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 
 type Props = {
+  salesResultData: IndividualSalesResult[] | undefined;
+  updateApplicationsData: (newData: IndividualSalesResult) => Promise<void>;
   productMst: ProductMst[];
   companyMst: CompanyMst[];
   statusMst: StatusMst[];
-  salesResultData: IndividualSalesResult[] | undefined;
-  updateApplicationsData: (newData: IndividualSalesResult) => Promise<void>;
   canEdit: boolean;
 };
 
@@ -80,17 +80,41 @@ const ApplicationList: FC<Props> = ({
   };
 
   const existsInProgressConstract = (target: IndividualSalesResult) => {
-    return target.applications.some((v) => v.status === "未成立");
+    return target.applications.some((v) => v.status === "1");
   };
 
   const statusChip = (status: string) => {
     switch (status) {
-      case "未成立":
-        return <Chip label={status} color="warning" />;
-      case "成立":
-        return <Chip label={status} color="success" />;
-      case "不成立":
-        return <Chip label={status} color="default" />;
+      case "1": //未成立
+        return (
+          <Chip
+            label={
+              statusMst.find((s) => s.id === status)?.name ||
+              "存在しないマスタです"
+            }
+            color="warning"
+          />
+        );
+      case "2": //成立
+        return (
+          <Chip
+            label={
+              statusMst.find((s) => s.id === status)?.name ||
+              "存在しないマスタです"
+            }
+            color="success"
+          />
+        );
+      case "3": //不成立
+        return (
+          <Chip
+            label={
+              statusMst.find((s) => s.id === status)?.name ||
+              "存在しないマスタです"
+            }
+            color="default"
+          />
+        );
       case null:
         return <></>;
     }
@@ -172,8 +196,14 @@ const ApplicationList: FC<Props> = ({
                         <TableCell component="th" scope="row">
                           {app.applicationDate}
                         </TableCell>
-                        <TableCell>{app.company}</TableCell>
-                        <TableCell>{app.product}</TableCell>
+                        <TableCell>
+                          {companyMst.find((c) => c.id === app.company)?.name ||
+                            "マスタが見つかりません"}
+                        </TableCell>
+                        <TableCell>
+                          {productMst.find((c) => c.id === app.product)?.name ||
+                            "マスタが見つかりません"}
+                        </TableCell>
                         <TableCell>{statusChip(app.status)}</TableCell>
                         <TableCell>
                           {app.establishDate === null ? "-" : app.establishDate}

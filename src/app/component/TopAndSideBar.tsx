@@ -44,7 +44,7 @@ const TopAndSideBar: FC<Props> = ({
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar position="fixed" open={openSideMenu}>
-        <Toolbar>
+        <Toolbar variant="dense">
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -126,8 +126,9 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   alignItems: "center",
   justifyContent: "flex-end",
   padding: theme.spacing(0, 1),
+  height: "48px",
   // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
+  // ...theme.mixins.toolbar, //これがあると、drawerのheightが64pxになってしまう
 }));
 
 interface AppBarProps extends MuiAppBarProps {
