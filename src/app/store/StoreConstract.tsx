@@ -7,6 +7,7 @@ import {
   CompanyMst,
   ConsultContentMst,
   IndividualSalesResult,
+  Member,
   NewVisitor,
   ProductMst,
   RouteMst,
@@ -21,9 +22,10 @@ import { useStoreAchievementData } from "./hooks/useStoreAchievementData";
 
 type Props = {
   applicationData: Application[] | undefined;
+  members: Member[];
 };
 
-const StoreConstract: FC<Props> = ({ applicationData }) => {
+const StoreConstract: FC<Props> = ({ applicationData, members }) => {
   const storeAchievementData = useStoreAchievementData(undefined);
 
   return (

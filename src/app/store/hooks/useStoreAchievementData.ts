@@ -1,107 +1,120 @@
-import { IndividualSalesResult, RouteMst } from "@/app/types";
 import {
-  amber,
-  deepOrange,
-  green,
-  lightGreen,
-  orange,
-  teal,
-} from "@mui/material/colors";
-import { useMemo } from "react";
+  CompanyMst,
+  ConsultContentMst,
+  IndividualSalesResult,
+  Member,
+  ProductMst,
+  RouteMst,
+  StatusMst,
+} from "@/app/types";
+import { useCallback, useMemo } from "react";
+
+export type VisitorAndAppointmentType = {
+  name: string;
+  新規数: number;
+  既契約数: number;
+  次アポ取得数: number;
+  nextAppointMentPercent: number;
+};
+export type CountAndPercentType = {
+  name: string;
+  件数: number;
+  率: number;
+};
 
 export const useStoreAchievementData = (
-  results: IndividualSalesResult[] | undefined
+  results: IndividualSalesResult[] | undefined,
+  members: Member[],
+  routeMst: RouteMst[],
+  consultContentMst: ConsultContentMst[],
+  productMst: ProductMst[],
+  companyMst: CompanyMst[],
+  statusMst: StatusMst[]
 ) => {
-  const visitorAndAppointment = useMemo(() => {
-    return [
-      {
-        name: "江澤誠哉",
-        新規数: 24,
-        既契約数: 18,
-        次アポ取得数: 30,
-        nextAppointMentPercent: 43,
-      },
-      {
-        name: "野比のび太",
-        新規数: 14,
-        既契約数: 35,
-        次アポ取得数: 31,
-        nextAppointMentPercent: 39,
-      },
-      {
-        name: "源しずか",
-        新規数: 28,
-        既契約数: 12,
-        次アポ取得数: 20,
-        nextAppointMentPercent: 31,
-      },
-      {
-        name: "剛田武",
-        新規数: 28,
-        既契約数: 12,
-        次アポ取得数: 20,
-        nextAppointMentPercent: 31,
-      },
-      {
-        name: "骨川スネ夫",
-        新規数: 28,
-        既契約数: 12,
-        次アポ取得数: 20,
-        nextAppointMentPercent: 31,
-      },
-      {
-        name: "出来杉英才",
-        新規数: 28,
-        既契約数: 12,
-        次アポ取得数: 20,
-        nextAppointMentPercent: 31,
-      },
-      {
-        name: "ドラえもん",
-        新規数: 28,
-        既契約数: 12,
-        次アポ取得数: 20,
-        nextAppointMentPercent: 31,
-      },
-    ];
-  }, [results]);
+  const resolveRouteKind = useCallback(
+    (v: string) => {
+      return routeMst.find((r) => r.id == v)?.kind;
+    },
+    [routeMst]
+  );
 
-  const countAndPercentData = [
-    {
-      name: "江澤誠哉",
-      件数: 53,
-      率: 70,
-    },
-    {
-      name: "野比のび太",
-      件数: 12,
-      率: 32,
-    },
-    {
-      name: "源しずか",
-      件数: 25,
-      率: 87,
-    },
-    {
-      name: "剛田武",
-      件数: 76,
-      率: 70,
-    },
-    {
-      name: "骨川スネ夫",
-      件数: 23,
-      率: 64,
-    },
-    {
-      name: "出来杉英才",
-      件数: 16,
-      率: 23,
-    },
-    {
-      name: "ドラえもん",
-      件数: 23,
-      率: 45,
-    },
-  ];
-  return { visitorAndAppointment, countAndPercentData };
+  const newVisitor = useCallback(
+    (targetResults: IndividualSalesResult[]) =>
+      targetResults?.filter((v) => resolveRouteKind(v.visitRoute) === "new"),
+    [resolveRouteKind]
+  );
+
+  const existVisitor = useCallback(
+    (targetResults: IndividualSalesResult[]) =>
+      targetResults.filter((v) => resolveRouteKind(v.visitRoute) === "exist"),
+    [resolveRouteKind]
+  );
+
+  const nextAppointor = useCallback(
+    (targetResults: IndividualSalesResult[]) =>
+      targetResults.filter((v) => v.nextAppointment),
+    []
+  );
+  const visitorAndAppointmentData: VisitorAndAppointmentType[] | undefined =
+    useMemo(() => {
+      if (!results) return;
+      return members.map((m) => {
+        const targetResults = results.filter((r) => r.userId === m.id);
+        const nextAppointmentCount = nextAppointor(targetResults).length;
+        const nextAppointmentPercent =
+          (nextAppointmentCount / targetResults.length) * 100;
+        const resultPercent = Math.round(nextAppointmentPercent * 10) / 10;
+        return {
+          name: m.name,
+          新規数: newVisitor(targetResults).length,
+          既契約数: existVisitor(targetResults).length,
+          次アポ取得数: nextAppointmentCount,
+          nextAppointMentPercent: isNaN(resultPercent) ? 0 : resultPercent,
+        };
+      });
+    }, [results, newVisitor, existVisitor, nextAppointor]);
+
+  const constractCountAndPercentData: CountAndPercentType[] | undefined =
+    useMemo(() => {
+      if (!results) return;
+      return members.map((m) => {
+        const targetResults = results.filter((r) => r.userId === m.id);
+        const targetNewVisitor = newVisitor(targetResults);
+        const constractedPersonCount = targetNewVisitor.filter(
+          (t) => t.applications.length > 0
+        ).length;
+        const constractPercent =
+          (constractedPersonCount / targetNewVisitor.length) * 100;
+        const resultPercent = Math.round(constractPercent * 10) / 10;
+        return {
+          name: m.name,
+          件数: constractedPersonCount,
+          率: isNaN(resultPercent) ? 0 : resultPercent,
+        };
+      });
+    }, [results, newVisitor]);
+
+  const thankyouCountAndPercentData: CountAndPercentType[] | undefined =
+    useMemo(() => {
+      if (!results) return;
+      return members.map((m) => {
+        const targetResults = results.filter((r) => r.userId === m.id);
+        const thankyouCount = targetResults.filter((r) => r.thankyou).length;
+        const applicatorCount = targetResults.filter(
+          (r) => r.applications.length > 0
+        ).length;
+        const thankyouPercent = (thankyouCount / applicatorCount) * 100;
+        const resultPercent = Math.round(thankyouPercent * 10) / 10;
+        return {
+          name: m.name,
+          件数: thankyouCount,
+          率: isNaN(resultPercent) ? 0 : resultPercent,
+        };
+      });
+    }, [results]);
+  return {
+    visitorAndAppointmentData,
+    constractCountAndPercentData,
+    thankyouCountAndPercentData,
+  };
 };

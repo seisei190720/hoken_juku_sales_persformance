@@ -1,12 +1,9 @@
-import { FC, useCallback, useState } from "react";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
+import { FC } from "react";
 import {
   CompanyMst,
   ConsultContentMst,
   IndividualSalesResult,
-  NewVisitor,
+  Member,
   ProductMst,
   RouteMst,
   StatusMst,
@@ -15,76 +12,69 @@ import Stack from "@mui/material/Stack";
 import VisitorAndAppointmentBarChart from "./components/visitorAndAppointmentBarChart";
 import { useStoreAchievementData } from "./hooks/useStoreAchievementData";
 import CountAndPercentBarChart from "./components/CountAndPercentBarChart";
-import Card from "@mui/material/Card";
-import CircularProgress from "@mui/material/CircularProgress";
-import SimpleSummaryCard from "../mypage/components/SimpleSummaryCard";
+import VisitorAndAppointmentSourceDataList from "./components/VisitorAndAppointmentSourceDataList";
+import SourceDataList from "./components/SourceDataList";
 
 type Props = {
   salesResultData: IndividualSalesResult[] | undefined;
+  members: Member[];
+  routeMst: RouteMst[];
+  consultContentMst: ConsultContentMst[];
+  productMst: ProductMst[];
+  companyMst: CompanyMst[];
+  statusMst: StatusMst[];
 };
 
-const StoreAchievement: FC<Props> = ({ salesResultData }) => {
-  const storeAchievementData = useStoreAchievementData(salesResultData);
+const StoreAchievement: FC<Props> = ({
+  salesResultData,
+  members,
+  routeMst,
+  consultContentMst,
+  productMst,
+  companyMst,
+  statusMst,
+}) => {
+  const storeAchievementData = useStoreAchievementData(
+    salesResultData,
+    members,
+    routeMst,
+    consultContentMst,
+    productMst,
+    companyMst,
+    statusMst
+  );
   return (
     <Stack gap={2} p={3}>
       <Stack direction="row" gap={2}>
         <VisitorAndAppointmentBarChart
-          values={storeAchievementData.visitorAndAppointment}
+          values={storeAchievementData.visitorAndAppointmentData}
         />
-        <Card
-          sx={{
-            padding: 2,
-            borderRadius: "12px",
-            flex: 1,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: 400,
-          }}
-        >
-          {/* リストを表示する */}
-          <CircularProgress />
-        </Card>
+        <VisitorAndAppointmentSourceDataList
+          title={"来店者&次アポ表"}
+          values={storeAchievementData.visitorAndAppointmentData}
+        />
       </Stack>
       <Stack direction="row" gap={2}>
-        <Card
-          sx={{
-            padding: 2,
-            borderRadius: "12px",
-            flex: 1,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: 400,
-          }}
-        >
-          {/* リストを表示する */}
-          <CircularProgress />
-        </Card>
+        <SourceDataList
+          title={"新規契約件数(率)表"}
+          values={storeAchievementData.constractCountAndPercentData}
+          columnHeaders={["名前", "件数", "割合"]}
+        />
         <CountAndPercentBarChart
           title={"新規契約件数(率)"}
-          values={storeAchievementData.countAndPercentData}
+          values={storeAchievementData.constractCountAndPercentData}
         />
       </Stack>
       <Stack direction="row" gap={2}>
         <CountAndPercentBarChart
           title={"ありがとう(率)"}
-          values={storeAchievementData.countAndPercentData}
+          values={storeAchievementData.thankyouCountAndPercentData}
         />
-        <Card
-          sx={{
-            padding: 2,
-            borderRadius: "12px",
-            flex: 1,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: 400,
-          }}
-        >
-          {/* リストを表示する */}
-          <CircularProgress />
-        </Card>
+        <SourceDataList
+          title={"ありがとう件数(率)表"}
+          values={storeAchievementData.thankyouCountAndPercentData}
+          columnHeaders={["名前", "件数", "割合"]}
+        />
       </Stack>
     </Stack>
   );

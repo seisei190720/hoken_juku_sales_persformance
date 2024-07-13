@@ -69,7 +69,7 @@ const VisitorAndAppointmentBarChart: FC<Props> = ({ values }) => {
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
-            <YAxis />
+            <YAxis label={{ value: "人数", angle: -90, dx: -20 }} />
             <Tooltip />
             <Legend />
             <Bar dataKey="新規数" stackId="a" fill={green[400]} />

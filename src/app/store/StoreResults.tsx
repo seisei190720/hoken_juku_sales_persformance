@@ -7,7 +7,6 @@ import {
   CompanyMst,
   ConsultContentMst,
   IndividualSalesResult,
-  NewVisitor,
   ProductMst,
   RouteMst,
   StatusMst,
@@ -15,11 +14,17 @@ import {
 import Stack from "@mui/material/Stack";
 import StoreConstract from "./StoreConstract";
 import StoreAchievement from "./StoreAchievement";
+import { useMockData } from "../mocks";
 
 type Props = {
   userId: string;
   salesResultData: IndividualSalesResult[] | undefined;
   applicationData: Application[] | undefined;
+  routeMst: RouteMst[];
+  consultContentMst: ConsultContentMst[];
+  productMst: ProductMst[];
+  companyMst: CompanyMst[];
+  statusMst: StatusMst[];
 };
 
 type StorePageMode = "achievement" | "contract";
@@ -28,8 +33,15 @@ const StoreResults: FC<Props> = ({
   userId,
   salesResultData,
   applicationData,
+  routeMst,
+  consultContentMst,
+  productMst,
+  companyMst,
+  statusMst,
 }) => {
   const [viewMode, setViewMode] = useState<StorePageMode>("achievement");
+
+  const { members } = useMockData();
 
   const updateViewMode = useCallback(
     (event: React.SyntheticEvent, nextView: string) => {
@@ -70,9 +82,24 @@ const StoreResults: FC<Props> = ({
         {(() => {
           switch (viewMode) {
             case "achievement":
-              return <StoreAchievement salesResultData={salesResultData} />;
+              return (
+                <StoreAchievement
+                  salesResultData={salesResultData}
+                  members={members}
+                  routeMst={routeMst}
+                  consultContentMst={consultContentMst}
+                  productMst={productMst}
+                  companyMst={companyMst}
+                  statusMst={statusMst}
+                />
+              );
             case "contract":
-              return <StoreConstract applicationData={applicationData} />;
+              return (
+                <StoreConstract
+                  applicationData={applicationData}
+                  members={members}
+                />
+              );
             default:
               return <></>;
           }

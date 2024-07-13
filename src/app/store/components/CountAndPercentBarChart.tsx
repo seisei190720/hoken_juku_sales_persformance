@@ -10,6 +10,7 @@ import {
   Legend,
   ResponsiveContainer,
   Area,
+  Line,
   ComposedChart,
 } from "recharts";
 import Card from "@mui/material/Card";
@@ -70,11 +71,26 @@ const CountAndPercentBarChart: FC<Props> = ({ title, values }) => {
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
-            <YAxis />
+            <YAxis
+              yAxisId={1}
+              orientation="right"
+              label={{ value: "率(%)", angle: -90, dx: 20 }}
+            />
+            <YAxis
+              yAxisId={2}
+              domain={[0, 5]}
+              // tickCount={6}
+              label={{ value: "数(件)", angle: -90, dx: -20 }}
+            />
             <Tooltip />
             <Legend />
-            <Area dataKey="率" fill={orange[200]} stroke={orange[400]} />
-            <Bar dataKey="件数" fill={blue[400]} />
+            <Bar dataKey="件数" yAxisId={2} fill={blue[400]} />
+            <Line
+              dataKey="率"
+              yAxisId={1}
+              fill={orange[200]}
+              stroke={orange[400]}
+            />
           </ComposedChart>
         </ResponsiveContainer>
       </Stack>

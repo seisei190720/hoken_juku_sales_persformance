@@ -75,6 +75,11 @@ const StorePage: FC<Props> = ({ user }) => {
           userId={user.userId}
           salesResultData={salesResultData}
           applicationData={applicationData}
+          routeMst={routeMst}
+          consultContentMst={consultContentMst}
+          productMst={productMst}
+          companyMst={companyMst}
+          statusMst={statusMst}
         />
       </Stack>
     </>
