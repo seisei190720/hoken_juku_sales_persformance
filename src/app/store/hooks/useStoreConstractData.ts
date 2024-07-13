@@ -28,7 +28,7 @@ export const useStoreConstractData = (
           率: 0,
         };
       });
-    }, [applicationData]);
+    }, [applicationData, member]);
 
   const storeConstractSum: number | undefined = useMemo(() => {
     if (!applicationData) return;
@@ -43,7 +43,7 @@ export const useStoreConstractData = (
     return salesResultData
       .flatMap((s) => s.applications)
       .filter((a) => a.status === "1").length;
-  }, [applicationData]);
+  }, [salesResultData]);
 
   //TODO: statusクエリだけでリクエストを投げて取得できるようにバックエンドを実装する
   const constractSouceData: ConstractSouceType[] | undefined = useMemo(() => {
@@ -73,7 +73,7 @@ export const useStoreConstractData = (
         inProgressAppCount: inProgressApp.length,
       };
     });
-  }, [applicationData, constractSumAndAchievementRateData]);
+  }, [salesResultData, constractSumAndAchievementRateData, member]);
 
   return {
     storeConstractSum,
