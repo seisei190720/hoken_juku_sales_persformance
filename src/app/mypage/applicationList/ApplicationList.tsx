@@ -29,11 +29,11 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 
 type Props = {
+  salesResultData: IndividualSalesResult[] | undefined;
+  updateApplicationsData: (newData: IndividualSalesResult) => Promise<void>;
   productMst: ProductMst[];
   companyMst: CompanyMst[];
   statusMst: StatusMst[];
-  salesResultData: IndividualSalesResult[] | undefined;
-  updateApplicationsData: (newData: IndividualSalesResult) => Promise<void>;
   canEdit: boolean;
 };
 

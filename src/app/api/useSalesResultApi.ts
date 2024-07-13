@@ -4,7 +4,7 @@ import {
   NewVisitor,
   applicationStatus,
 } from "../types";
-import useSWR from "swr";
+import useSWR, { KeyedMutator } from "swr";
 import axios from "axios";
 import { useCallback } from "react";
 import IndividualSalesResults from "../mypage/visitorList/IndividualSalesResults";
@@ -162,5 +162,6 @@ export const useSalesResultApi = (
     updateSalesResultData,
     deleteSalesResultData,
     error,
+    mutate,
   };
 };

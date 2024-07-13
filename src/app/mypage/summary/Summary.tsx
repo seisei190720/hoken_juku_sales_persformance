@@ -29,24 +29,6 @@ type Props = {
   productMst: ProductMst[];
 };
 const Summary: FC<Props> = ({ userId, routeMst, productMst }) => {
-  const [targetMonth, setTargetMonth] = useState<string | null>(null);
-
-  const forwardToNextMonth = () => {
-    setTargetMonth((v) => dayjs(v).add(1, "month").format("YYYY-MM"));
-  };
-  const backToLastMonth = () => {
-    setTargetMonth((v) => dayjs(v).subtract(1, "month").format("YYYY-MM"));
-  };
-
-  useEffect(() => {
-    setTargetMonth(dayjs().format("YYYY-MM"));
-  }, [setTargetMonth]);
-
-  const { salesResultData } = useSalesResultApi(userId, {
-    status: null,
-    year: resolveYear(targetMonth),
-    firstVisitDate: targetMonth,
-  });
   const { applicationData } = useApplicationApi({
     userId: userId,
     year: resolveYear(targetMonth),
@@ -70,17 +52,9 @@ const Summary: FC<Props> = ({ userId, routeMst, productMst }) => {
   return (
     <>
       <Stack direction="column" gap={2} p={2} pt={3} borderColor={grey[300]}>
-        <Stack direction="row" gap={3} ml={2} alignItems="flex-end">
-          <Stack direction="row" alignItems="center">
-            <Button onClick={backToLastMonth}>
-              <ArrowBackIosIcon />
-            </Button>
-            <Typography>{targetMonth}</Typography>
-            <Button onClick={forwardToNextMonth}>
-              <ArrowForwardIosIcon />
-            </Button>
-          </Stack>
-          <ToggleButtonGroup
+        {/* <Stack direction="row" gap={3} ml={2} alignItems="flex-end"> */}
+
+        {/* <ToggleButtonGroup
             size="small"
             color="info"
             value={summaryMode}
@@ -90,8 +64,8 @@ const Summary: FC<Props> = ({ userId, routeMst, productMst }) => {
           >
             <ToggleButton value="visitor">来店状況</ToggleButton>
             <ToggleButton value="applicator">申込状況</ToggleButton>
-          </ToggleButtonGroup>
-        </Stack>
+          </ToggleButtonGroup> */}
+        {/* </Stack> */}
 
         {(() => {
           switch (summaryMode) {

@@ -51,7 +51,7 @@ function Home() {
         selectedMenu={selectedMenu}
         setSelectedMenu={setSelectedMenu}
       />
-      <Box sx={{ width: "100%", margin: "84px 24px 24px 24px" }}>
+      <Box sx={{ width: "100%", margin: "68px 24px 24px 24px" }}>
         {(() => {
           switch (selectedMenu) {
             case "mypage":

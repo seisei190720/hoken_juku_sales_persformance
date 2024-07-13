@@ -1,18 +1,22 @@
-import { FC, useEffect, useState } from "react";
-import { CompanyMst, ProductMst, StatusMst } from "@/app/types";
+import { FC, useState } from "react";
+import {
+  CompanyMst,
+  IndividualSalesResult,
+  ProductMst,
+  StatusMst,
+} from "@/app/types";
 import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import dayjs from "dayjs";
 import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import NotYetEstablished from "./NotYetEstablished";
-import TargetMonthApplicators from "./TargetMonthApplicators";
+import ApplicationList from "./ApplicationList";
+import { KeyedMutator } from "swr";
+import InProgressApplicationList from "./InProgressApplicationList";
 
 type Props = {
   userId: string;
+  salesResultData: IndividualSalesResult[] | undefined;
+  updateSalesResultData: (newData: IndividualSalesResult) => Promise<void>;
+  mutateSalesResultData: KeyedMutator<any>;
   productMst: ProductMst[];
   companyMst: CompanyMst[];
   statusMst: StatusMst[];
@@ -21,27 +25,15 @@ type Props = {
 
 const AllApplicators: FC<Props> = ({
   userId,
+  salesResultData,
+  updateSalesResultData,
+  mutateSalesResultData,
   productMst,
   companyMst,
   statusMst,
   canEdit,
 }) => {
-  const [targetMonth, setTargetMonth] = useState<string | null>(null);
   const [showInProgressApp, setShowInProgressApp] = useState<boolean>(false);
-
-  useEffect(() => {
-    setTargetMonth(dayjs().format("YYYY-MM"));
-  }, [setTargetMonth]);
-
-  const forwardToNextMonth = () => {
-    setTargetMonth((v) => dayjs(v).add(1, "month").format("YYYY-MM"));
-  };
-  const backToLastMonth = () => {
-    setTargetMonth((v) => dayjs(v).subtract(1, "month").format("YYYY-MM"));
-  };
-  const moveToCurrentMonth = () => {
-    setTargetMonth(dayjs().format("YYYY-MM"));
-  };
 
   const toggleShowInProgressApp = () => {
     setShowInProgressApp((pre) => !pre);
@@ -49,32 +41,12 @@ const AllApplicators: FC<Props> = ({
 
   return (
     <>
-      <Stack gap={2} p={2} pt={3} ml={2} mr={2}>
+      <Stack gap={2} p={2} ml={2} mr={2}>
         <Stack
           direction="row"
           alignItems="center"
           justifyContent="space-between"
         >
-          <Stack direction="row" alignItems="center">
-            <Button onClick={backToLastMonth} disabled={showInProgressApp}>
-              <ArrowBackIosIcon />
-            </Button>
-            <Typography color={showInProgressApp ? "grey" : "black"}>
-              {targetMonth}
-            </Typography>
-            <Button onClick={forwardToNextMonth} disabled={showInProgressApp}>
-              <ArrowForwardIosIcon />
-            </Button>
-            <Button
-              variant="outlined"
-              onClick={moveToCurrentMonth}
-              disabled={
-                targetMonth === dayjs().format("YYYY-MM") || showInProgressApp
-              }
-            >
-              今月に戻る
-            </Button>
-          </Stack>
           <FormControlLabel
             control={
               <Switch
@@ -82,21 +54,22 @@ const AllApplicators: FC<Props> = ({
                 onClick={toggleShowInProgressApp}
               />
             }
-            label="未成立のみ表示する"
+            label="未成立者のみ表示する"
           />
         </Stack>
         {showInProgressApp ? (
-          <NotYetEstablished
+          <InProgressApplicationList
             userId={userId}
+            mutateSalesResultData={mutateSalesResultData}
             productMst={productMst}
             companyMst={companyMst}
             statusMst={statusMst}
             canEdit={canEdit}
           />
         ) : (
-          <TargetMonthApplicators
-            userId={userId}
-            targetMonth={targetMonth}
+          <ApplicationList
+            salesResultData={salesResultData}
+            updateApplicationsData={updateSalesResultData}
             productMst={productMst}
             companyMst={companyMst}
             statusMst={statusMst}
