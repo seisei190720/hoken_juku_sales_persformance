@@ -434,6 +434,22 @@ export const useMockData = () => {
       id: "85588ef2-4f3f-44d5-9636-a3b4cb6985e0",
       name: "江澤宏直",
     },
+    {
+      id: "7a31f925-0abd-4564-94f9-6bcdb9496cbb",
+      name: "野比のび太",
+    },
+    {
+      id: "e9d35fb1-08b3-428f-b5ac-6a04e1ce134c",
+      name: "源しずか",
+    },
+    {
+      id: "4364633f-c45f-417b-b762-fc918b7daa14",
+      name: "骨川スネ夫",
+    },
+    {
+      id: "e5b432df-16e6-4dbf-be46-dd7a5f8e125d",
+      name: "剛田武",
+    },
   ];
   return {
     salesResults,

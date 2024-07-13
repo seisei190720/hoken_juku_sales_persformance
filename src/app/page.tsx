@@ -14,7 +14,9 @@ import TopAndSideBar from "./component/TopAndSideBar";
 import PersonIcon from "@mui/icons-material/Person";
 import TimelineIcon from "@mui/icons-material/Timeline";
 import PeopleIcon from "@mui/icons-material/People";
+import StorefrontIcon from "@mui/icons-material/Storefront";
 import MemberPage from "./member";
+import StorePage from "./store";
 
 Amplify.configure({
   Auth: {
@@ -36,7 +38,8 @@ function Home() {
   const menuList: MenuItem[] = [
     { name: "マイページ", menuKind: "mypage", icon: <PersonIcon /> },
     { name: "メンバーページ", menuKind: "member", icon: <PeopleIcon /> },
-    { name: "ダッシュボード", menuKind: "dashboard", icon: <TimelineIcon /> },
+    { name: "店舗成績", menuKind: "store", icon: <StorefrontIcon /> },
+    { name: "通年成績", menuKind: "year", icon: <TimelineIcon /> },
   ];
   return (
     // <button onClick={() => cognitoUser.signOut()}>Sign Out</button>
@@ -58,8 +61,10 @@ function Home() {
               return <MyPage userId={user.userId} canEdit={true} />;
             case "member":
               return <MemberPage user={user} />;
-            case "dashboard":
-              return <Dashboard user={user} />;
+            case "store":
+              return <StorePage user={user} />;
+            case "year":
+              return <StorePage user={user} />;
             default:
               return <></>;
           }
