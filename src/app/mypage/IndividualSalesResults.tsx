@@ -2,9 +2,8 @@ import { FC, useCallback, useState } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import Summary from "../summary/Summary";
-import AllApplicators from "../applicationList/AllApplicators";
-import Visitor from "./Visitor";
+import AllApplicators from "./applicationList/AllApplicators";
+import Visitor from "./visitorList/Visitor";
 import {
   CompanyMst,
   ConsultContentMst,
@@ -16,9 +15,12 @@ import {
 } from "@/app/types";
 import Stack from "@mui/material/Stack";
 import { KeyedMutator } from "swr";
+import Constract from "./contract/Contract";
+import Achievement from "./achievement/Achievement";
 
 type Props = {
   userId: string;
+  targetMonth: string | null;
   salesResultData: IndividualSalesResult[] | undefined;
   postVisitorData: (newData: NewVisitor) => Promise<void>;
   updateSalesResultData: (newData: IndividualSalesResult) => Promise<void>;
@@ -32,10 +34,11 @@ type Props = {
   canEdit: boolean;
 };
 
-type MyPageMode = "summary" | "visitor" | "applicator";
+type MyPageMode = "visitor" | "applicator" | "achievement" | "contract";
 
 const IndividualSalesResults: FC<Props> = ({
   userId,
+  targetMonth,
   salesResultData,
   postVisitorData,
   updateSalesResultData,
@@ -75,9 +78,10 @@ const IndividualSalesResults: FC<Props> = ({
           onChange={updateViewMode}
           aria-label="sales-result-view-mode-tab"
         >
-          <Tab label="サマリ" value="summary" {...a11yProps(0)} />
           <Tab label="来店者" value="visitor" {...a11yProps(1)} />
           <Tab label="申込者" value="applicator" {...a11yProps(2)} />
+          <Tab label="成果" value="achievement" {...a11yProps(0)} />
+          <Tab label="契約実績" value="contract" {...a11yProps(0)} />
         </Tabs>
       </Stack>
       <Box
@@ -89,15 +93,6 @@ const IndividualSalesResults: FC<Props> = ({
       >
         {(() => {
           switch (viewMode) {
-            case "summary":
-              return (
-                <Summary
-                  userId={userId}
-                  // salesResultData={salesResultData}
-                  routeMst={routeMst}
-                  productMst={productMst}
-                />
-              );
             case "visitor":
               return (
                 <Visitor
@@ -124,6 +119,23 @@ const IndividualSalesResults: FC<Props> = ({
                   companyMst={companyMst}
                   statusMst={statusMst}
                   canEdit={canEdit}
+                />
+              );
+            case "achievement":
+              return (
+                <Achievement
+                  userId={userId}
+                  salesResultData={salesResultData}
+                  routeMst={routeMst}
+                  productMst={productMst}
+                />
+              );
+            case "contract":
+              return (
+                <Constract
+                  userId={userId}
+                  targetMonth={targetMonth}
+                  productMst={productMst}
                 />
               );
             default:

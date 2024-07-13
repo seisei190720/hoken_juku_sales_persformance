@@ -8,21 +8,14 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import { Member } from "../types";
-import IndividualSalesResults from "../mypage/visitorList/IndividualSalesResults";
+import MyPage from "../mypage";
 
 type Props = {
   user: AuthUser;
 };
 
 const MemberPage: FC<Props> = ({ user }) => {
-  const {
-    routeMst,
-    consultContentMst,
-    productMst,
-    companyMst,
-    statusMst,
-    members,
-  } = useMockData();
+  const { members } = useMockData();
   const [selecetedMember, setSelectedMember] = useState<Member | null>(null);
   const handleMemberSelector = (e: SelectChangeEvent) => {
     setSelectedMember(members.find((m) => e.target.value === m.id) || null);
@@ -61,15 +54,7 @@ const MemberPage: FC<Props> = ({ user }) => {
         {selecetedMember === null ? (
           <Typography>表示したいメンバーを選択してください。</Typography>
         ) : (
-          <IndividualSalesResults
-            userId={selecetedMember.id}
-            routeMst={routeMst}
-            productMst={productMst}
-            companyMst={companyMst}
-            consultContentMst={consultContentMst}
-            statusMst={statusMst}
-            canEdit={user.userId === selecetedMember.id}
-          />
+          <MyPage userId={selecetedMember.id} />
         )}
       </Stack>
     </>

@@ -6,15 +6,6 @@ export const useApplicatorSummaryComposition = (
   applicationData: Application[] | undefined,
   productMst: ProductMst[]
 ) => {
-  // const [applicationData, setApplicationData] = useState<
-  //   Application[] | undefined
-  // >(undefined);
-
-  // useEffect(() => {
-  //   if (!results) return;
-  //   setApplicationData(results);
-  // }, [results]);
-
   const calculateTotalFee = (applications: Application[]): number => {
     return applications.reduce(
       (sum, item) => sum + (item.firstYearFee ?? 0),

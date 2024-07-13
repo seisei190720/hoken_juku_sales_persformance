@@ -4,17 +4,17 @@ import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
 import { FC, useEffect, useState } from "react";
 import { useMockData } from "../mocks";
-import IndividualSalesResults from "./visitorList/IndividualSalesResults";
+import IndividualSalesResults from "./IndividualSalesResults";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { resolveYear, useSalesResultApi } from "../api/useSalesResultApi";
 import Button from "@mui/material/Button";
 
 type Props = {
-  user: AuthUser;
+  userId: string;
 };
 
-const MyPage: FC<Props> = ({ user }) => {
+const MyPage: FC<Props> = ({ userId }) => {
   const { routeMst, consultContentMst, productMst, companyMst, statusMst } =
     useMockData();
   const [targetMonth, setTargetMonth] = useState<string | null>(null);
@@ -25,7 +25,7 @@ const MyPage: FC<Props> = ({ user }) => {
     updateSalesResultData,
     deleteSalesResultData,
     mutate,
-  } = useSalesResultApi(user.userId, {
+  } = useSalesResultApi(userId, {
     status: null,
     year: resolveYear(targetMonth),
     firstVisitDate: targetMonth,
@@ -67,7 +67,8 @@ const MyPage: FC<Props> = ({ user }) => {
           </Button>
         </Stack>
         <IndividualSalesResults
-          userId={user.userId}
+          userId={userId}
+          targetMonth={targetMonth}
           salesResultData={salesResultData}
           postVisitorData={postVisitorData}
           updateSalesResultData={updateSalesResultData}
