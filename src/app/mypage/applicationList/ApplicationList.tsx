@@ -181,35 +181,46 @@ const ApplicationList: FC<Props> = ({
               <AccordionDetails>
                 <Table size="small">
                   <TableHead>
-                    <TableRow key={"applicator_header"}>
-                      <TableCell>申込日</TableCell>
-                      <TableCell>会社</TableCell>
-                      <TableCell>商品</TableCell>
-                      <TableCell>状態</TableCell>
-                      <TableCell>成立日</TableCell>
-                      <TableCell>初回手数料</TableCell>
+                    <TableRow
+                      key={"applicator_header"}
+                      sx={{ display: "flex" }}
+                    >
+                      <TableCell sx={{ flex: 1 }}>申込日</TableCell>
+                      <TableCell sx={{ flex: 1 }}>会社</TableCell>
+                      <TableCell sx={{ flex: 1 }}>商品</TableCell>
+                      <TableCell sx={{ flex: 1 }}>状態</TableCell>
+                      <TableCell sx={{ flex: 1 }}>成立日</TableCell>
+                      <TableCell sx={{ flex: 1 }}>初回手数料</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {result.applications.map((app, idx) => (
-                      <StyledTableRow hover key={`${result.name}_${idx}`}>
-                        <TableCell component="th" scope="row">
+                      <StyledTableRow
+                        hover
+                        key={`${result.name}_${idx}`}
+                        sx={{ display: "flex" }}
+                      >
+                        <TableCell component="th" scope="row" sx={{ flex: 1 }}>
                           {app.applicationDate}
                         </TableCell>
-                        <TableCell>
+                        <TableCell sx={{ flex: 1 }}>
                           {companyMst.find((c) => c.id === app.company)?.name ||
                             "マスタが見つかりません"}
                         </TableCell>
-                        <TableCell>
+                        <TableCell sx={{ flex: 1 }}>
                           {productMst.find((c) => c.id === app.product)?.name ||
                             "マスタが見つかりません"}
                         </TableCell>
-                        <TableCell>{statusChip(app.status)}</TableCell>
-                        <TableCell>
+                        <TableCell sx={{ flex: 1 }}>
+                          {statusChip(app.status)}
+                        </TableCell>
+                        <TableCell sx={{ flex: 1 }}>
                           {app.establishDate === null ? "-" : app.establishDate}
                         </TableCell>
-                        <TableCell>
-                          {app.firstYearFee === null ? "-" : app.firstYearFee}
+                        <TableCell sx={{ flex: 1 }}>
+                          {app.firstYearFee === null
+                            ? "-"
+                            : app.firstYearFee.toLocaleString()}
                         </TableCell>
                       </StyledTableRow>
                     ))}

@@ -61,7 +61,13 @@ const TopAndSideBar: FC<Props> = ({
             ほけん塾 営業成績管理
           </Typography>
           {cognitoUser !== null && (
-            <Button color="inherit" onClick={() => cognitoUser.signOut()}>
+            <Button
+              color="inherit"
+              onClick={() => {
+                cognitoUser.signOut();
+                window.location.reload();
+              }}
+            >
               SignOut
             </Button>
           )}
