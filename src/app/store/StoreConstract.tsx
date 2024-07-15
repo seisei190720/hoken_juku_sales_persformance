@@ -74,8 +74,9 @@ const StoreConstract: FC<Props> = ({
             storeConstractData.inProgressApplicationCount === undefined
               ? undefined
               : {
-                  mainValue: storeConstractData.inProgressApplicationCount,
-                  subValue: "",
+                  mainValue:
+                    storeConstractData.inProgressApplicationCount.count,
+                  subValue: `合計：${storeConstractData.inProgressApplicationCount.sum.toLocaleString()}円`,
                 }
           }
           title={"申込残り"}

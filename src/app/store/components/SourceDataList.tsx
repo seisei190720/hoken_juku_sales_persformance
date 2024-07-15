@@ -72,8 +72,15 @@ const SourceDataList: FC<Props> = ({ title, values, columnHeaders }) => {
               {values.map((v, idx) => (
                 <TableRow key={`${idx}_row`}>
                   <TableCell key={`${idx}_name_${v.name}`}>{v.name}</TableCell>
-                  <TableCell key={`${idx}_count_${v.件数}`}>{v.件数}</TableCell>
-                  <TableCell key={`${idx}_pervent_${v.率}`}>{v.率}</TableCell>
+                  <TableCell key={`${idx}_count_${v.件数}`} align="right">
+                    {v.件数}
+                  </TableCell>
+                  <TableCell key={`${idx}_all_${v.全体}`} align="right">
+                    {v.全体}
+                  </TableCell>
+                  <TableCell key={`${idx}_percent_${v.率}`} align="right">
+                    {`${v.率}%`}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

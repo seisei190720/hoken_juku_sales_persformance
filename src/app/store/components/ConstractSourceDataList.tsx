@@ -69,20 +69,29 @@ const ConstractSourceDataList: FC<Props> = ({ title, values }) => {
                 <TableCell key={"inProgressAppCount"} align="right">
                   申込残り(件)
                 </TableCell>
+                <TableCell key={"inProgressAppSum"} align="right">
+                  申込残り(円)
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {values.map((v, idx) => (
                 <TableRow key={`${idx}_row`}>
                   <TableCell key={`${idx}_name_${v.name}`}>{v.name}</TableCell>
-                  <TableCell key={`${idx}_count_${v.sum}`} align="right">
+                  <TableCell key={`${idx}_constractSum_${v.sum}`} align="right">
                     {v.sum.toLocaleString()}
                   </TableCell>
                   <TableCell
-                    key={`${idx}_pervent_${v.inProgressAppCount}`}
+                    key={`${idx}_appCount_${v.inProgressAppCount}`}
                     align="right"
                   >
                     {v.inProgressAppCount}
+                  </TableCell>
+                  <TableCell
+                    key={`${idx}_appSum_${v.inProgressAppSum}`}
+                    align="right"
+                  >
+                    {v.inProgressAppSum.toLocaleString()}
                   </TableCell>
                 </TableRow>
               ))}

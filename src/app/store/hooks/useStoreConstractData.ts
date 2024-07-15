@@ -7,6 +7,7 @@ import { CountAndPercentType } from "./useStoreAchievementData";
 export type ConstractSouceType = {
   name: string;
   sum: number;
+  inProgressAppSum: number;
   inProgressAppCount: number;
 };
 export const useStoreConstractData = (
@@ -19,12 +20,14 @@ export const useStoreConstractData = (
       if (!applicationData) return;
       return member.map((m) => {
         const targetApp = applicationData.filter((a) => a.userId === m.id);
-        const sumOfFirstYearFee = targetApp
-          .map((t) => (t.firstYearFee === null ? 0 : t.firstYearFee))
-          .reduce((pre, crr) => pre + crr, 0);
         return {
           name: m.name,
-          件数: sumOfFirstYearFee,
+          件数: targetApp
+            .map((t) =>
+              t.status === "2" && t.firstYearFee !== null ? t.firstYearFee : 0
+            )
+            .reduce((pre, crr) => pre + crr, 0),
+          全体: 0, //使っていないので、適当に
           率: 0,
         };
       });
@@ -33,16 +36,23 @@ export const useStoreConstractData = (
   const storeConstractSum: number | undefined = useMemo(() => {
     if (!applicationData) return;
     return applicationData
-      .map((t) => (t.firstYearFee === null ? 0 : t.firstYearFee))
-      .reduce((pre, crr) => pre + crr, 0);
+      .filter((a) => a.status === "2")
+      .reduce((pre, { firstYearFee }) => pre + (firstYearFee ?? 0), 0);
   }, [applicationData]);
 
   //TODO: statusクエリだけでリクエストを投げて取得できるようにバックエンドを実装する
-  const inProgressApplicationCount: number | undefined = useMemo(() => {
+  const inProgressApplicationCount = useMemo(() => {
     if (!salesResultData) return;
-    return salesResultData
+    const targetApplications = salesResultData
       .flatMap((s) => s.applications)
-      .filter((a) => a.status === "1").length;
+      .filter((a) => a.status === "1");
+    return {
+      count: targetApplications.length,
+      sum: targetApplications.reduce(
+        (pre, { firstYearFee }) => pre + (firstYearFee ?? 0),
+        0
+      ),
+    };
   }, [salesResultData]);
 
   //TODO: statusクエリだけでリクエストを投げて取得できるようにバックエンドを実装する
@@ -62,6 +72,7 @@ export const useStoreConstractData = (
         return {
           name: c.name,
           sum: c.件数,
+          inProgressAppSum: 0,
           inProgressAppCount: 0,
         };
       const inProgressApp = targetApplications
@@ -70,6 +81,10 @@ export const useStoreConstractData = (
       return {
         name: c.name,
         sum: c.件数,
+        inProgressAppSum: inProgressApp.reduce(
+          (pre, { firstYearFee }) => pre + (firstYearFee ?? 0),
+          0
+        ),
         inProgressAppCount: inProgressApp.length,
       };
     });
