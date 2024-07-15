@@ -17,6 +17,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import MemberPage from "./member";
 import StorePage from "./store";
+import YearlyPage from "./yearly";
 
 Amplify.configure({
   Auth: {
@@ -64,7 +65,7 @@ function Home() {
             case "store":
               return <StorePage user={user} />;
             case "year":
-              return <StorePage user={user} />;
+              return <YearlyPage user={user} />;
             default:
               return <></>;
           }

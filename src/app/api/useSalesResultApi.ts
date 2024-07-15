@@ -68,7 +68,9 @@ export const useSalesResultApi = (
     error,
     mutate,
   } = useSWR(
-    param.status === null && param.firstVisitDate === null
+    param.status === null &&
+      param.firstVisitDate === null &&
+      param.year === null
       ? null
       : [prodUrl, userId, param.status, param.year, param.firstVisitDate],
     fetcher
