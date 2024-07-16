@@ -86,3 +86,54 @@ export type Member = {
   id: string;
   name: string;
 };
+
+export const yearMonth = [
+  {
+    name: "7月",
+    keyMonth: "-07-",
+  },
+  {
+    name: "8月",
+    keyMonth: "-08-",
+  },
+  {
+    name: "9月",
+    keyMonth: "-09-",
+  },
+  {
+    name: "10月",
+    keyMonth: "-10-",
+  },
+  {
+    name: "11月",
+    keyMonth: "-11-",
+  },
+  {
+    name: "12月",
+    keyMonth: "-12-",
+  },
+  {
+    name: "1月",
+    keyMonth: "-01-",
+  },
+  {
+    name: "2月",
+    keyMonth: "-02-",
+  },
+  {
+    name: "3月",
+    keyMonth: "-03-",
+  },
+  {
+    name: "4月",
+    keyMonth: "-04-",
+  },
+  {
+    name: "5月",
+    keyMonth: "-05-",
+  },
+  {
+    name: "6月",
+    keyMonth: "-06-",
+  },
+];

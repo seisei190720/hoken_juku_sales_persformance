@@ -58,7 +58,7 @@ const StoreAchievement: FC<Props> = ({
         <SourceDataList
           title={"新規契約件数(率)表"}
           values={storeAchievementData.constractCountAndPercentData}
-          columnHeaders={["名前", "件数", "割合"]}
+          columnHeaders={["名前", "契約数", "新規数", "割合"]}
         />
         <CountAndPercentBarChart
           title={"新規契約件数(率)"}
@@ -73,7 +73,7 @@ const StoreAchievement: FC<Props> = ({
         <SourceDataList
           title={"ありがとう件数(率)表"}
           values={storeAchievementData.thankyouCountAndPercentData}
-          columnHeaders={["名前", "件数", "割合"]}
+          columnHeaders={["名前", "件数", "申込数", "割合"]}
         />
       </Stack>
     </Stack>

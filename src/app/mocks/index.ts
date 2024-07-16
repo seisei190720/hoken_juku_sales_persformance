@@ -199,18 +199,23 @@ export const useMockData = () => {
       kind: "life",
     },
     {
+      id: "21",
+      name: "緩和医療",
+      kind: "life",
+    },
+    {
       id: "2",
       name: "がん保険",
       kind: "life",
     },
     {
       id: "3",
-      name: "三大一時金",
+      name: "特定疾病",
       kind: "life",
     },
     {
       id: "4",
-      name: "収入保険",
+      name: "収入保障",
       kind: "life",
     },
     {
@@ -225,12 +230,12 @@ export const useMockData = () => {
     },
     {
       id: "7",
-      name: "円終身",
+      name: "円建終身",
       kind: "life",
     },
     {
       id: "8",
-      name: "ドル終身",
+      name: "外貨建終身",
       kind: "life",
     },
     {
@@ -240,7 +245,7 @@ export const useMockData = () => {
     },
     {
       id: "10",
-      name: "年金保険",
+      name: "個人年金",
       kind: "life",
     },
     {
@@ -250,7 +255,7 @@ export const useMockData = () => {
     },
     {
       id: "12",
-      name: "一時払い",
+      name: "一時払",
       kind: "life",
     },
     {
@@ -270,7 +275,7 @@ export const useMockData = () => {
     },
     {
       id: "16",
-      name: "自動車",
+      name: "自動車保険",
       kind: "nonLife",
     },
     {
@@ -289,6 +294,11 @@ export const useMockData = () => {
       kind: "nonLife",
     },
     {
+      id: "22",
+      name: "事業保険",
+      kind: "nonLife",
+    },
+    {
       id: "20",
       name: "他損保",
       kind: "nonLife",
@@ -298,7 +308,7 @@ export const useMockData = () => {
   const companyMst: CompanyMst[] = [
     {
       id: "1",
-      name: "アクサ",
+      name: "アクサ生命",
     },
     {
       id: "2",
@@ -306,19 +316,19 @@ export const useMockData = () => {
     },
     {
       id: "3",
-      name: "アフラック",
+      name: "アフラック生命",
     },
     {
       id: "4",
-      name: "FWD",
+      name: "FWD生命",
     },
     {
       id: "5",
-      name: "オリックス",
+      name: "オリックス生命",
     },
     {
       id: "6",
-      name: "ジブラルタ",
+      name: "ジブラルタ生命",
     },
     {
       id: "7",
@@ -326,23 +336,23 @@ export const useMockData = () => {
     },
     {
       id: "8",
-      name: "ひまわり",
+      name: "SOMPOひまわり生命",
     },
     {
       id: "9",
-      name: "フロンティア",
+      name: "第一フロンティア生命",
     },
     {
       id: "10",
-      name: "チューリッヒ",
+      name: "チューリッヒ生命",
     },
     {
       id: "11",
-      name: "あんしん",
+      name: "東京海上日動あんしん生命",
     },
     {
       id: "12",
-      name: "なないろ",
+      name: "なないろ生命",
     },
     {
       id: "13",
@@ -350,44 +360,37 @@ export const useMockData = () => {
     },
     {
       id: "14",
-      name: "ネオファ",
+      name: "ネオファースト生命",
     },
     {
       id: "15",
-      name: "はなさく",
+      name: "はなさく生命",
     },
     {
       id: "16",
-      name: "マニュ",
+      name: "マニュライフ生命",
     },
     {
       id: "17",
-      name: "あいおい",
+      name: "三井住友海上あいおい生命",
     },
     {
       id: "18",
-      name: "メット",
+      name: "メットライフ生命",
     },
     {
       id: "19",
-      name: "メディケア",
+      name: "メディケア生命",
     },
     {
       id: "20",
-      name: "ニッセイ同和",
+      name: "あいおいニッセイ同和損保",
     },
     {
       id: "21",
-      name: "イーデザイン",
+      name: "イーデザイン損保",
     },
-    {
-      id: "22",
-      name: "AIG",
-    },
-    {
-      id: "23",
-      name: "セゾン",
-    },
+    //22, 23は削除した。ただ、データがすでに入っているので、本番稼働時に採番を綺麗に振り直す
     {
       id: "24",
       name: "ソニー損保",
@@ -398,15 +401,19 @@ export const useMockData = () => {
     },
     {
       id: "26",
-      name: "東京海上",
+      name: "東京海上日動",
     },
     {
       id: "27",
-      name: "三井住友",
+      name: "三井住友海上",
     },
     {
       id: "28",
-      name: "楽天",
+      name: "楽天損保",
+    },
+    {
+      id: "29",
+      name: "日新火災海上",
     },
   ];
 

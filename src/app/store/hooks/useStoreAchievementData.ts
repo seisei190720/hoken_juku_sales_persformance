@@ -19,6 +19,7 @@ export type VisitorAndAppointmentType = {
 export type CountAndPercentType = {
   name: string;
   件数: number;
+  全体: number;
   率: number;
 };
 
@@ -89,6 +90,7 @@ export const useStoreAchievementData = (
         return {
           name: m.name,
           件数: constractedPersonCount,
+          全体: targetNewVisitor.length,
           率: isNaN(resultPercent) ? 0 : resultPercent,
         };
       });
@@ -108,6 +110,7 @@ export const useStoreAchievementData = (
         return {
           name: m.name,
           件数: thankyouCount,
+          全体: applicatorCount,
           率: isNaN(resultPercent) ? 0 : resultPercent,
         };
       });

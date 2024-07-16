@@ -9,13 +9,13 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Button from "@mui/material/Button";
 import { resolveYear, useSalesResultApi } from "../api/useSalesResultApi";
 import { useApplicationApi } from "../api/useApplicationApi";
-import StoreResults from "./StoreResults";
+import YearlyResults from "./YearlyResults";
 
 type Props = {
   user: AuthUser;
 };
 
-const StorePage: FC<Props> = ({ user }) => {
+const YearlyPage: FC<Props> = ({ user }) => {
   const {
     members,
     routeMst,
@@ -27,21 +27,14 @@ const StorePage: FC<Props> = ({ user }) => {
   const [targetMonth, setTargetMonth] = useState<string | null>(null);
   const { salesResultData } = useSalesResultApi(null, {
     status: null,
-    year: resolveYear(targetMonth),
-    firstVisitDate: targetMonth,
+    year: "2024",
+    firstVisitDate: null,
   });
-  const { salesResultData: inProgressSalasResultData } = useSalesResultApi(
-    null,
-    {
-      status: "1",
-      firstVisitDate: null,
-      year: null,
-    }
-  );
+
   const { applicationData } = useApplicationApi({
     userId: null,
-    year: resolveYear(targetMonth),
-    establishDate: targetMonth,
+    year: "2024",
+    establishDate: null,
   });
 
   const forwardToNextMonth = () => {
@@ -79,10 +72,9 @@ const StorePage: FC<Props> = ({ user }) => {
             今月に戻る
           </Button>
         </Stack>
-        <StoreResults
+        <YearlyResults
           userId={user.userId}
           salesResultData={salesResultData}
-          inProgressSalesResultData={inProgressSalasResultData}
           applicationData={applicationData}
           routeMst={routeMst}
           consultContentMst={consultContentMst}
@@ -95,4 +87,4 @@ const StorePage: FC<Props> = ({ user }) => {
   );
 };
 
-export default StorePage;
+export default YearlyPage;

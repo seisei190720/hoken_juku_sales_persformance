@@ -67,15 +67,23 @@ const VisitorAndAppointmentSourceDataList: FC<Props> = ({ title, values }) => {
                   来店者数(人)
                 </TableCell>
                 <TableCell colSpan={2} key={"nextAppointmentRowCell"}>
-                  次アポ(件/%)
+                  次アポ(件)
                 </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell key={"nameRowCell"}>名前</TableCell>
-                <TableCell key={"newVisitorRowCell"}>新規</TableCell>
-                <TableCell key={"existVisitorRowCell"}>既契約</TableCell>
-                <TableCell key={"appointmentCountRowCell"}>数</TableCell>
-                <TableCell key={"appointmentPercentRowCell"}>率</TableCell>
+                <TableCell key={"newVisitorRowCell"} align="right">
+                  新規
+                </TableCell>
+                <TableCell key={"existVisitorRowCell"} align="right">
+                  既契約
+                </TableCell>
+                <TableCell key={"appointmentCountRowCell"} align="right">
+                  数
+                </TableCell>
+                <TableCell key={"appointmentPercentRowCell"} align="right">
+                  率
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -88,19 +96,26 @@ const VisitorAndAppointmentSourceDataList: FC<Props> = ({ title, values }) => {
                   >
                     {v.name}
                   </TableCell>
-                  <TableCell key={`${idx}_newCount_${v.新規数}`}>
+                  <TableCell key={`${idx}_newCount_${v.新規数}`} align="right">
                     {v.新規数}
                   </TableCell>
-                  <TableCell key={`${idx}_existCount_${v.既契約数}`}>
+                  <TableCell
+                    key={`${idx}_existCount_${v.既契約数}`}
+                    align="right"
+                  >
                     {v.既契約数}
                   </TableCell>
-                  <TableCell key={`${idx}_appointmentCount_${v.次アポ取得数}`}>
+                  <TableCell
+                    key={`${idx}_appointmentCount_${v.次アポ取得数}`}
+                    align="right"
+                  >
                     {v.次アポ取得数}
                   </TableCell>
                   <TableCell
                     key={`${idx}_appointmentPercent_${v.nextAppointMentPercent}`}
+                    align="right"
                   >
-                    {v.nextAppointMentPercent}
+                    {`${v.nextAppointMentPercent}%`}
                   </TableCell>
                 </TableRow>
               ))}

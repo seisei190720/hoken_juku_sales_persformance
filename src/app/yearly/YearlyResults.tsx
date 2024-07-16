@@ -12,14 +12,12 @@ import {
   StatusMst,
 } from "@/app/types";
 import Stack from "@mui/material/Stack";
-import StoreConstract from "./StoreConstract";
-import StoreAchievement from "./StoreAchievement";
 import { useMockData } from "../mocks";
+import YearlyMemberResult from "./YearlyMemberResult";
 
 type Props = {
   userId: string;
   salesResultData: IndividualSalesResult[] | undefined;
-  inProgressSalesResultData: IndividualSalesResult[] | undefined;
   applicationData: Application[] | undefined;
   routeMst: RouteMst[];
   consultContentMst: ConsultContentMst[];
@@ -28,12 +26,11 @@ type Props = {
   statusMst: StatusMst[];
 };
 
-type StorePageMode = "achievement" | "contract";
+type YearlyPageMode = "member" | "store";
 
 const StoreResults: FC<Props> = ({
   userId,
   salesResultData,
-  inProgressSalesResultData,
   applicationData,
   routeMst,
   consultContentMst,
@@ -41,13 +38,13 @@ const StoreResults: FC<Props> = ({
   companyMst,
   statusMst,
 }) => {
-  const [viewMode, setViewMode] = useState<StorePageMode>("achievement");
+  const [viewMode, setViewMode] = useState<YearlyPageMode>("member");
 
   const { members } = useMockData();
 
   const updateViewMode = useCallback(
     (event: React.SyntheticEvent, nextView: string) => {
-      setViewMode(nextView as StorePageMode);
+      setViewMode(nextView as YearlyPageMode);
     },
     []
   );
@@ -83,26 +80,17 @@ const StoreResults: FC<Props> = ({
       >
         {(() => {
           switch (viewMode) {
-            case "achievement":
+            case "member":
               return (
-                <StoreAchievement
+                <YearlyMemberResult
                   salesResultData={salesResultData}
-                  members={members}
-                  routeMst={routeMst}
-                  consultContentMst={consultContentMst}
-                  productMst={productMst}
-                  companyMst={companyMst}
-                  statusMst={statusMst}
-                />
-              );
-            case "contract":
-              return (
-                <StoreConstract
-                  inProgressSalesResultData={inProgressSalesResultData}
                   applicationData={applicationData}
                   members={members}
+                  routeMst={routeMst}
                 />
               );
+            case "store":
+              return <></>;
             default:
               return <></>;
           }

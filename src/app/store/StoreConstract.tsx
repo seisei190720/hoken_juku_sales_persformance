@@ -1,18 +1,5 @@
-import { FC, useCallback, useState } from "react";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
-import {
-  Application,
-  CompanyMst,
-  ConsultContentMst,
-  IndividualSalesResult,
-  Member,
-  NewVisitor,
-  ProductMst,
-  RouteMst,
-  StatusMst,
-} from "@/app/types";
+import { FC } from "react";
+import { Application, IndividualSalesResult, Member } from "@/app/types";
 import Stack from "@mui/material/Stack";
 import SimpleSummaryCard from "../mypage/components/SimpleSummaryCard";
 import CountAndPercentBarChart from "./components/CountAndPercentBarChart";
@@ -20,18 +7,18 @@ import { useStoreConstractData } from "./hooks/useStoreConstractData";
 import ConstractSourceDataList from "./components/ConstractSourceDataList";
 
 type Props = {
-  salesResultData: IndividualSalesResult[] | undefined;
+  inProgressSalesResultData: IndividualSalesResult[] | undefined;
   applicationData: Application[] | undefined;
   members: Member[];
 };
 
 const StoreConstract: FC<Props> = ({
-  salesResultData,
+  inProgressSalesResultData,
   applicationData,
   members,
 }) => {
   const storeConstractData = useStoreConstractData(
-    salesResultData,
+    inProgressSalesResultData,
     applicationData,
     members
   );
@@ -74,8 +61,9 @@ const StoreConstract: FC<Props> = ({
             storeConstractData.inProgressApplicationCount === undefined
               ? undefined
               : {
-                  mainValue: storeConstractData.inProgressApplicationCount,
-                  subValue: "",
+                  mainValue:
+                    storeConstractData.inProgressApplicationCount.count,
+                  subValue: `合計：${storeConstractData.inProgressApplicationCount.sum.toLocaleString()}円`,
                 }
           }
           title={"申込残り"}
