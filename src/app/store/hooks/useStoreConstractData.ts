@@ -11,7 +11,7 @@ export type ConstractSouceType = {
   inProgressAppCount: number;
 };
 export const useStoreConstractData = (
-  salesResultData: IndividualSalesResult[] | undefined,
+  lastSalesResultData: IndividualSalesResult[] | undefined,
   applicationData: Application[] | undefined,
   member: Member[]
 ) => {
@@ -40,10 +40,9 @@ export const useStoreConstractData = (
       .reduce((pre, { firstYearFee }) => pre + (firstYearFee ?? 0), 0);
   }, [applicationData]);
 
-  //TODO: statusクエリだけでリクエストを投げて取得できるようにバックエンドを実装する
   const inProgressApplicationCount = useMemo(() => {
-    if (!salesResultData) return;
-    const targetApplications = salesResultData
+    if (!lastSalesResultData) return;
+    const targetApplications = lastSalesResultData
       .flatMap((s) => s.applications)
       .filter((a) => a.status === "1");
     return {
@@ -53,12 +52,12 @@ export const useStoreConstractData = (
         0
       ),
     };
-  }, [salesResultData]);
+  }, [lastSalesResultData]);
 
   //TODO: statusクエリだけでリクエストを投げて取得できるようにバックエンドを実装する
   const constractSouceData: ConstractSouceType[] | undefined = useMemo(() => {
-    if (!constractSumAndAchievementRateData || !salesResultData) return;
-    const targetApplications = salesResultData.flatMap((s) => {
+    if (!constractSumAndAchievementRateData || !lastSalesResultData) return;
+    const targetApplications = lastSalesResultData.flatMap((s) => {
       return s.applications.map((a) => {
         return {
           ...a,
@@ -88,7 +87,7 @@ export const useStoreConstractData = (
         inProgressAppCount: inProgressApp.length,
       };
     });
-  }, [salesResultData, constractSumAndAchievementRateData, member]);
+  }, [lastSalesResultData, constractSumAndAchievementRateData, member]);
 
   return {
     storeConstractSum,

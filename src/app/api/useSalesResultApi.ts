@@ -2,6 +2,7 @@ import { Application, IndividualSalesResult, NewVisitor } from "../types";
 import useSWR, { KeyedMutator } from "swr";
 import axios from "axios";
 import { useCallback } from "react";
+import dayjs from "dayjs";
 
 const devUrl =
   "https://1us1ed23t2.execute-api.ap-northeast-1.amazonaws.com/hoken_juku_sales_result/sales-results";
@@ -48,11 +49,14 @@ const fetcher = async ([url, userId, status, year, firstVisitDate]: [
   }
 };
 
-export const resolveYear = (date: string | null) => {
-  //TODO: 年度を計算する
-  if (date === null) return null;
+export const resolveYear = (dateStr: string | null) => {
+  // 2024-07から2025-06を2024年度とする
+  if (dateStr === null) return null;
+  const date = dayjs(dateStr);
+  const year = date.year();
+  const month = date.month() + 1; // month() returns 0-11, so add 1 to get 1-12
 
-  return "2024";
+  return month >= 7 ? year.toString() : (year - 1).toString();
 };
 
 export const useSalesResultApi = (

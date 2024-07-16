@@ -30,6 +30,14 @@ const StorePage: FC<Props> = ({ user }) => {
     year: resolveYear(targetMonth),
     firstVisitDate: targetMonth,
   });
+  const { salesResultData: inProgressSalasResultData } = useSalesResultApi(
+    null,
+    {
+      status: "1",
+      firstVisitDate: null,
+      year: null,
+    }
+  );
   const { applicationData } = useApplicationApi({
     userId: null,
     year: resolveYear(targetMonth),
@@ -74,6 +82,7 @@ const StorePage: FC<Props> = ({ user }) => {
         <StoreResults
           userId={user.userId}
           salesResultData={salesResultData}
+          inProgressSalesResultData={inProgressSalasResultData}
           applicationData={applicationData}
           routeMst={routeMst}
           consultContentMst={consultContentMst}

@@ -19,6 +19,7 @@ import { useMockData } from "../mocks";
 type Props = {
   userId: string;
   salesResultData: IndividualSalesResult[] | undefined;
+  inProgressSalesResultData: IndividualSalesResult[] | undefined;
   applicationData: Application[] | undefined;
   routeMst: RouteMst[];
   consultContentMst: ConsultContentMst[];
@@ -32,6 +33,7 @@ type StorePageMode = "achievement" | "contract";
 const StoreResults: FC<Props> = ({
   userId,
   salesResultData,
+  inProgressSalesResultData,
   applicationData,
   routeMst,
   consultContentMst,
@@ -96,7 +98,7 @@ const StoreResults: FC<Props> = ({
             case "contract":
               return (
                 <StoreConstract
-                  salesResultData={salesResultData}
+                  inProgressSalesResultData={inProgressSalesResultData}
                   applicationData={applicationData}
                   members={members}
                 />
