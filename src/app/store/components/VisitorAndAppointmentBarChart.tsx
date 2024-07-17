@@ -22,7 +22,7 @@ type Props = {
         新規数: number;
         既契約数: number;
         次アポ取得数: number;
-        nextAppointMentPercent: number;
+        nextAppointmentPercent: number;
       }[]
     | undefined;
 };

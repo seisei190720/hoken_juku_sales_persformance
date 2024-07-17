@@ -11,6 +11,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { CountAndPercentType } from "../hooks/useStoreAchievementData";
+import { styled } from "@mui/material/styles";
 
 type Props = {
   title: string;
@@ -56,9 +57,10 @@ const SourceDataList: FC<Props> = ({ title, values, columnHeaders }) => {
           {title}
         </Typography>
         <TableContainer>
-          <Table size="small" aria-label="a dense table">
+          <Table size="small" aria-label="a dense table" stickyHeader>
             <TableHead
               sx={{
+                //なぜがstickyHeaderにすると効かない...
                 background: blue[100],
               }}
             >
@@ -70,7 +72,7 @@ const SourceDataList: FC<Props> = ({ title, values, columnHeaders }) => {
             </TableHead>
             <TableBody>
               {values.map((v, idx) => (
-                <TableRow key={`${idx}_row`}>
+                <StyledTableRow key={`${idx}_row`}>
                   <TableCell key={`${idx}_name_${v.name}`}>{v.name}</TableCell>
                   <TableCell key={`${idx}_count_${v.件数}`} align="right">
                     {v.件数}
@@ -81,7 +83,7 @@ const SourceDataList: FC<Props> = ({ title, values, columnHeaders }) => {
                   <TableCell key={`${idx}_percent_${v.率}`} align="right">
                     {`${v.率}%`}
                   </TableCell>
-                </TableRow>
+                </StyledTableRow>
               ))}
             </TableBody>
           </Table>
@@ -92,3 +94,13 @@ const SourceDataList: FC<Props> = ({ title, values, columnHeaders }) => {
 };
 
 export default SourceDataList;
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));

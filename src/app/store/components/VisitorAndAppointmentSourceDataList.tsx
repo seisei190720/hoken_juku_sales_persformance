@@ -11,6 +11,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { VisitorAndAppointmentType } from "../hooks/useStoreAchievementData";
+import { styled } from "@mui/material/styles";
 
 type Props = {
   title: string;
@@ -55,7 +56,7 @@ const VisitorAndAppointmentSourceDataList: FC<Props> = ({ title, values }) => {
           {title}
         </Typography>
         <TableContainer>
-          <Table size="small" aria-label="a dense table">
+          <Table size="small" aria-label="a dense table" stickyHeader>
             <TableHead
               sx={{
                 background: blue[100],
@@ -88,7 +89,7 @@ const VisitorAndAppointmentSourceDataList: FC<Props> = ({ title, values }) => {
             </TableHead>
             <TableBody>
               {values.map((v, idx) => (
-                <TableRow key={`${idx}_row`}>
+                <StyledTableRow key={`${idx}_row`}>
                   <TableCell
                     component="th"
                     scope="row"
@@ -112,12 +113,12 @@ const VisitorAndAppointmentSourceDataList: FC<Props> = ({ title, values }) => {
                     {v.次アポ取得数}
                   </TableCell>
                   <TableCell
-                    key={`${idx}_appointmentPercent_${v.nextAppointMentPercent}`}
+                    key={`${idx}_appointmentPercent_${v.nextAppointmentPercent}`}
                     align="right"
                   >
-                    {`${v.nextAppointMentPercent}%`}
+                    {`${v.nextAppointmentPercent}%`}
                   </TableCell>
-                </TableRow>
+                </StyledTableRow>
               ))}
             </TableBody>
           </Table>
@@ -128,3 +129,13 @@ const VisitorAndAppointmentSourceDataList: FC<Props> = ({ title, values }) => {
 };
 
 export default VisitorAndAppointmentSourceDataList;
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));

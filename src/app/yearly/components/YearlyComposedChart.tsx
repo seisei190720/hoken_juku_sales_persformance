@@ -1,14 +1,14 @@
-import { FC } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import Stack from "@mui/material/Stack";
-import { grey, orange } from "@mui/material/colors";
+import { green, grey, orange, pink, red } from "@mui/material/colors";
 import {
-  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
+  Legend,
+  Bar,
   Line,
   ComposedChart,
 } from "recharts";
@@ -16,19 +16,21 @@ import Card from "@mui/material/Card";
 import { blue, yellow } from "@mui/material/colors";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
+import { CountAndPercentType } from "@/app/store/hooks/useStoreAchievementData";
 
 type Props = {
   title: string;
-  values:
-    | {
-        name: string;
-        件数: number;
-        率: number;
-      }[]
-    | undefined;
+  values: CountAndPercentType[] | undefined;
+  barStroleColor: string;
+  barFillColor: string;
 };
 
-const CountAndPercentBarChart: FC<Props> = ({ title, values }) => {
+const YearlyComposedChart: FC<Props> = ({
+  title,
+  values,
+  barStroleColor,
+  barFillColor,
+}) => {
   if (!values)
     return (
       <Card
@@ -45,6 +47,7 @@ const CountAndPercentBarChart: FC<Props> = ({ title, values }) => {
         <CircularProgress />
       </Card>
     );
+
   return (
     <Card sx={{ padding: 2, borderRadius: "12px", flex: 2, gap: 2 }}>
       <Typography variant="h6" color={blue[600]}>
@@ -58,17 +61,17 @@ const CountAndPercentBarChart: FC<Props> = ({ title, values }) => {
       >
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart
-            //   width={500}
-            //   height={300}
+            width={500}
+            height={400}
             data={values}
             margin={{
-              top: 5,
-              right: 30,
+              top: 20,
+              right: 20,
+              bottom: 20,
               left: 20,
-              bottom: 5,
             }}
           >
-            <CartesianGrid strokeDasharray="3 3" />
+            <CartesianGrid stroke="#f5f5f5" />
             <XAxis dataKey="name" />
             <YAxis
               yAxisId={1}
@@ -87,14 +90,13 @@ const CountAndPercentBarChart: FC<Props> = ({ title, values }) => {
               dataKey="件数"
               yAxisId={2}
               barSize={40}
-              fill={blue[200]}
-              stroke={blue[600]}
+              fill={barFillColor}
+              stroke={barStroleColor}
             />
             <Line
               dataKey="率"
               yAxisId={1}
-              fill={orange[200]}
-              stroke={orange[400]}
+              stroke={orange[200]}
               strokeWidth={2}
             />
           </ComposedChart>
@@ -103,5 +105,4 @@ const CountAndPercentBarChart: FC<Props> = ({ title, values }) => {
     </Card>
   );
 };
-
-export default CountAndPercentBarChart;
+export default YearlyComposedChart;

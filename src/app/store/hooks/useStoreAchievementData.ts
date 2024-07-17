@@ -14,7 +14,7 @@ export type VisitorAndAppointmentType = {
   新規数: number;
   既契約数: number;
   次アポ取得数: number;
-  nextAppointMentPercent: number;
+  nextAppointmentPercent: number;
 };
 export type CountAndPercentType = {
   name: string;
@@ -70,7 +70,7 @@ export const useStoreAchievementData = (
           新規数: newVisitor(targetResults).length,
           既契約数: existVisitor(targetResults).length,
           次アポ取得数: nextAppointmentCount,
-          nextAppointMentPercent: isNaN(resultPercent) ? 0 : resultPercent,
+          nextAppointmentPercent: isNaN(resultPercent) ? 0 : resultPercent,
         };
       });
     }, [results, newVisitor, existVisitor, nextAppointor]);

@@ -10,6 +10,11 @@ import Button from "@mui/material/Button";
 import { resolveYear, useSalesResultApi } from "../api/useSalesResultApi";
 import { useApplicationApi } from "../api/useApplicationApi";
 import YearlyResults from "./YearlyResults";
+import { Member } from "../types";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
 
 type Props = {
   user: AuthUser;
@@ -24,42 +29,79 @@ const YearlyPage: FC<Props> = ({ user }) => {
     companyMst,
     statusMst,
   } = useMockData();
-  const [targetMonth, setTargetMonth] = useState<string | null>(null);
-  const { salesResultData } = useSalesResultApi(null, {
-    status: null,
-    year: "2024",
-    firstVisitDate: null,
-  });
+  const [selecetedMember, setSelectedMember] = useState<Member | "all">("all");
+  const handleMemberSelector = (e: SelectChangeEvent) => {
+    if (e.target.value === "all") return setSelectedMember("all");
+    setSelectedMember(members.find((m) => e.target.value === m.id) || "all");
+  };
+
+  const [targetYear, setTargetYear] = useState<string | null>(null);
+  const { salesResultData } = useSalesResultApi(
+    selecetedMember === "all" ? null : selecetedMember.id,
+    {
+      status: null,
+      year: targetYear,
+      firstVisitDate: null,
+    }
+  );
 
   const { applicationData } = useApplicationApi({
-    userId: null,
-    year: "2024",
+    userId: selecetedMember === "all" ? null : selecetedMember.id,
+    year: targetYear,
     establishDate: null,
   });
 
   const forwardToNextMonth = () => {
-    setTargetMonth((v) => dayjs(v).add(1, "month").format("YYYY-MM"));
+    setTargetYear((v) => dayjs(v).add(1, "year").format("YYYY"));
   };
   const backToLastMonth = () => {
-    setTargetMonth((v) => dayjs(v).subtract(1, "month").format("YYYY-MM"));
+    setTargetYear((v) => dayjs(v).subtract(1, "year").format("YYYY"));
   };
   const moveToCurrentMonth = () => {
-    setTargetMonth(dayjs().format("YYYY-MM"));
+    setTargetYear(dayjs().format("YYYY"));
   };
 
   useEffect(() => {
-    setTargetMonth(dayjs().format("YYYY-MM"));
-  }, [setTargetMonth]);
+    setTargetYear(dayjs().format("YYYY"));
+  }, [setTargetYear]);
 
   return (
     <>
       <Stack gap={1} sx={{ width: "100%" }}>
+        <Stack direction="row" gap={1} alignItems="center">
+          <FormControl size="small">
+            <InputLabel id="showing-member-select-label">メンバー</InputLabel>
+            <Select
+              sx={{
+                width: "150px",
+              }}
+              labelId="showing-member-select-label"
+              id="showing-member-select"
+              value={selecetedMember === "all" ? "all" : selecetedMember.id}
+              label="Member"
+              onChange={handleMemberSelector}
+            >
+              <MenuItem value={"all"} key={`all-member-menuitem`}>
+                店舗全体
+              </MenuItem>
+              {members.map((member, idx) => {
+                return (
+                  <MenuItem value={member.id} key={`${idx}_${member.name}`}>
+                    {member.name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+          <Typography variant="subtitle1">を表示中</Typography>
+          {/* </Stack> */}
+        </Stack>
         <Stack direction="row" alignItems="center" gap={1}>
           <Button onClick={backToLastMonth}>
             <ArrowBackIosIcon />
           </Button>
           <Typography variant="h5">
-            {dayjs(targetMonth).format("YYYY年MM月")}
+            {dayjs(targetYear).format("YYYY年度")}
           </Typography>
           <Button>
             <ArrowForwardIosIcon onClick={forwardToNextMonth} />
@@ -67,9 +109,9 @@ const YearlyPage: FC<Props> = ({ user }) => {
           <Button
             variant="outlined"
             onClick={moveToCurrentMonth}
-            disabled={targetMonth === dayjs().format("YYYY-MM")}
+            disabled={targetYear === dayjs().format("YYYY-MM")}
           >
-            今月に戻る
+            今年度に戻る
           </Button>
         </Stack>
         <YearlyResults

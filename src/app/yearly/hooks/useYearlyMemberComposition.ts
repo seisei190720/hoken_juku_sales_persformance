@@ -1,3 +1,4 @@
+import { CountAndPercentType } from "@/app/store/hooks/useStoreAchievementData";
 import {
   CompanyMst,
   ConsultContentMst,
@@ -10,16 +11,12 @@ import {
 } from "@/app/types";
 import { useCallback, useMemo } from "react";
 
-export type VisitorSourceType = {
+export type YearlyVisitorAndNextAppointmentType = {
   month: string;
   新規数: number;
   既契約数: number;
-};
-export type CountAndPercentType = {
-  name: string;
-  件数: number;
-  全体: number;
-  率: number;
+  全体数: number;
+  次アポ数: number;
 };
 
 export const useYearlyMemberComposition = (
@@ -38,6 +35,12 @@ export const useYearlyMemberComposition = (
     [routeMst]
   );
 
+  const getTargetMonthData = useCallback(
+    (target: IndividualSalesResult[], month: string) =>
+      target.filter((r) => r.firstVisitDate.indexOf(month) !== -1),
+    []
+  );
+
   const newVisitor = useCallback(
     (target: IndividualSalesResult[]) =>
       target.filter((v) => resolveRouteKind(v.visitRoute) === "new"),
@@ -50,66 +53,73 @@ export const useYearlyMemberComposition = (
     [resolveRouteKind]
   );
 
-  const nextAppointor = useCallback(() => {
-    if (!results) return;
-    results.filter((v) => v.nextAppointment);
-  }, [results]);
+  const nextAppointor = useCallback(
+    (target: IndividualSalesResult[]) =>
+      target.filter((v) => v.nextAppointment),
+    []
+  );
 
-  const visitorSourceData: VisitorSourceType[] | undefined = useMemo(() => {
+  const visitorAndNextAppointmentData:
+    | YearlyVisitorAndNextAppointmentType[]
+    | undefined = useMemo(() => {
     if (!results) return;
     return yearMonth.map((y) => {
-      const targetMonth = results.filter(
-        (r) => r.firstVisitDate.indexOf(y.keyMonth) !== -1
-      );
+      const targetMonth = getTargetMonthData(results, y.keyMonth);
+      const newVisitorCount = newVisitor(targetMonth).length;
+      const existVisitorCount = existVisitor(targetMonth).length;
       return {
         month: y.name,
-        新規数: newVisitor(targetMonth).length,
-        既契約数: existVisitor(targetMonth).length,
+        新規数: newVisitorCount,
+        既契約数: existVisitorCount,
+        全体数: newVisitorCount + existVisitorCount,
+        次アポ数: nextAppointor(targetMonth).length,
       };
     });
   }, [results, newVisitor, existVisitor, nextAppointor]);
 
-  // const constractCountAndPercentData: CountAndPercentType[] | undefined =
-  //   useMemo(() => {
-  //     if (!results) return;
-  //     return members.map((m) => {
-  //       const targetResults = results.filter((r) => r.userId === m.id);
-  //       const targetNewVisitor = newVisitor(targetResults);
-  //       const constractedPersonCount = targetNewVisitor.filter(
-  //         (t) => t.applications.length > 0
-  //       ).length;
-  //       const constractPercent =
-  //         (constractedPersonCount / targetNewVisitor.length) * 100;
-  //       const resultPercent = Math.round(constractPercent * 10) / 10;
-  //       return {
-  //         name: m.name,
-  //         件数: constractedPersonCount,
-  //         全体: targetNewVisitor.length,
-  //         率: isNaN(resultPercent) ? 0 : resultPercent,
-  //       };
-  //     });
-  //   }, [results, newVisitor]);
+  const constractCountAndPercentData: CountAndPercentType[] | undefined =
+    useMemo(() => {
+      if (!results) return;
+      return yearMonth.map((y) => {
+        const targetMonth = getTargetMonthData(results, y.keyMonth);
+        const targetNewVisitor = newVisitor(targetMonth);
+        const constractedPersonCount = targetNewVisitor.filter(
+          (t) => t.applications.length > 0
+        ).length;
+        const constractPercent =
+          (constractedPersonCount / targetNewVisitor.length) * 100;
+        const resultPercent = Math.round(constractPercent * 10) / 10;
+        return {
+          name: y.name,
+          件数: constractedPersonCount,
+          全体: targetNewVisitor.length,
+          率: isNaN(resultPercent) ? 0 : resultPercent,
+        };
+      });
+    }, [results, newVisitor]);
 
-  // const thankyouCountAndPercentData: CountAndPercentType[] | undefined =
-  //   useMemo(() => {
-  //     if (!results) return;
-  //     return members.map((m) => {
-  //       const targetResults = results.filter((r) => r.userId === m.id);
-  //       const thankyouCount = targetResults.filter((r) => r.thankyou).length;
-  //       const applicatorCount = targetResults.filter(
-  //         (r) => r.applications.length > 0
-  //       ).length;
-  //       const thankyouPercent = (thankyouCount / applicatorCount) * 100;
-  //       const resultPercent = Math.round(thankyouPercent * 10) / 10;
-  //       return {
-  //         name: m.name,
-  //         件数: thankyouCount,
-  //         全体: applicatorCount,
-  //         率: isNaN(resultPercent) ? 0 : resultPercent,
-  //       };
-  //     });
-  //   }, [results]);
+  const thankyouCountAndPercentData: CountAndPercentType[] | undefined =
+    useMemo(() => {
+      if (!results) return;
+      return yearMonth.map((y) => {
+        const targetMonth = getTargetMonthData(results, y.keyMonth);
+        const thankyouCount = targetMonth.filter((r) => r.thankyou).length;
+        const applicatorCount = targetMonth.filter(
+          (r) => r.applications.length > 0
+        ).length;
+        const thankyouPercent = (thankyouCount / applicatorCount) * 100;
+        const resultPercent = Math.round(thankyouPercent * 10) / 10;
+        return {
+          name: y.name,
+          件数: thankyouCount,
+          全体: applicatorCount,
+          率: isNaN(resultPercent) ? 0 : resultPercent,
+        };
+      });
+    }, [results, getTargetMonthData]);
   return {
-    visitorSourceData,
+    visitorAndNextAppointmentData,
+    constractCountAndPercentData,
+    thankyouCountAndPercentData,
   };
 };
