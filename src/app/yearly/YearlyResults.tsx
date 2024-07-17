@@ -26,7 +26,7 @@ type Props = {
   statusMst: StatusMst[];
 };
 
-type YearlyPageMode = "member" | "store";
+type YearlyPageMode = "achievement" | "contract";
 
 const StoreResults: FC<Props> = ({
   userId,
@@ -38,8 +38,7 @@ const StoreResults: FC<Props> = ({
   companyMst,
   statusMst,
 }) => {
-  const [viewMode, setViewMode] = useState<YearlyPageMode>("member");
-
+  const [viewMode, setViewMode] = useState<YearlyPageMode>("achievement");
   const { members } = useMockData();
 
   const updateViewMode = useCallback(
@@ -80,7 +79,7 @@ const StoreResults: FC<Props> = ({
       >
         {(() => {
           switch (viewMode) {
-            case "member":
+            case "achievement":
               return (
                 <YearlyMemberResult
                   salesResultData={salesResultData}
@@ -89,7 +88,7 @@ const StoreResults: FC<Props> = ({
                   routeMst={routeMst}
                 />
               );
-            case "store":
+            case "contract":
               return <></>;
             default:
               return <></>;
