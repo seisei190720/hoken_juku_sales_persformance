@@ -12,11 +12,12 @@ import {
 import { useCallback, useMemo } from "react";
 
 export type YearlyVisitorAndNextAppointmentType = {
-  month: string;
+  name: string;
   新規数: number;
   既契約数: number;
   全体数: number;
   次アポ数: number;
+  nextAppointmentPercent: number;
 };
 
 export const useYearlyMemberComposition = (
@@ -65,14 +66,17 @@ export const useYearlyMemberComposition = (
     if (!results) return;
     return yearMonth.map((y) => {
       const targetMonth = getTargetMonthData(results, y.keyMonth);
-      const newVisitorCount = newVisitor(targetMonth).length;
-      const existVisitorCount = existVisitor(targetMonth).length;
+      const nextAppointmentCount = nextAppointor(targetMonth).length;
+      const nextAppointmentPercent =
+        (nextAppointmentCount / targetMonth.length) * 100;
+      const resultPercent = Math.round(nextAppointmentPercent * 10) / 10;
       return {
-        month: y.name,
-        新規数: newVisitorCount,
-        既契約数: existVisitorCount,
-        全体数: newVisitorCount + existVisitorCount,
+        name: y.name,
+        新規数: newVisitor(targetMonth).length,
+        既契約数: existVisitor(targetMonth).length,
+        全体数: targetMonth.length,
         次アポ数: nextAppointor(targetMonth).length,
+        nextAppointmentPercent: isNaN(resultPercent) ? 0 : resultPercent,
       };
     });
   }, [results, newVisitor, existVisitor, nextAppointor]);

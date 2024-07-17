@@ -17,6 +17,7 @@ import { useYearlyMemberComposition } from "./hooks/useYearlyMemberComposition";
 import YearlyComposedChart from "./components/YearlyComposedChart";
 import { blue, pink } from "@mui/material/colors";
 import SourceDataList from "../store/components/SourceDataList";
+import VisitorAndAppointmentSourceDataList from "../store/components/VisitorAndAppointmentSourceDataList";
 
 type Props = {
   salesResultData: IndividualSalesResult[] | undefined;
@@ -41,6 +42,10 @@ const YearlyMemberResult: FC<Props> = ({
       <Stack direction="row" gap={2}>
         <YearlyVisitorAreaChart
           title={"来店者数推移"}
+          values={yearlyMemberComposition.visitorAndNextAppointmentData}
+        />
+        <VisitorAndAppointmentSourceDataList
+          title={"来店者&次アポ数(率)"}
           values={yearlyMemberComposition.visitorAndNextAppointmentData}
         />
       </Stack>

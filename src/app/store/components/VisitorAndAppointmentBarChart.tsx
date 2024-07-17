@@ -21,7 +21,7 @@ type Props = {
         name: string;
         新規数: number;
         既契約数: number;
-        次アポ取得数: number;
+        次アポ数: number;
         nextAppointmentPercent: number;
       }[]
     | undefined;
@@ -72,9 +72,26 @@ const VisitorAndAppointmentBarChart: FC<Props> = ({ values }) => {
             <YAxis label={{ value: "人数", angle: -90, dx: -20 }} />
             <Tooltip />
             <Legend />
-            <Bar dataKey="新規数" stackId="a" fill={green[400]} />
-            <Bar dataKey="既契約数" stackId="a" fill={orange[400]} />
-            <Bar dataKey="次アポ取得数" fill={blue[400]} />
+            <Bar
+              dataKey="新規数"
+              stackId="a"
+              fill={green[300]}
+              stroke={green[700]}
+              // strokeWidth={2}
+            />
+            <Bar
+              dataKey="既契約数"
+              stackId="a"
+              fill={orange[300]}
+              stroke={orange[700]}
+              // strokeWidth={2}
+            />
+            <Bar
+              dataKey="次アポ数"
+              fill={blue[300]}
+              stroke={blue[700]}
+              // strokeWidth={2}
+            />
             {/* 責任挙績が追加できるようになったら、↓でグラフに表示する */}
             {/* <Scatter dataKey="cnt" fill="red" /> */}
           </BarChart>

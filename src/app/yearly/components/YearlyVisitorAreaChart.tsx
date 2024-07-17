@@ -90,7 +90,7 @@ const YearlyVisitorAreaChart: FC<Props> = ({ title, values }) => {
             }}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="month" />
+            <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
             <Area

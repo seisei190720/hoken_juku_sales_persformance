@@ -12,10 +12,14 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { VisitorAndAppointmentType } from "../hooks/useStoreAchievementData";
 import { styled } from "@mui/material/styles";
+import { YearlyVisitorAndNextAppointmentType } from "@/app/yearly/hooks/useYearlyMemberComposition";
 
 type Props = {
   title: string;
-  values: VisitorAndAppointmentType[] | undefined;
+  values:
+    | VisitorAndAppointmentType[]
+    | YearlyVisitorAndNextAppointmentType[]
+    | undefined;
 };
 
 const VisitorAndAppointmentSourceDataList: FC<Props> = ({ title, values }) => {
@@ -107,10 +111,10 @@ const VisitorAndAppointmentSourceDataList: FC<Props> = ({ title, values }) => {
                     {v.既契約数}
                   </TableCell>
                   <TableCell
-                    key={`${idx}_appointmentCount_${v.次アポ取得数}`}
+                    key={`${idx}_appointmentCount_${v.次アポ数}`}
                     align="right"
                   >
-                    {v.次アポ取得数}
+                    {v.次アポ数}
                   </TableCell>
                   <TableCell
                     key={`${idx}_appointmentPercent_${v.nextAppointmentPercent}`}
