@@ -20,7 +20,7 @@ export type YearlyVisitorAndNextAppointmentType = {
   nextAppointmentPercent: number;
 };
 
-export const useYearlyMemberComposition = (
+export const useYearlyAchievementComposition = (
   results: IndividualSalesResult[] | undefined,
   // members: Member[],
   routeMst: RouteMst[]

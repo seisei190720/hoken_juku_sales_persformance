@@ -14,7 +14,7 @@ import Card from "@mui/material/Card";
 import { blue, yellow } from "@mui/material/colors";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
-import { YearlyVisitorAndNextAppointmentType } from "../hooks/useYearlyMemberComposition";
+import { YearlyVisitorAndNextAppointmentType } from "../hooks/useYearlyAchievementComposition";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
