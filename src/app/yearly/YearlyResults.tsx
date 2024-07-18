@@ -13,7 +13,8 @@ import {
 } from "@/app/types";
 import Stack from "@mui/material/Stack";
 import { useMockData } from "../mocks";
-import YearlyMemberResult from "./YearlyMemberResult";
+import YearlyAchievementResult from "./YearlyAchievementResult";
+import YearlyConstractResult from "./YearlyConstractResult";
 
 type Props = {
   userId: string;
@@ -81,15 +82,20 @@ const StoreResults: FC<Props> = ({
           switch (viewMode) {
             case "achievement":
               return (
-                <YearlyMemberResult
+                <YearlyAchievementResult
                   salesResultData={salesResultData}
-                  applicationData={applicationData}
                   members={members}
                   routeMst={routeMst}
                 />
               );
             case "contract":
-              return <></>;
+              return (
+                <YearlyConstractResult
+                  lastSalesResultData={salesResultData}
+                  applicationData={applicationData}
+                  productMst={productMst}
+                />
+              );
             default:
               return <></>;
           }

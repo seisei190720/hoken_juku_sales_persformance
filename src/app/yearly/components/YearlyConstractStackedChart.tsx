@@ -1,33 +1,28 @@
-import { FC, useCallback, useState } from "react";
+import { FC } from "react";
 import Stack from "@mui/material/Stack";
-import { green, orange, blue } from "@mui/material/colors";
+import { green, grey, orange, pink, red } from "@mui/material/colors";
 import {
-  BarChart,
-  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
+  Legend,
+  Bar,
+  ComposedChart,
 } from "recharts";
 import Card from "@mui/material/Card";
+import { blue, yellow } from "@mui/material/colors";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
+import { YearlyConstractSumAndCountType } from "../hooks/useYearlyConstractComposition";
 
 type Props = {
-  values:
-    | {
-        name: string;
-        新規数: number;
-        既契約数: number;
-        次アポ数: number;
-        nextAppointmentPercent: number;
-      }[]
-    | undefined;
+  title: string;
+  values: YearlyConstractSumAndCountType[] | undefined;
 };
 
-const VisitorAndAppointmentBarChart: FC<Props> = ({ values }) => {
+const YearlyConstractStackedChart: FC<Props> = ({ title, values }) => {
   if (!values)
     return (
       <Card
@@ -44,10 +39,11 @@ const VisitorAndAppointmentBarChart: FC<Props> = ({ values }) => {
         <CircularProgress />
       </Card>
     );
+
   return (
     <Card sx={{ padding: 2, borderRadius: "12px", flex: 2, gap: 2 }}>
       <Typography variant="h6" color={blue[600]}>
-        {"メンバー別来店者数"}
+        {title}
       </Typography>
       <Stack
         direction="row"
@@ -56,49 +52,58 @@ const VisitorAndAppointmentBarChart: FC<Props> = ({ values }) => {
         height="300px"
       >
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            //   width={500}
-            //   height={300}
+          <ComposedChart
+            width={500}
+            height={400}
             data={values}
             margin={{
-              top: 5,
-              right: 30,
+              top: 20,
+              right: 20,
+              bottom: 20,
               left: 20,
-              bottom: 5,
             }}
           >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis label={{ value: "人数", angle: -90, dx: -20 }} />
+            <CartesianGrid stroke="#f5f5f5" />
+            <XAxis dataKey="month" />
+            {/* <YAxis
+              yAxisId={1}
+              orientation="right"
+              label={{ value: "率(%)", angle: -90, dx: 20 }}
+            /> */}
+            <YAxis
+              yAxisId={2}
+              domain={[0, 5]}
+              // tickCount={6}
+              label={{ value: "数", angle: -90, dx: -20 }}
+            />
             <Tooltip />
             <Legend />
             <Bar
-              dataKey="新規数"
+              dataKey="生保"
+              yAxisId={2}
+              barSize={40}
               stackId="a"
               fill={green[300]}
               stroke={green[700]}
-              // strokeWidth={2}
             />
             <Bar
-              dataKey="既契約数"
+              dataKey="損保"
+              yAxisId={2}
+              barSize={40}
               stackId="a"
               fill={orange[300]}
               stroke={orange[700]}
-              // strokeWidth={2}
             />
-            <Bar
-              dataKey="次アポ数"
-              fill={blue[300]}
-              stroke={blue[700]}
-              // strokeWidth={2}
-            />
-            {/* 責任挙績が追加できるようになったら、↓でグラフに表示する */}
-            {/* <Scatter dataKey="cnt" fill="red" /> */}
-          </BarChart>
+            {/* <Line
+              dataKey="率"
+              yAxisId={1}
+              stroke={orange[200]}
+              strokeWidth={2}
+            /> */}
+          </ComposedChart>
         </ResponsiveContainer>
       </Stack>
     </Card>
   );
 };
-
-export default VisitorAndAppointmentBarChart;
+export default YearlyConstractStackedChart;

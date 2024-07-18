@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import Stack from "@mui/material/Stack";
 import Card from "@mui/material/Card";
 import { blue, grey } from "@mui/material/colors";
@@ -10,19 +10,20 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { VisitorAndAppointmentType } from "../hooks/useStoreAchievementData";
 import { styled } from "@mui/material/styles";
-import { YearlyVisitorAndNextAppointmentType } from "@/app/yearly/hooks/useYearlyAchievementComposition";
+import { YearlyBudgetAndAchievementType } from "../hooks/useYearlyConstractComposition";
 
 type Props = {
   title: string;
-  values:
-    | VisitorAndAppointmentType[]
-    | YearlyVisitorAndNextAppointmentType[]
-    | undefined;
+  values: YearlyBudgetAndAchievementType[] | undefined;
+  columnHeaders: string[];
 };
 
-const VisitorAndAppointmentSourceDataList: FC<Props> = ({ title, values }) => {
+const YearlyBudgetAndAchievementSourceDataList: FC<Props> = ({
+  title,
+  values,
+  columnHeaders,
+}) => {
   if (!values)
     return (
       <Card
@@ -63,64 +64,33 @@ const VisitorAndAppointmentSourceDataList: FC<Props> = ({ title, values }) => {
           <Table size="small" aria-label="a dense table" stickyHeader>
             <TableHead
               sx={{
+                //なぜがstickyHeaderにすると効かない...
                 background: blue[100],
               }}
             >
               <TableRow>
-                <TableCell key={"emptyRowCell"}></TableCell>
-                <TableCell colSpan={2} key={"visitorCountRowCell"}>
-                  来店者数(人)
-                </TableCell>
-                <TableCell colSpan={2} key={"nextAppointmentRowCell"}>
-                  次アポ(件)
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell key={"nameRowCell"}>名前</TableCell>
-                <TableCell key={"newVisitorRowCell"} align="right">
-                  新規
-                </TableCell>
-                <TableCell key={"existVisitorRowCell"} align="right">
-                  既契約
-                </TableCell>
-                <TableCell key={"appointmentCountRowCell"} align="right">
-                  数
-                </TableCell>
-                <TableCell key={"appointmentPercentRowCell"} align="right">
-                  率
-                </TableCell>
+                {columnHeaders.map((v, idx) => (
+                  <TableCell key={`${idx}_${v}`}>{v}</TableCell>
+                ))}
               </TableRow>
             </TableHead>
             <TableBody>
               {values.map((v, idx) => (
                 <StyledTableRow key={`${idx}_row`}>
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    key={`${idx}_name_${v.name}`}
-                  >
-                    {v.name}
-                  </TableCell>
-                  <TableCell key={`${idx}_newCount_${v.新規数}`} align="right">
-                    {v.新規数}
+                  <TableCell key={`${idx}_month_${v.month}`}>
+                    {v.month}
                   </TableCell>
                   <TableCell
-                    key={`${idx}_existCount_${v.既契約数}`}
+                    key={`${idx}_achievement_${v.実実績}`}
                     align="right"
                   >
-                    {v.既契約数}
+                    {v.実実績.toLocaleString()}
                   </TableCell>
-                  <TableCell
-                    key={`${idx}_appointmentCount_${v.次アポ数}`}
-                    align="right"
-                  >
-                    {v.次アポ数}
+                  <TableCell key={`${idx}_budget_${v.予算}`} align="right">
+                    {v.予算.toLocaleString()}
                   </TableCell>
-                  <TableCell
-                    key={`${idx}_appointmentPercent_${v.nextAppointmentPercent}`}
-                    align="right"
-                  >
-                    {`${v.nextAppointmentPercent}%`}
+                  <TableCell key={`${idx}_percent_${v.達成率}`} align="right">
+                    {`${v.達成率.toLocaleString()}%`}
                   </TableCell>
                 </StyledTableRow>
               ))}
@@ -132,7 +102,7 @@ const VisitorAndAppointmentSourceDataList: FC<Props> = ({ title, values }) => {
   );
 };
 
-export default VisitorAndAppointmentSourceDataList;
+export default YearlyBudgetAndAchievementSourceDataList;
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
