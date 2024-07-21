@@ -16,11 +16,11 @@ import Card from "@mui/material/Card";
 import { blue, yellow } from "@mui/material/colors";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
-import { YearlyBudgetAndAchievementType } from "../hooks/useYearlyConstractComposition";
+import { BudgetAndAchievementType } from "../hooks/useYearlyConstractComposition";
 
 type Props = {
   title: string;
-  values: YearlyBudgetAndAchievementType[] | undefined;
+  values: BudgetAndAchievementType[] | undefined;
 };
 
 const YearlyBudgetAndAchievementComposedChart: FC<Props> = ({
@@ -68,7 +68,7 @@ const YearlyBudgetAndAchievementComposedChart: FC<Props> = ({
             }}
           >
             <CartesianGrid stroke="#f5f5f5" />
-            <XAxis dataKey="month" />
+            <XAxis dataKey="name" />
             <YAxis
               yAxisId={1}
               orientation="right"

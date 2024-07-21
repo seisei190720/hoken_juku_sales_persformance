@@ -7,11 +7,12 @@ import {
 } from "@/app/types";
 import Stack from "@mui/material/Stack";
 import SimpleSummaryCard from "../mypage/components/SimpleSummaryCard";
-import CountAndPercentBarChart from "./components/CountAndPercentBarChart";
 import { useStoreConstractData } from "./hooks/useStoreConstractData";
-import ConstractSourceDataList from "./components/ConstractSourceDataList";
 import BudgetCard from "../component/BudgetCard";
 import { resolveYear } from "../api/useSalesResultApi";
+import YearlyBudgetAndAchievementComposedChart from "../yearly/components/YearlyBudgetAndAchievementComposedChart";
+import YearlyBudgetAndAchievementSourceDataList from "../yearly/components/YearlyBudgetAndAchievementSourceDataList";
+import { useContractBudgetApi } from "../api/useContractBudgetApi";
 
 type Props = {
   userId: string;
@@ -19,9 +20,6 @@ type Props = {
   inProgressSalesResultData: IndividualSalesResult[] | undefined;
   applicationData: Application[] | undefined;
   members: Member[];
-  storeConstractBudgetData: ContractBudget[];
-  postStoreConstractBudgetData: (newData: ContractBudget) => Promise<void>;
-  memberConstractBudgetData: ContractBudget[];
 };
 
 const StoreConstract: FC<Props> = ({
@@ -30,15 +28,27 @@ const StoreConstract: FC<Props> = ({
   inProgressSalesResultData,
   applicationData,
   members,
-  storeConstractBudgetData,
-  postStoreConstractBudgetData,
-  memberConstractBudgetData,
 }) => {
+  const {
+    contractBudgetData: storeContractBudgetData,
+    postContractBudgetData: storePostContractBudgetData,
+  } = useContractBudgetApi({
+    userId: "1",
+    year: resolveYear(targetMonth),
+    month: targetMonth,
+  });
+
+  const { contractBudgetData: memberConstractBudget } = useContractBudgetApi({
+    userId: null,
+    year: resolveYear(targetMonth),
+    month: targetMonth,
+  });
+
   const storeConstractData = useStoreConstractData(
     inProgressSalesResultData,
     applicationData,
     members,
-    memberConstractBudgetData
+    memberConstractBudget
   );
 
   return (
@@ -70,14 +80,14 @@ const StoreConstract: FC<Props> = ({
           targetMonth={targetMonth}
           targetYear={resolveYear(targetMonth)}
           contractBudgetData={
-            storeConstractBudgetData === undefined
+            storeContractBudgetData === undefined
               ? undefined
-              : storeConstractBudgetData.find(
+              : storeContractBudgetData.find(
                   (c: ContractBudget) => (c.userId = "1")
                 ) || null
           }
-          postContractBudgetData={postStoreConstractBudgetData}
-          canEdit={true}
+          postContractBudgetData={storePostContractBudgetData}
+          canEdit={true} //今は誰でもいじれるようにしているが、管理者しかいじれないようにする必要あり
         />
         <SimpleSummaryCard
           values={
@@ -94,13 +104,14 @@ const StoreConstract: FC<Props> = ({
         />
       </Stack>
       <Stack direction="row" gap={2}>
-        <CountAndPercentBarChart
-          title={"実績(達成率)"}
+        <YearlyBudgetAndAchievementComposedChart
+          title={""}
           values={storeConstractData.constractSumAndAchievementRateData}
         />
-        <ConstractSourceDataList
+        <YearlyBudgetAndAchievementSourceDataList
           title={"実績表"}
-          values={storeConstractData.constractSouceData}
+          values={storeConstractData.constractSumAndAchievementRateData}
+          columnHeaders={["名前", "実績", "予算", "達成率"]}
         />
       </Stack>
     </Stack>

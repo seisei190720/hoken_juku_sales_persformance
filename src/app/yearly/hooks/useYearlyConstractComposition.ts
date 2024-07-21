@@ -11,8 +11,8 @@ import {
 } from "@/app/types";
 import { useCallback, useMemo } from "react";
 
-export type YearlyBudgetAndAchievementType = {
-  month: string;
+export type BudgetAndAchievementType = {
+  name: string;
   実績: number;
   実実績: number;
   未達額: number;
@@ -64,7 +64,7 @@ export const useYearlyConstractComposition = (
     []
   );
 
-  const budgetAndAchievementData: YearlyBudgetAndAchievementType[] | undefined =
+  const budgetAndAchievementData: BudgetAndAchievementType[] | undefined =
     useMemo(() => {
       if (!applicationData) return;
       return yearMonth.map((y) => {
@@ -80,7 +80,7 @@ export const useYearlyConstractComposition = (
           resultPercent > 100 ? 100 : resultPercent;
         const excessSum = constractSum - budget < 0 ? 0 : constractSum - budget;
         return {
-          month: y.name,
+          name: y.name,
           実績: constractSum - excessSum, // グラフで表示するように、予算額をmaxとしている
           実実績: constractSum,
           未達額: budget - constractSum < 0 ? 0 : budget - constractSum,

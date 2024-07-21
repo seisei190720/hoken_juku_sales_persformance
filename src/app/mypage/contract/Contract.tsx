@@ -17,8 +17,17 @@ type Props = {
   targetMonth: string | null;
   productMst: ProductMst[];
   canEdit: boolean;
+  contractBudgetData: ContractBudget[];
+  postContractBudgetData: (newData: ContractBudget) => Promise<void>;
 };
-const Constract: FC<Props> = ({ userId, targetMonth, productMst, canEdit }) => {
+const Constract: FC<Props> = ({
+  userId,
+  targetMonth,
+  productMst,
+  canEdit,
+  contractBudgetData,
+  postContractBudgetData,
+}) => {
   const { applicationData } = useApplicationApi({
     userId: userId,
     year: resolveYear(targetMonth),
@@ -28,11 +37,6 @@ const Constract: FC<Props> = ({ userId, targetMonth, productMst, canEdit }) => {
     applicationData,
     productMst
   );
-  const { contractBudgetData, postContractBudgetData } = useContractBudgetApi({
-    userId: userId,
-    year: resolveYear(targetMonth),
-    month: targetMonth,
-  });
   const lastApplicationData = useLastApplicationsComposition(userId);
 
   return (

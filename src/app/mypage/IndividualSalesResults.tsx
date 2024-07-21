@@ -17,6 +17,8 @@ import Stack from "@mui/material/Stack";
 import { KeyedMutator } from "swr";
 import Constract from "./contract/Contract";
 import Achievement from "./achievement/Achievement";
+import { useContractBudgetApi } from "../api/useContractBudgetApi";
+import { resolveYear } from "../api/useSalesResultApi";
 
 type Props = {
   userId: string;
@@ -52,6 +54,11 @@ const IndividualSalesResults: FC<Props> = ({
   canEdit,
 }) => {
   const [viewMode, setViewMode] = useState<MyPageMode>("visitor");
+  const { contractBudgetData, postContractBudgetData } = useContractBudgetApi({
+    userId: userId,
+    year: resolveYear(targetMonth),
+    month: targetMonth,
+  });
 
   const updateViewMode = useCallback(
     (event: React.SyntheticEvent, nextView: string) => {
@@ -137,6 +144,8 @@ const IndividualSalesResults: FC<Props> = ({
                   targetMonth={targetMonth}
                   productMst={productMst}
                   canEdit={canEdit}
+                  contractBudgetData={contractBudgetData}
+                  postContractBudgetData={postContractBudgetData}
                 />
               );
             default:

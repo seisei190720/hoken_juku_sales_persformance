@@ -16,7 +16,6 @@ import Stack from "@mui/material/Stack";
 import StoreConstract from "./StoreConstract";
 import StoreAchievement from "./StoreAchievement";
 import { useMockData } from "../mocks";
-import { useContractBudgetApi } from "../api/useContractBudgetApi";
 
 type Props = {
   userId: string;
@@ -29,9 +28,6 @@ type Props = {
   productMst: ProductMst[];
   companyMst: CompanyMst[];
   statusMst: StatusMst[];
-  storeConstractBudgetData: ContractBudget[];
-  postStoreConstractBudgetData: (newData: ContractBudget) => Promise<void>;
-  memberConstractBudgetData: ContractBudget[];
 };
 
 type StorePageMode = "achievement" | "contract";
@@ -47,9 +43,6 @@ const StoreResults: FC<Props> = ({
   productMst,
   companyMst,
   statusMst,
-  storeConstractBudgetData,
-  postStoreConstractBudgetData,
-  memberConstractBudgetData,
 }) => {
   const [viewMode, setViewMode] = useState<StorePageMode>("achievement");
 
@@ -112,9 +105,6 @@ const StoreResults: FC<Props> = ({
                   inProgressSalesResultData={inProgressSalesResultData}
                   applicationData={applicationData}
                   members={members}
-                  storeConstractBudgetData={storeConstractBudgetData}
-                  postStoreConstractBudgetData={postStoreConstractBudgetData}
-                  memberConstractBudgetData={memberConstractBudgetData}
                 />
               );
             default:

@@ -2,7 +2,7 @@ import { ContractBudget } from "../types";
 import useSWR from "swr";
 import axios from "axios";
 import { useCallback } from "react";
-import { resolveYear } from "./useSalesResultApi";
+
 // const devUrl =
 //   "https://1us1ed23t2.execute-api.ap-northeast-1.amazonaws.com/hoken_juku_sales_result/sales-results/applications";
 
