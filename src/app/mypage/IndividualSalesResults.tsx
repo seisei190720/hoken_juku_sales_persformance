@@ -136,6 +136,7 @@ const IndividualSalesResults: FC<Props> = ({
                   userId={userId}
                   targetMonth={targetMonth}
                   productMst={productMst}
+                  canEdit={canEdit}
                 />
               );
             default:

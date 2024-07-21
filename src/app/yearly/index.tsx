@@ -15,6 +15,13 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
+import SimpleSummaryCard from "../mypage/components/SimpleSummaryCard";
+import Drawer from "@mui/material/Drawer";
+import { useLastApplicationsComposition } from "../mypage/contract/hooks/useLastApplicationsComposition";
+import SearchIcon from "@mui/icons-material/Search";
+import ListIcon from "@mui/icons-material/List";
+import Fab from "@mui/material/Fab";
+import { useContractBudgetApi } from "../api/useContractBudgetApi";
 
 type Props = {
   user: AuthUser;
@@ -35,6 +42,15 @@ const YearlyPage: FC<Props> = ({ user }) => {
     setSelectedMember(members.find((m) => e.target.value === m.id) || "all");
   };
 
+  const [openLastApplicationDrawer, setOpenLastApplicationDrawer] =
+    useState(false);
+  const handleDrawerClickOpen = () => {
+    setOpenLastApplicationDrawer(true);
+  };
+  const handleDrawerClose = () => {
+    setOpenLastApplicationDrawer(false);
+  };
+
   const [targetYear, setTargetYear] = useState<string | null>(null);
   const { salesResultData } = useSalesResultApi(
     selecetedMember === "all" ? null : selecetedMember.id,
@@ -45,10 +61,20 @@ const YearlyPage: FC<Props> = ({ user }) => {
     }
   );
 
+  const lastApplicationData = useLastApplicationsComposition(
+    selecetedMember === "all" ? null : selecetedMember.id
+  );
+
   const { applicationData } = useApplicationApi({
     userId: selecetedMember === "all" ? null : selecetedMember.id,
     year: targetYear,
     establishDate: null,
+  });
+
+  const { contractBudgetData, postContractBudgetData } = useContractBudgetApi({
+    userId: selecetedMember === "all" ? "1" : selecetedMember.id,
+    year: targetYear,
+    month: null,
   });
 
   const forwardToNextMonth = () => {
@@ -113,9 +139,22 @@ const YearlyPage: FC<Props> = ({ user }) => {
           >
             今年度に戻る
           </Button>
+          <Fab
+            variant="extended"
+            size="medium"
+            color="primary"
+            onClick={handleDrawerClickOpen}
+            sx={{ position: "fixed", top: 72, right: 56 }}
+          >
+            <ListIcon sx={{ mr: 1 }} />
+            未成立の申込
+            {/* <Button onClick={handleDrawerClickOpen}>未成立の申込情報</Button> */}
+          </Fab>
         </Stack>
         <YearlyResults
           userId={user.userId}
+          selecetedMember={selecetedMember}
+          targetYear={targetYear}
           salesResultData={salesResultData}
           applicationData={applicationData}
           routeMst={routeMst}
@@ -123,7 +162,29 @@ const YearlyPage: FC<Props> = ({ user }) => {
           productMst={productMst}
           companyMst={companyMst}
           statusMst={statusMst}
+          contractBudgetData={contractBudgetData}
+          postContractBudgetData={postContractBudgetData}
         />
+        <Drawer
+          anchor="bottom"
+          open={openLastApplicationDrawer}
+          onClose={handleDrawerClose}
+        >
+          <Stack width={400} height={400}>
+            <SimpleSummaryCard
+              values={
+                lastApplicationData !== undefined
+                  ? {
+                      mainValue: lastApplicationData.count,
+                      subValue: "3000円",
+                    }
+                  : undefined
+              }
+              title={"申込残"}
+              mainUnit={"件"}
+            />
+          </Stack>
+        </Drawer>
       </Stack>
     </>
   );

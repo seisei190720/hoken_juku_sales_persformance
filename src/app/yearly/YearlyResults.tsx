@@ -6,7 +6,9 @@ import {
   Application,
   CompanyMst,
   ConsultContentMst,
+  ContractBudget,
   IndividualSalesResult,
+  Member,
   ProductMst,
   RouteMst,
   StatusMst,
@@ -18,6 +20,8 @@ import YearlyConstractResult from "./YearlyConstractResult";
 
 type Props = {
   userId: string;
+  selecetedMember: Member | "all";
+  targetYear: string | null;
   salesResultData: IndividualSalesResult[] | undefined;
   applicationData: Application[] | undefined;
   routeMst: RouteMst[];
@@ -25,12 +29,16 @@ type Props = {
   productMst: ProductMst[];
   companyMst: CompanyMst[];
   statusMst: StatusMst[];
+  contractBudgetData: ContractBudget[];
+  postContractBudgetData: (newData: ContractBudget) => Promise<void>;
 };
 
 type YearlyPageMode = "achievement" | "contract";
 
 const StoreResults: FC<Props> = ({
   userId,
+  selecetedMember,
+  targetYear,
   salesResultData,
   applicationData,
   routeMst,
@@ -38,6 +46,8 @@ const StoreResults: FC<Props> = ({
   productMst,
   companyMst,
   statusMst,
+  contractBudgetData,
+  postContractBudgetData,
 }) => {
   const [viewMode, setViewMode] = useState<YearlyPageMode>("achievement");
   const { members } = useMockData();
@@ -91,9 +101,12 @@ const StoreResults: FC<Props> = ({
             case "contract":
               return (
                 <YearlyConstractResult
-                  lastSalesResultData={salesResultData}
+                  selecetedMember={selecetedMember}
+                  targetYear={targetYear}
                   applicationData={applicationData}
                   productMst={productMst}
+                  contractBudgetData={contractBudgetData}
+                  postContractBudgetData={postContractBudgetData}
                 />
               );
             default:

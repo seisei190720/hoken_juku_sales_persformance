@@ -53,6 +53,13 @@ export type NewVisitor = {
   consultContent: ConsultContentMst | null;
 };
 
+export type ContractBudget = {
+  userId: string;
+  year: string;
+  month: string | null;
+  value: number;
+};
+
 export type RouteKind = "new" | "exist";
 export type RouteMst = {
   id: string;

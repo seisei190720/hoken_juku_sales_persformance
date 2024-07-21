@@ -1,5 +1,10 @@
 import { useSalesResultApi } from "@/app/api/useSalesResultApi";
-import { Application, IndividualSalesResult, Member } from "@/app/types";
+import {
+  Application,
+  ContractBudget,
+  IndividualSalesResult,
+  Member,
+} from "@/app/types";
 import { amber } from "@mui/material/colors";
 import { useEffect, useMemo, useState } from "react";
 import { CountAndPercentType } from "./useStoreAchievementData";
@@ -13,7 +18,8 @@ export type ConstractSouceType = {
 export const useStoreConstractData = (
   lastSalesResultData: IndividualSalesResult[] | undefined,
   applicationData: Application[] | undefined,
-  member: Member[]
+  member: Member[],
+  memberConstractBudgetData: ContractBudget[]
 ) => {
   const constractSumAndAchievementRateData: CountAndPercentType[] | undefined =
     useMemo(() => {

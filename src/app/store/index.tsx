@@ -10,6 +10,7 @@ import Button from "@mui/material/Button";
 import { resolveYear, useSalesResultApi } from "../api/useSalesResultApi";
 import { useApplicationApi } from "../api/useApplicationApi";
 import StoreResults from "./StoreResults";
+import { useContractBudgetApi } from "../api/useContractBudgetApi";
 
 type Props = {
   user: AuthUser;
@@ -43,6 +44,21 @@ const StorePage: FC<Props> = ({ user }) => {
     year: resolveYear(targetMonth),
     establishDate: targetMonth,
   });
+  const {
+    contractBudgetData: storeConstractBudgetData,
+    postContractBudgetData: postStoreConstractBudgetData,
+  } = useContractBudgetApi({
+    userId: "1",
+    year: resolveYear(targetMonth),
+    month: targetMonth,
+  });
+
+  const { contractBudgetData: memberConstractBudgetData } =
+    useContractBudgetApi({
+      userId: null,
+      year: resolveYear(targetMonth),
+      month: targetMonth,
+    });
 
   const forwardToNextMonth = () => {
     setTargetMonth((v) => dayjs(v).add(1, "month").format("YYYY-MM"));
@@ -81,6 +97,7 @@ const StorePage: FC<Props> = ({ user }) => {
         </Stack>
         <StoreResults
           userId={user.userId}
+          targetMonth={targetMonth}
           salesResultData={salesResultData}
           inProgressSalesResultData={inProgressSalasResultData}
           applicationData={applicationData}
@@ -89,6 +106,9 @@ const StorePage: FC<Props> = ({ user }) => {
           productMst={productMst}
           companyMst={companyMst}
           statusMst={statusMst}
+          storeConstractBudgetData={storeConstractBudgetData}
+          postStoreConstractBudgetData={postStoreConstractBudgetData}
+          memberConstractBudgetData={memberConstractBudgetData}
         />
       </Stack>
     </>

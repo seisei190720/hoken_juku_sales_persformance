@@ -29,7 +29,6 @@ export type YearlyConstractSumAndCountType = {
 };
 
 export const useYearlyConstractComposition = (
-  lastSalesResultData: IndividualSalesResult[] | undefined,
   applicationData: Application[] | undefined,
   //   routeMst: RouteMst[]
   // consultContentMst: ConsultContentMst[],

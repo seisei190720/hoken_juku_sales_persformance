@@ -68,7 +68,7 @@ const YearlyBudgetAndAchievementComposedChart: FC<Props> = ({
             }}
           >
             <CartesianGrid stroke="#f5f5f5" />
-            <XAxis dataKey="name" />
+            <XAxis dataKey="month" />
             <YAxis
               yAxisId={1}
               orientation="right"

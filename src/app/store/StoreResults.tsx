@@ -6,6 +6,7 @@ import {
   Application,
   CompanyMst,
   ConsultContentMst,
+  ContractBudget,
   IndividualSalesResult,
   ProductMst,
   RouteMst,
@@ -15,9 +16,11 @@ import Stack from "@mui/material/Stack";
 import StoreConstract from "./StoreConstract";
 import StoreAchievement from "./StoreAchievement";
 import { useMockData } from "../mocks";
+import { useContractBudgetApi } from "../api/useContractBudgetApi";
 
 type Props = {
   userId: string;
+  targetMonth: string | null;
   salesResultData: IndividualSalesResult[] | undefined;
   inProgressSalesResultData: IndividualSalesResult[] | undefined;
   applicationData: Application[] | undefined;
@@ -26,12 +29,16 @@ type Props = {
   productMst: ProductMst[];
   companyMst: CompanyMst[];
   statusMst: StatusMst[];
+  storeConstractBudgetData: ContractBudget[];
+  postStoreConstractBudgetData: (newData: ContractBudget) => Promise<void>;
+  memberConstractBudgetData: ContractBudget[];
 };
 
 type StorePageMode = "achievement" | "contract";
 
 const StoreResults: FC<Props> = ({
   userId,
+  targetMonth,
   salesResultData,
   inProgressSalesResultData,
   applicationData,
@@ -40,11 +47,13 @@ const StoreResults: FC<Props> = ({
   productMst,
   companyMst,
   statusMst,
+  storeConstractBudgetData,
+  postStoreConstractBudgetData,
+  memberConstractBudgetData,
 }) => {
   const [viewMode, setViewMode] = useState<StorePageMode>("achievement");
 
   const { members } = useMockData();
-
   const updateViewMode = useCallback(
     (event: React.SyntheticEvent, nextView: string) => {
       setViewMode(nextView as StorePageMode);
@@ -98,9 +107,14 @@ const StoreResults: FC<Props> = ({
             case "contract":
               return (
                 <StoreConstract
+                  userId={userId}
+                  targetMonth={targetMonth}
                   inProgressSalesResultData={inProgressSalesResultData}
                   applicationData={applicationData}
                   members={members}
+                  storeConstractBudgetData={storeConstractBudgetData}
+                  postStoreConstractBudgetData={postStoreConstractBudgetData}
+                  memberConstractBudgetData={memberConstractBudgetData}
                 />
               );
             default:

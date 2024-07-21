@@ -1,16 +1,8 @@
 import { useSalesResultApi } from "@/app/api/useSalesResultApi";
 import { Application, IndividualSalesResult, RouteMst } from "@/app/types";
-import {
-  amber,
-  deepOrange,
-  green,
-  lightGreen,
-  orange,
-  teal,
-} from "@mui/material/colors";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-export const useLastApplicationsComposition = (userId: string) => {
+export const useLastApplicationsComposition = (userId: string | null) => {
   const [lastApplicationResults, setLastApplicationResults] = useState<
     IndividualSalesResult[] | undefined
   >(undefined);

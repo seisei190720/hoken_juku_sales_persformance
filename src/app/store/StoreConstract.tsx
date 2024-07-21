@@ -1,26 +1,44 @@
 import { FC } from "react";
-import { Application, IndividualSalesResult, Member } from "@/app/types";
+import {
+  Application,
+  ContractBudget,
+  IndividualSalesResult,
+  Member,
+} from "@/app/types";
 import Stack from "@mui/material/Stack";
 import SimpleSummaryCard from "../mypage/components/SimpleSummaryCard";
 import CountAndPercentBarChart from "./components/CountAndPercentBarChart";
 import { useStoreConstractData } from "./hooks/useStoreConstractData";
 import ConstractSourceDataList from "./components/ConstractSourceDataList";
+import BudgetCard from "../component/BudgetCard";
+import { resolveYear } from "../api/useSalesResultApi";
 
 type Props = {
+  userId: string;
+  targetMonth: string | null;
   inProgressSalesResultData: IndividualSalesResult[] | undefined;
   applicationData: Application[] | undefined;
   members: Member[];
+  storeConstractBudgetData: ContractBudget[];
+  postStoreConstractBudgetData: (newData: ContractBudget) => Promise<void>;
+  memberConstractBudgetData: ContractBudget[];
 };
 
 const StoreConstract: FC<Props> = ({
+  userId,
+  targetMonth,
   inProgressSalesResultData,
   applicationData,
   members,
+  storeConstractBudgetData,
+  postStoreConstractBudgetData,
+  memberConstractBudgetData,
 }) => {
   const storeConstractData = useStoreConstractData(
     inProgressSalesResultData,
     applicationData,
-    members
+    members,
+    memberConstractBudgetData
   );
 
   return (
@@ -44,17 +62,22 @@ const StoreConstract: FC<Props> = ({
           title={"当月実績"}
           mainUnit={"円"}
         />
-        <SimpleSummaryCard
-          values={
-            storeConstractData.storeConstractSum === undefined
-              ? undefined
-              : {
-                  mainValue: storeConstractData.storeConstractSum,
-                  subValue: "予算：???円",
-                }
-          }
-          title={"予算到達まで残り"}
+        <BudgetCard
+          value={storeConstractData.storeConstractSum}
+          title={"予算達成まで残り"}
           mainUnit={"円"}
+          userId={"1"} //storeIdを入れたいので、
+          targetMonth={targetMonth}
+          targetYear={resolveYear(targetMonth)}
+          contractBudgetData={
+            storeConstractBudgetData === undefined
+              ? undefined
+              : storeConstractBudgetData.find(
+                  (c: ContractBudget) => (c.userId = "1")
+                ) || null
+          }
+          postContractBudgetData={postStoreConstractBudgetData}
+          canEdit={true}
         />
         <SimpleSummaryCard
           values={
