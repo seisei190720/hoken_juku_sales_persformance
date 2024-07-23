@@ -1,26 +1,55 @@
 import { FC } from "react";
-import { Application, IndividualSalesResult, Member } from "@/app/types";
+import {
+  Application,
+  ContractBudget,
+  IndividualSalesResult,
+  Member,
+} from "@/app/types";
 import Stack from "@mui/material/Stack";
 import SimpleSummaryCard from "../mypage/components/SimpleSummaryCard";
-import CountAndPercentBarChart from "./components/CountAndPercentBarChart";
 import { useStoreConstractData } from "./hooks/useStoreConstractData";
-import ConstractSourceDataList from "./components/ConstractSourceDataList";
+import BudgetCard from "../component/BudgetCard";
+import { resolveYear } from "../api/useSalesResultApi";
+import YearlyBudgetAndAchievementComposedChart from "../yearly/components/YearlyBudgetAndAchievementComposedChart";
+import YearlyBudgetAndAchievementSourceDataList from "../yearly/components/YearlyBudgetAndAchievementSourceDataList";
+import { useContractBudgetApi } from "../api/useContractBudgetApi";
 
 type Props = {
+  userId: string;
+  targetMonth: string | null;
   inProgressSalesResultData: IndividualSalesResult[] | undefined;
   applicationData: Application[] | undefined;
   members: Member[];
 };
 
 const StoreConstract: FC<Props> = ({
+  userId,
+  targetMonth,
   inProgressSalesResultData,
   applicationData,
   members,
 }) => {
+  const {
+    contractBudgetData: storeContractBudgetData,
+    postContractBudgetData: storePostContractBudgetData,
+  } = useContractBudgetApi({
+    userId: "1",
+    year: resolveYear(targetMonth),
+    month: targetMonth,
+  });
+
+  const { contractBudgetData: memberConstractBudget } = useContractBudgetApi({
+    userId: null,
+    year: resolveYear(targetMonth),
+    month: targetMonth,
+  });
+
   const storeConstractData = useStoreConstractData(
     inProgressSalesResultData,
     applicationData,
-    members
+    members,
+    storeContractBudgetData,
+    memberConstractBudget
   );
 
   return (
@@ -37,47 +66,40 @@ const StoreConstract: FC<Props> = ({
             storeConstractData.storeConstractSum === undefined
               ? undefined
               : {
-                  mainValue: storeConstractData.storeConstractSum,
-                  subValue: "達成率：??%",
+                  mainValue: storeConstractData.storeConstractSum.achivementSum,
+                  subValue: `達成率：${storeConstractData.storeConstractSum.achivementPercent}%`,
                 }
           }
           title={"当月実績"}
           mainUnit={"円"}
         />
-        <SimpleSummaryCard
-          values={
-            storeConstractData.storeConstractSum === undefined
-              ? undefined
-              : {
-                  mainValue: storeConstractData.storeConstractSum,
-                  subValue: "予算：???円",
-                }
-          }
-          title={"予算到達まで残り"}
+        <BudgetCard
+          value={storeConstractData.storeConstractSum?.achivementSum}
+          title={"予算達成まで残り"}
           mainUnit={"円"}
-        />
-        <SimpleSummaryCard
-          values={
-            storeConstractData.inProgressApplicationCount === undefined
+          userId={"1"} //storeIdを入れたいので、
+          targetMonth={targetMonth}
+          targetYear={resolveYear(targetMonth)}
+          contractBudgetData={
+            storeContractBudgetData === undefined
               ? undefined
-              : {
-                  mainValue:
-                    storeConstractData.inProgressApplicationCount.count,
-                  subValue: `合計：${storeConstractData.inProgressApplicationCount.sum.toLocaleString()}円`,
-                }
+              : storeContractBudgetData.find(
+                  (c: ContractBudget) => (c.userId = "1")
+                ) || null
           }
-          title={"申込残り"}
-          mainUnit={"件"}
+          postContractBudgetData={storePostContractBudgetData}
+          canEdit={true} //今は誰でもいじれるようにしているが、管理者しかいじれないようにする必要あり
         />
       </Stack>
       <Stack direction="row" gap={2}>
-        <CountAndPercentBarChart
-          title={"実績(達成率)"}
+        <YearlyBudgetAndAchievementComposedChart
+          title={"実績グラフ"}
           values={storeConstractData.constractSumAndAchievementRateData}
         />
-        <ConstractSourceDataList
+        <YearlyBudgetAndAchievementSourceDataList
           title={"実績表"}
-          values={storeConstractData.constractSouceData}
+          values={storeConstractData.constractSumAndAchievementRateData}
+          columnHeaders={["名前", "予算", "実績", "達成率"]}
         />
       </Stack>
     </Stack>

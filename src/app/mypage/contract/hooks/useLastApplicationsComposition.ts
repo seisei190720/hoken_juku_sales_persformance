@@ -1,24 +1,28 @@
 import { useSalesResultApi } from "@/app/api/useSalesResultApi";
-import { Application, IndividualSalesResult, RouteMst } from "@/app/types";
 import {
-  amber,
-  deepOrange,
-  green,
-  lightGreen,
-  orange,
-  teal,
-} from "@mui/material/colors";
+  Application,
+  IndividualSalesResult,
+  Member,
+  RouteMst,
+} from "@/app/types";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-export const useLastApplicationsComposition = (userId: string) => {
+export const useLastApplicationsComposition = (
+  // userId: string | null,
+  members: Member[]
+) => {
   const [lastApplicationResults, setLastApplicationResults] = useState<
     IndividualSalesResult[] | undefined
   >(undefined);
-  const { salesResultData } = useSalesResultApi(userId, {
-    status: "1",
-    year: null,
-    firstVisitDate: null,
-  });
+  const { salesResultData } = useSalesResultApi(
+    //常にstore全体のデータを取ってくるようにする
+    null, //いずれselectedMemberIdを入れる
+    {
+      status: "1",
+      year: null,
+      firstVisitDate: null,
+    }
+  );
 
   useEffect(() => {
     setLastApplicationResults(salesResultData);
@@ -26,17 +30,43 @@ export const useLastApplicationsComposition = (userId: string) => {
 
   const lastApplicationData = useMemo(() => {
     if (!lastApplicationResults) return;
-    const applications = lastApplicationResults.flatMap((a) => a.applications);
+    const targetApplications = lastApplicationResults
+      .flatMap((a) => a.applications)
+      .filter((v) => v.status === "1");
     // const reducer = (pre: number | null, crr: number | null) => {
     //   if (pre === null) return crr;
     //   const crrValue = crr === null ? 0 : crr;
     //   return pre + crrValue;
     // };
     return {
-      count: applications.filter((v) => v.status === "1").length,
-      //   sum: applications.flatMap((v) => v.firstYearFee).reduce(reducer),
+      count: targetApplications.length,
+      sum: targetApplications.reduce(
+        (pre, { firstYearFee }) => pre + (firstYearFee ?? 0),
+        0
+      ),
     };
   }, [lastApplicationResults]);
 
-  return lastApplicationData;
+  const memberLastApplicationDate = useMemo(() => {
+    if (!lastApplicationResults) return;
+    return members.map((m) => {
+      const targetApp = lastApplicationResults
+        .filter((a) => a.userId === m.id)
+        .flatMap((f) => f.applications)
+        .filter((v) => v.status === "1");
+      return {
+        name: m.name,
+        count: targetApp.length,
+        sum: targetApp.reduce(
+          (pre, { firstYearFee }) => pre + (firstYearFee ?? 0),
+          0
+        ),
+      };
+    });
+  }, [lastApplicationResults]);
+
+  return {
+    lastApplicationData,
+    memberLastApplicationDate,
+  };
 };

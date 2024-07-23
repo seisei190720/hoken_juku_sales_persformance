@@ -11,16 +11,17 @@ import {
   Bar,
   Line,
   ComposedChart,
+  Scatter,
 } from "recharts";
 import Card from "@mui/material/Card";
 import { blue, yellow } from "@mui/material/colors";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
-import { YearlyBudgetAndAchievementType } from "../hooks/useYearlyConstractComposition";
+import { BudgetAndAchievementType } from "../hooks/useYearlyConstractComposition";
 
 type Props = {
   title: string;
-  values: YearlyBudgetAndAchievementType[] | undefined;
+  values: BudgetAndAchievementType[] | undefined;
 };
 
 const YearlyBudgetAndAchievementComposedChart: FC<Props> = ({
@@ -94,8 +95,9 @@ const YearlyBudgetAndAchievementComposedChart: FC<Props> = ({
               dataKey="未達額"
               yAxisId={2}
               barSize={40}
-              fill={red[200]}
-              stroke={red[700]}
+              fill={grey[200]}
+              // fill={red[200]}
+              // stroke={red[700]}
               stackId="a"
             />
             <Bar
@@ -111,6 +113,12 @@ const YearlyBudgetAndAchievementComposedChart: FC<Props> = ({
               yAxisId={1}
               stroke={orange[200]}
               strokeWidth={2}
+            />
+            <Scatter
+              yAxisId={2}
+              dataKey="予算"
+              fill={red[400]}
+              shape="square"
             />
           </ComposedChart>
         </ResponsiveContainer>

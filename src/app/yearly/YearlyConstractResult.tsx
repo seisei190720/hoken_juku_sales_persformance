@@ -1,5 +1,11 @@
 import { FC } from "react";
-import { Application, IndividualSalesResult, ProductMst } from "@/app/types";
+import {
+  Application,
+  ContractBudget,
+  IndividualSalesResult,
+  Member,
+  ProductMst,
+} from "@/app/types";
 import Stack from "@mui/material/Stack";
 import SimpleSummaryCard from "../mypage/components/SimpleSummaryCard";
 import { useYearlyConstractComposition } from "./hooks/useYearlyConstractComposition";
@@ -7,22 +13,29 @@ import YearlyBudgetAndAchievementComposedChart from "./components/YearlyBudgetAn
 import YearlyConstractStackedChart from "./components/YearlyConstractStackedChart";
 import YearlyConstractSourceDataList from "./components/YearlyConstractSourceDataList";
 import YearlyBudgetAndAchievementSourceDataList from "./components/YearlyBudgetAndAchievementSourceDataList";
+import BudgetCard from "../component/BudgetCard";
 
 type Props = {
-  lastSalesResultData: IndividualSalesResult[] | undefined;
+  selecetedMember: Member | "all";
+  targetYear: string | null;
   applicationData: Application[] | undefined;
   productMst: ProductMst[];
+  contractBudgetData: ContractBudget[];
+  postContractBudgetData: (newData: ContractBudget) => Promise<void>;
 };
 
 const YearlyConstractResult: FC<Props> = ({
-  lastSalesResultData,
+  selecetedMember,
+  targetYear,
   applicationData,
   productMst,
+  contractBudgetData,
+  postContractBudgetData,
 }) => {
   const yearlyConstractComposition = useYearlyConstractComposition(
-    lastSalesResultData,
     applicationData,
-    productMst
+    productMst,
+    contractBudgetData
   );
 
   return (
@@ -36,25 +49,34 @@ const YearlyConstractResult: FC<Props> = ({
                   mainValue:
                     yearlyConstractComposition.allBudgetAndAchievementData
                       .achivementSum,
-                  subValue: "達成率：??%",
+                  subValue: `達成率：${yearlyConstractComposition.allBudgetAndAchievementData.achivementPercent}%`,
                 }
           }
           title={"今年度実績"}
           mainUnit={"円"}
         />
-        <SimpleSummaryCard
-          values={
-            yearlyConstractComposition.allBudgetAndAchievementData === undefined
-              ? undefined
-              : {
-                  mainValue:
-                    yearlyConstractComposition.allBudgetAndAchievementData
-                      .achivementSum,
-                  subValue: "予算：???円",
-                }
+        <BudgetCard
+          value={
+            yearlyConstractComposition.allBudgetAndAchievementData
+              ?.achivementSum
           }
-          title={"予算到達まで残り"}
+          title={"予算達成まで残り"}
           mainUnit={"円"}
+          userId={selecetedMember === "all" ? "1" : selecetedMember.id}
+          targetMonth={null}
+          targetYear={targetYear}
+          contractBudgetData={
+            contractBudgetData === undefined
+              ? undefined
+              : contractBudgetData.find(
+                  (c: ContractBudget) =>
+                    (c.userId =
+                      selecetedMember === "all" ? "1" : selecetedMember.id) &&
+                    c.month === null
+                ) || null
+          }
+          postContractBudgetData={postContractBudgetData}
+          canEdit={true}
         />
       </Stack>
       <Stack direction="row" gap={2}>
@@ -65,7 +87,7 @@ const YearlyConstractResult: FC<Props> = ({
         <YearlyBudgetAndAchievementSourceDataList
           title={"予算と実績"}
           values={yearlyConstractComposition.budgetAndAchievementData}
-          columnHeaders={["月", "実績", "予算", "達成率"]}
+          columnHeaders={["月", "予算", "実績", "達成率"]}
         />
       </Stack>
       <Stack direction="row" gap={2}>

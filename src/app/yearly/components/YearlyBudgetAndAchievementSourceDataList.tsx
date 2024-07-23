@@ -11,11 +11,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { styled } from "@mui/material/styles";
-import { YearlyBudgetAndAchievementType } from "../hooks/useYearlyConstractComposition";
+import { BudgetAndAchievementType } from "../hooks/useYearlyConstractComposition";
 
 type Props = {
   title: string;
-  values: YearlyBudgetAndAchievementType[] | undefined;
+  values: BudgetAndAchievementType[] | undefined;
   columnHeaders: string[];
 };
 
@@ -77,17 +77,15 @@ const YearlyBudgetAndAchievementSourceDataList: FC<Props> = ({
             <TableBody>
               {values.map((v, idx) => (
                 <StyledTableRow key={`${idx}_row`}>
-                  <TableCell key={`${idx}_month_${v.month}`}>
-                    {v.month}
+                  <TableCell key={`${idx}_month_${v.name}`}>{v.name}</TableCell>
+                  <TableCell key={`${idx}_budget_${v.予算}`} align="right">
+                    {v.予算.toLocaleString()}
                   </TableCell>
                   <TableCell
                     key={`${idx}_achievement_${v.実実績}`}
                     align="right"
                   >
                     {v.実実績.toLocaleString()}
-                  </TableCell>
-                  <TableCell key={`${idx}_budget_${v.予算}`} align="right">
-                    {v.予算.toLocaleString()}
                   </TableCell>
                   <TableCell key={`${idx}_percent_${v.達成率}`} align="right">
                     {`${v.達成率.toLocaleString()}%`}

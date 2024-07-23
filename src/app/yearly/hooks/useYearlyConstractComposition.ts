@@ -1,18 +1,13 @@
 import {
   Application,
-  CompanyMst,
-  ConsultContentMst,
-  IndividualSalesResult,
-  Member,
+  ContractBudget,
   ProductMst,
-  RouteMst,
-  StatusMst,
   yearMonth,
 } from "@/app/types";
 import { useCallback, useMemo } from "react";
 
-export type YearlyBudgetAndAchievementType = {
-  month: string;
+export type BudgetAndAchievementType = {
+  name: string;
   実績: number;
   実実績: number;
   未達額: number;
@@ -29,20 +24,29 @@ export type YearlyConstractSumAndCountType = {
 };
 
 export const useYearlyConstractComposition = (
-  lastSalesResultData: IndividualSalesResult[] | undefined,
   applicationData: Application[] | undefined,
-  //   routeMst: RouteMst[]
-  // consultContentMst: ConsultContentMst[],
-  productMst: ProductMst[]
-  // companyMst: CompanyMst[],
-  // statusMst: StatusMst[]
+  productMst: ProductMst[],
+  contractBudgetData: ContractBudget[]
 ) => {
-  const getTargetMonthData = useCallback(
-    (target: Application[], month: string) =>
+  const getTargetMonthDateApp = useCallback(
+    (target: Application[], monthDate: string) =>
       target.filter((r) => {
         if (r.establishDate === null) return false;
-        return r.establishDate.indexOf(month) !== -1;
+        return r.establishDate.indexOf(monthDate) !== -1;
       }),
+    []
+  );
+  const getTargetMonthYearContract = useCallback(
+    (target: ContractBudget[], monthYear: string) =>
+      target.find((r) => {
+        if (r.month === null) return false;
+        return r.month.indexOf(monthYear) !== -1;
+      }),
+    []
+  );
+
+  const getYearlyContract = useCallback(
+    (target: ContractBudget[]) => target.find((r) => r.month === null),
     []
   );
 
@@ -65,23 +69,29 @@ export const useYearlyConstractComposition = (
     []
   );
 
-  const budgetAndAchievementData: YearlyBudgetAndAchievementType[] | undefined =
+  const budgetAndAchievementData: BudgetAndAchievementType[] | undefined =
     useMemo(() => {
-      if (!applicationData) return;
+      if (!applicationData || !contractBudgetData) return;
       return yearMonth.map((y) => {
-        const targetMonthApp = getTargetMonthData(applicationData, y.keyMonth);
+        const targetMonthApp = getTargetMonthDateApp(
+          applicationData,
+          y.keyMonthDate
+        );
         const constractSum = targetMonthApp
           .filter((t) => t.status === "2")
           .reduce((pre, { firstYearFee }) => pre + (firstYearFee ?? 0), 0);
-        //一時的に予算額を100,000円と仮定する(予算を入力てできるようになったら修正する)
-        const budget = 700000;
+        const targetMonthContract = getTargetMonthYearContract(
+          contractBudgetData,
+          y.keyMonthYear
+        );
+        const budget = !targetMonthContract ? 0 : targetMonthContract.value;
         const achievedPercent = (constractSum / budget) * 100;
         const resultPercent = Math.round(achievedPercent * 10) / 10;
         const resultPercentUnderHundred =
           resultPercent > 100 ? 100 : resultPercent;
         const excessSum = constractSum - budget < 0 ? 0 : constractSum - budget;
         return {
-          month: y.name,
+          name: y.name,
           実績: constractSum - excessSum, // グラフで表示するように、予算額をmaxとしている
           実実績: constractSum,
           未達額: budget - constractSum < 0 ? 0 : budget - constractSum,
@@ -90,12 +100,15 @@ export const useYearlyConstractComposition = (
           達成率: isNaN(resultPercent) ? 0 : resultPercentUnderHundred,
         };
       });
-    }, [applicationData, getTargetMonthData]);
+    }, [applicationData, contractBudgetData, getTargetMonthDateApp]);
 
   const constractSumData = useMemo(() => {
     if (!applicationData) return;
     return yearMonth.map((y) => {
-      const targetMonthApp = getTargetMonthData(applicationData, y.keyMonth);
+      const targetMonthApp = getTargetMonthDateApp(
+        applicationData,
+        y.keyMonthDate
+      );
       const targetFilteredApp = targetMonthApp.filter((t) => t.status === "2");
       return {
         month: y.name,
@@ -115,7 +128,7 @@ export const useYearlyConstractComposition = (
     });
   }, [
     applicationData,
-    getTargetMonthData,
+    getTargetMonthDateApp,
     lifeApplications,
     nonLifeApplications,
   ]);
@@ -123,7 +136,10 @@ export const useYearlyConstractComposition = (
   const constractCountData = useMemo(() => {
     if (!applicationData) return;
     return yearMonth.map((y) => {
-      const targetMonthApp = getTargetMonthData(applicationData, y.keyMonth);
+      const targetMonthApp = getTargetMonthDateApp(
+        applicationData,
+        y.keyMonthDate
+      );
       const targetFilteredApp = targetMonthApp.filter((t) => t.status === "2");
       return {
         month: y.name,
@@ -134,20 +150,43 @@ export const useYearlyConstractComposition = (
     });
   }, [
     applicationData,
-    getTargetMonthData,
+    getTargetMonthDateApp,
     lifeApplications,
     nonLifeApplications,
   ]);
 
+  const calcAchievementPercent = useCallback(
+    (
+      targetMonthContract: ContractBudget | undefined,
+      achivementSum: number
+    ) => {
+      if (!targetMonthContract) return 0;
+
+      const achievedPercent = (achivementSum / targetMonthContract.value) * 100;
+      const resultPercent = Math.round(achievedPercent * 10) / 10;
+      const resultPercentUnderHundred =
+        resultPercent > 100 ? 100 : resultPercent;
+      return isNaN(resultPercent) ? 0 : resultPercentUnderHundred;
+    },
+    []
+  );
+
   const allBudgetAndAchievementData = useMemo(() => {
-    if (!budgetAndAchievementData) return;
+    if (!budgetAndAchievementData || !contractBudgetData) return;
+
+    const achivementSum = budgetAndAchievementData
+      .map((b) => b.実実績)
+      .reduce((pre, crr) => pre + crr, 0);
+    const targetYearContract = getYearlyContract(contractBudgetData);
+
     return {
-      achivementSum: budgetAndAchievementData
-        .map((b) => b.実実績)
-        .reduce((pre, crr) => pre + crr, 0),
-      budgetSum: 1000000, //TODO 予算
+      achivementSum: achivementSum,
+      achivementPercent: calcAchievementPercent(
+        targetYearContract,
+        achivementSum
+      ),
     };
-  }, [budgetAndAchievementData]);
+  }, [budgetAndAchievementData, contractBudgetData]);
 
   return {
     budgetAndAchievementData,

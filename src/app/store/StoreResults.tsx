@@ -6,6 +6,7 @@ import {
   Application,
   CompanyMst,
   ConsultContentMst,
+  ContractBudget,
   IndividualSalesResult,
   ProductMst,
   RouteMst,
@@ -18,6 +19,7 @@ import { useMockData } from "../mocks";
 
 type Props = {
   userId: string;
+  targetMonth: string | null;
   salesResultData: IndividualSalesResult[] | undefined;
   inProgressSalesResultData: IndividualSalesResult[] | undefined;
   applicationData: Application[] | undefined;
@@ -32,6 +34,7 @@ type StorePageMode = "achievement" | "contract";
 
 const StoreResults: FC<Props> = ({
   userId,
+  targetMonth,
   salesResultData,
   inProgressSalesResultData,
   applicationData,
@@ -44,7 +47,6 @@ const StoreResults: FC<Props> = ({
   const [viewMode, setViewMode] = useState<StorePageMode>("achievement");
 
   const { members } = useMockData();
-
   const updateViewMode = useCallback(
     (event: React.SyntheticEvent, nextView: string) => {
       setViewMode(nextView as StorePageMode);
@@ -98,6 +100,8 @@ const StoreResults: FC<Props> = ({
             case "contract":
               return (
                 <StoreConstract
+                  userId={userId}
+                  targetMonth={targetMonth}
                   inProgressSalesResultData={inProgressSalesResultData}
                   applicationData={applicationData}
                   members={members}

@@ -7,7 +7,7 @@ import { useMockData } from "../mocks";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Button from "@mui/material/Button";
-import { resolveYear, useSalesResultApi } from "../api/useSalesResultApi";
+import { useSalesResultApi } from "../api/useSalesResultApi";
 import { useApplicationApi } from "../api/useApplicationApi";
 import YearlyResults from "./YearlyResults";
 import { Member } from "../types";
@@ -15,6 +15,10 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import Fab from "@mui/material/Fab";
+import { useContractBudgetApi } from "../api/useContractBudgetApi";
+import LastApplicationDrawer from "../component/LastApplicationDrawer";
 
 type Props = {
   user: AuthUser;
@@ -35,6 +39,15 @@ const YearlyPage: FC<Props> = ({ user }) => {
     setSelectedMember(members.find((m) => e.target.value === m.id) || "all");
   };
 
+  const [openLastApplicationDrawer, setOpenLastApplicationDrawer] =
+    useState(false);
+  const handleDrawerClickOpen = () => {
+    setOpenLastApplicationDrawer(true);
+  };
+  const handleDrawerClose = () => {
+    setOpenLastApplicationDrawer(false);
+  };
+
   const [targetYear, setTargetYear] = useState<string | null>(null);
   const { salesResultData } = useSalesResultApi(
     selecetedMember === "all" ? null : selecetedMember.id,
@@ -49,6 +62,12 @@ const YearlyPage: FC<Props> = ({ user }) => {
     userId: selecetedMember === "all" ? null : selecetedMember.id,
     year: targetYear,
     establishDate: null,
+  });
+
+  const { contractBudgetData, postContractBudgetData } = useContractBudgetApi({
+    userId: selecetedMember === "all" ? "1" : selecetedMember.id,
+    year: targetYear,
+    month: null,
   });
 
   const forwardToNextMonth = () => {
@@ -116,6 +135,8 @@ const YearlyPage: FC<Props> = ({ user }) => {
         </Stack>
         <YearlyResults
           userId={user.userId}
+          selecetedMember={selecetedMember}
+          targetYear={targetYear}
           salesResultData={salesResultData}
           applicationData={applicationData}
           routeMst={routeMst}
@@ -123,6 +144,22 @@ const YearlyPage: FC<Props> = ({ user }) => {
           productMst={productMst}
           companyMst={companyMst}
           statusMst={statusMst}
+          contractBudgetData={contractBudgetData}
+          postContractBudgetData={postContractBudgetData}
+        />
+        <Fab
+          variant="extended"
+          color="primary"
+          onClick={handleDrawerClickOpen}
+          sx={{ position: "fixed", top: 72, right: 56 }}
+        >
+          <VisibilityIcon sx={{ mr: 1 }} />
+          未成立の申込情報
+        </Fab>
+        <LastApplicationDrawer
+          open={openLastApplicationDrawer}
+          handleDrawerClose={handleDrawerClose}
+          members={members}
         />
       </Stack>
     </>

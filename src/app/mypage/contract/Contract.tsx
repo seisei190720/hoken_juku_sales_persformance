@@ -1,10 +1,12 @@
 import { useApplicationApi } from "@/app/api/useApplicationApi";
+import { useContractBudgetApi } from "@/app/api/useContractBudgetApi";
 import { resolveYear } from "@/app/api/useSalesResultApi";
-import { ProductMst, RouteMst } from "@/app/types";
+import BudgetCard from "@/app/component/BudgetCard";
+import { ContractBudget, ProductMst, RouteMst } from "@/app/types";
 import { grey } from "@mui/material/colors";
+import Drawer from "@mui/material/Drawer";
 import Stack from "@mui/material/Stack";
-import { FC } from "react";
-import SimpleSummaryCard from "../components/SimpleSummaryCard";
+import { FC, useEffect } from "react";
 import ThreeCompartmentSummaryCard from "../components/ThreeCompartmentSummaryCard";
 import ApplicatorBarChart from "./components/ApplicatorBarChart";
 import { useApplicatorSummaryComposition } from "./hooks/useApplicatorSummaryComposition";
@@ -14,8 +16,18 @@ type Props = {
   userId: string;
   targetMonth: string | null;
   productMst: ProductMst[];
+  canEdit: boolean;
+  contractBudgetData: ContractBudget[];
+  postContractBudgetData: (newData: ContractBudget) => Promise<void>;
 };
-const Constract: FC<Props> = ({ userId, targetMonth, productMst }) => {
+const Constract: FC<Props> = ({
+  userId,
+  targetMonth,
+  productMst,
+  canEdit,
+  contractBudgetData,
+  postContractBudgetData,
+}) => {
   const { applicationData } = useApplicationApi({
     userId: userId,
     year: resolveYear(targetMonth),
@@ -26,6 +38,7 @@ const Constract: FC<Props> = ({ userId, targetMonth, productMst }) => {
     productMst
   );
   const lastApplicationData = useLastApplicationsComposition(userId);
+
   return (
     <>
       <Stack direction="column" gap={2} p={2} pt={3} borderColor={grey[300]}>
@@ -43,7 +56,27 @@ const Constract: FC<Props> = ({ userId, targetMonth, productMst }) => {
               mainUnit={"円"}
               sub1ChipName={"生保"}
               sub2ChipName={"損保"}
-              cardFlex={2}
+              cardFlex={1.5}
+            />
+            <BudgetCard
+              value={
+                applicatorData.fistYearFeeData &&
+                applicatorData.fistYearFeeData.all
+              }
+              title={"予算達成まで残り"}
+              mainUnit={"円"}
+              userId={userId}
+              targetMonth={targetMonth}
+              targetYear={resolveYear(targetMonth)}
+              contractBudgetData={
+                contractBudgetData === undefined
+                  ? undefined
+                  : contractBudgetData.find(
+                      (c: ContractBudget) => (c.userId = userId)
+                    ) || null
+              }
+              postContractBudgetData={postContractBudgetData}
+              canEdit={canEdit}
             />
             <ThreeCompartmentSummaryCard
               values={
@@ -57,9 +90,9 @@ const Constract: FC<Props> = ({ userId, targetMonth, productMst }) => {
               mainUnit={"件"}
               sub1ChipName={"生保"}
               sub2ChipName={"損保"}
-              cardFlex={1.5}
+              cardFlex={1}
             />
-            <SimpleSummaryCard
+            {/* <SimpleSummaryCard
               values={
                 lastApplicationData !== undefined
                   ? {
@@ -70,7 +103,7 @@ const Constract: FC<Props> = ({ userId, targetMonth, productMst }) => {
               }
               title={"申込残"}
               mainUnit={"件"}
-            />
+            /> */}
           </Stack>
           <Stack direction="row" gap={2}>
             <ApplicatorBarChart values={applicatorData.productBarChartData} />
