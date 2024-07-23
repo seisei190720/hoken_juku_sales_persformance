@@ -1,16 +1,13 @@
 import { useApplicationApi } from "@/app/api/useApplicationApi";
-import { useContractBudgetApi } from "@/app/api/useContractBudgetApi";
 import { resolveYear } from "@/app/api/useSalesResultApi";
 import BudgetCard from "@/app/component/BudgetCard";
-import { ContractBudget, ProductMst, RouteMst } from "@/app/types";
+import { ContractBudget, ProductMst } from "@/app/types";
 import { grey } from "@mui/material/colors";
-import Drawer from "@mui/material/Drawer";
 import Stack from "@mui/material/Stack";
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import ThreeCompartmentSummaryCard from "../components/ThreeCompartmentSummaryCard";
 import ApplicatorBarChart from "./components/ApplicatorBarChart";
 import { useApplicatorSummaryComposition } from "./hooks/useApplicatorSummaryComposition";
-import { useLastApplicationsComposition } from "./hooks/useLastApplicationsComposition";
 
 type Props = {
   userId: string;
@@ -37,7 +34,6 @@ const Constract: FC<Props> = ({
     applicationData,
     productMst
   );
-  const lastApplicationData = useLastApplicationsComposition(userId);
 
   return (
     <>
