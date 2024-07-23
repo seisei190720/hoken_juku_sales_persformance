@@ -54,7 +54,7 @@ export const useContractBudgetApi = (param: {
     async (newData: ContractBudget) => {
       try {
         await axios.post(prodUrl, newData);
-        await mutate([newData], false);
+        await mutate();
       } catch (error) {
         console.error("Error posting data:", error);
       }
