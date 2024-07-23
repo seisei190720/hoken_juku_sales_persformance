@@ -34,7 +34,8 @@ const YearlyConstractResult: FC<Props> = ({
 }) => {
   const yearlyConstractComposition = useYearlyConstractComposition(
     applicationData,
-    productMst
+    productMst,
+    contractBudgetData
   );
 
   return (
@@ -48,7 +49,7 @@ const YearlyConstractResult: FC<Props> = ({
                   mainValue:
                     yearlyConstractComposition.allBudgetAndAchievementData
                       .achivementSum,
-                  subValue: "達成率：??%",
+                  subValue: `達成率：${yearlyConstractComposition.allBudgetAndAchievementData.achivementPercent}%`,
                 }
           }
           title={"今年度実績"}
@@ -70,25 +71,12 @@ const YearlyConstractResult: FC<Props> = ({
               : contractBudgetData.find(
                   (c: ContractBudget) =>
                     (c.userId =
-                      selecetedMember === "all" ? "1" : selecetedMember.id)
+                      selecetedMember === "all" ? "1" : selecetedMember.id) &&
+                    c.month === null
                 ) || null
           }
           postContractBudgetData={postContractBudgetData}
           canEdit={true}
-        />
-        <SimpleSummaryCard
-          values={
-            yearlyConstractComposition.allBudgetAndAchievementData === undefined
-              ? undefined
-              : {
-                  mainValue:
-                    yearlyConstractComposition.allBudgetAndAchievementData
-                      .achivementSum,
-                  subValue: "予算：???円",
-                }
-          }
-          title={"予算到達まで残り"}
-          mainUnit={"円"}
         />
       </Stack>
       <Stack direction="row" gap={2}>
@@ -99,7 +87,7 @@ const YearlyConstractResult: FC<Props> = ({
         <YearlyBudgetAndAchievementSourceDataList
           title={"予算と実績"}
           values={yearlyConstractComposition.budgetAndAchievementData}
-          columnHeaders={["月", "実績", "予算", "達成率"]}
+          columnHeaders={["月", "予算", "実績", "達成率"]}
         />
       </Stack>
       <Stack direction="row" gap={2}>

@@ -18,8 +18,7 @@ import MenuItem from "@mui/material/MenuItem";
 import SimpleSummaryCard from "../mypage/components/SimpleSummaryCard";
 import Drawer from "@mui/material/Drawer";
 import { useLastApplicationsComposition } from "../mypage/contract/hooks/useLastApplicationsComposition";
-import SearchIcon from "@mui/icons-material/Search";
-import ListIcon from "@mui/icons-material/List";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import Fab from "@mui/material/Fab";
 import { useContractBudgetApi } from "../api/useContractBudgetApi";
 
@@ -141,14 +140,12 @@ const YearlyPage: FC<Props> = ({ user }) => {
           </Button>
           <Fab
             variant="extended"
-            size="medium"
             color="primary"
             onClick={handleDrawerClickOpen}
             sx={{ position: "fixed", top: 72, right: 56 }}
           >
-            <ListIcon sx={{ mr: 1 }} />
-            未成立の申込
-            {/* <Button onClick={handleDrawerClickOpen}>未成立の申込情報</Button> */}
+            <VisibilityIcon sx={{ mr: 1 }} />
+            未成立の申込情報
           </Fab>
         </Stack>
         <YearlyResults

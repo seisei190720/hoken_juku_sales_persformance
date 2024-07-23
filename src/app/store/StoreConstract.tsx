@@ -48,6 +48,7 @@ const StoreConstract: FC<Props> = ({
     inProgressSalesResultData,
     applicationData,
     members,
+    storeContractBudgetData,
     memberConstractBudget
   );
 
@@ -65,15 +66,15 @@ const StoreConstract: FC<Props> = ({
             storeConstractData.storeConstractSum === undefined
               ? undefined
               : {
-                  mainValue: storeConstractData.storeConstractSum,
-                  subValue: "達成率：??%",
+                  mainValue: storeConstractData.storeConstractSum.achivementSum,
+                  subValue: `達成率：${storeConstractData.storeConstractSum.achivementPercent}%`,
                 }
           }
           title={"当月実績"}
           mainUnit={"円"}
         />
         <BudgetCard
-          value={storeConstractData.storeConstractSum}
+          value={storeConstractData.storeConstractSum?.achivementSum}
           title={"予算達成まで残り"}
           mainUnit={"円"}
           userId={"1"} //storeIdを入れたいので、
@@ -111,7 +112,7 @@ const StoreConstract: FC<Props> = ({
         <YearlyBudgetAndAchievementSourceDataList
           title={"実績表"}
           values={storeConstractData.constractSumAndAchievementRateData}
-          columnHeaders={["名前", "実績", "予算", "達成率"]}
+          columnHeaders={["名前", "予算", "実績", "達成率"]}
         />
       </Stack>
     </Stack>

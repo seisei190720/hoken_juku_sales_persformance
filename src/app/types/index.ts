@@ -97,50 +97,62 @@ export type Member = {
 export const yearMonth = [
   {
     name: "7月",
-    keyMonth: "-07-",
+    keyMonthDate: "-07-",
+    keyMonthYear: "-07",
   },
   {
     name: "8月",
-    keyMonth: "-08-",
+    keyMonthDate: "-08-",
+    keyMonthYear: "-08",
   },
   {
     name: "9月",
-    keyMonth: "-09-",
+    keyMonthDate: "-09-",
+    keyMonthYear: "-09",
   },
   {
     name: "10月",
-    keyMonth: "-10-",
+    keyMonthDate: "-10-",
+    keyMonthYear: "-10",
   },
   {
     name: "11月",
-    keyMonth: "-11-",
+    keyMonthDate: "-11-",
+    keyMonthYear: "-11",
   },
   {
     name: "12月",
-    keyMonth: "-12-",
+    keyMonthDate: "-12-",
+    keyMonthYear: "-12",
   },
   {
     name: "1月",
-    keyMonth: "-01-",
+    keyMonthDate: "-01-",
+    keyMonthYear: "-01",
   },
   {
     name: "2月",
-    keyMonth: "-02-",
+    keyMonthDate: "-02-",
+    keyMonthYear: "-02",
   },
   {
     name: "3月",
-    keyMonth: "-03-",
+    keyMonthDate: "-03-",
+    keyMonthYear: "-03",
   },
   {
     name: "4月",
-    keyMonth: "-04-",
+    keyMonthDate: "-04-",
+    keyMonthYear: "-04",
   },
   {
     name: "5月",
-    keyMonth: "-05-",
+    keyMonthDate: "-05-",
+    keyMonthYear: "-05",
   },
   {
     name: "6月",
-    keyMonth: "-06-",
+    keyMonthDate: "-06-",
+    keyMonthYear: "-06",
   },
 ];

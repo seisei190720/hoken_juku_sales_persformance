@@ -35,7 +35,7 @@ type Props = {
 
 type YearlyPageMode = "achievement" | "contract";
 
-const StoreResults: FC<Props> = ({
+const YearlyResults: FC<Props> = ({
   userId,
   selecetedMember,
   targetYear,
@@ -118,4 +118,4 @@ const StoreResults: FC<Props> = ({
   );
 };
 
-export default StoreResults;
+export default YearlyResults;

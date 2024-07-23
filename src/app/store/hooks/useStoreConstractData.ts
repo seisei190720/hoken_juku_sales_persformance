@@ -7,7 +7,7 @@ import {
 } from "@/app/types";
 import { BudgetAndAchievementType } from "@/app/yearly/hooks/useYearlyConstractComposition";
 import { amber } from "@mui/material/colors";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { CountAndPercentType } from "./useStoreAchievementData";
 
 export type ConstractSouceType = {
@@ -20,6 +20,7 @@ export const useStoreConstractData = (
   lastSalesResultData: IndividualSalesResult[] | undefined,
   applicationData: Application[] | undefined,
   member: Member[],
+  storeConstractBudgetData: ContractBudget[],
   memberConstractBudgetData: ContractBudget[]
 ) => {
   const tempConstractSumAndAchievementRateData:
@@ -84,12 +85,34 @@ export const useStoreConstractData = (
     });
   }, [applicationData, memberConstractBudgetData]);
 
-  const storeConstractSum: number | undefined = useMemo(() => {
-    if (!applicationData) return;
-    return applicationData
+  const calcAchievementPercent = useCallback(
+    (targetMonthContract: ContractBudget[], achivementSum: number) => {
+      if (targetMonthContract.length === 0) return 0;
+
+      const achievedPercent =
+        (achivementSum / targetMonthContract[0].value) * 100;
+      const resultPercent = Math.round(achievedPercent * 10) / 10;
+      const resultPercentUnderHundred =
+        resultPercent > 100 ? 100 : resultPercent;
+      return isNaN(resultPercent) ? 0 : resultPercentUnderHundred;
+    },
+    []
+  );
+
+  const storeConstractSum = useMemo(() => {
+    if (!applicationData || !storeConstractBudgetData) return;
+    const achivementSum = applicationData
       .filter((a) => a.status === "2")
       .reduce((pre, { firstYearFee }) => pre + (firstYearFee ?? 0), 0);
-  }, [applicationData]);
+
+    return {
+      achivementSum: achivementSum,
+      achivementPercent: calcAchievementPercent(
+        storeConstractBudgetData,
+        achivementSum
+      ),
+    };
+  }, [applicationData, storeConstractBudgetData]);
 
   const inProgressApplicationCount = useMemo(() => {
     if (!lastSalesResultData) return;

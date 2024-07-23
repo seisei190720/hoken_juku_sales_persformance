@@ -65,7 +65,7 @@ export const useYearlyAchievementComposition = (
     | undefined = useMemo(() => {
     if (!results) return;
     return yearMonth.map((y) => {
-      const targetMonth = getTargetMonthData(results, y.keyMonth);
+      const targetMonth = getTargetMonthData(results, y.keyMonthDate);
       const nextAppointmentCount = nextAppointor(targetMonth).length;
       const nextAppointmentPercent =
         (nextAppointmentCount / targetMonth.length) * 100;
@@ -85,7 +85,7 @@ export const useYearlyAchievementComposition = (
     useMemo(() => {
       if (!results) return;
       return yearMonth.map((y) => {
-        const targetMonth = getTargetMonthData(results, y.keyMonth);
+        const targetMonth = getTargetMonthData(results, y.keyMonthDate);
         const targetNewVisitor = newVisitor(targetMonth);
         const constractedPersonCount = targetNewVisitor.filter(
           (t) => t.applications.length > 0
@@ -106,7 +106,7 @@ export const useYearlyAchievementComposition = (
     useMemo(() => {
       if (!results) return;
       return yearMonth.map((y) => {
-        const targetMonth = getTargetMonthData(results, y.keyMonth);
+        const targetMonth = getTargetMonthData(results, y.keyMonthDate);
         const thankyouCount = targetMonth.filter((r) => r.thankyou).length;
         const applicatorCount = targetMonth.filter(
           (r) => r.applications.length > 0
