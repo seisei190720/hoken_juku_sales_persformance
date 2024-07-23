@@ -7,7 +7,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { ContractBudget } from "../types";
-import { useUpdateContractBudget } from "../hooks/useupdateContractBudget";
+import { useUpdateContractBudget } from "../hooks/useUpdateContractBudget";
 
 type Props = {
   openFormDialog: boolean;
