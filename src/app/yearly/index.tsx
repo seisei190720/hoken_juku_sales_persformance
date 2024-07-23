@@ -7,7 +7,7 @@ import { useMockData } from "../mocks";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Button from "@mui/material/Button";
-import { resolveYear, useSalesResultApi } from "../api/useSalesResultApi";
+import { useSalesResultApi } from "../api/useSalesResultApi";
 import { useApplicationApi } from "../api/useApplicationApi";
 import YearlyResults from "./YearlyResults";
 import { Member } from "../types";
@@ -15,12 +15,10 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import SimpleSummaryCard from "../mypage/components/SimpleSummaryCard";
-import Drawer from "@mui/material/Drawer";
-import { useLastApplicationsComposition } from "../mypage/contract/hooks/useLastApplicationsComposition";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Fab from "@mui/material/Fab";
 import { useContractBudgetApi } from "../api/useContractBudgetApi";
+import LastApplicationDrawer from "../component/LastApplicationDrawer";
 
 type Props = {
   user: AuthUser;
@@ -58,10 +56,6 @@ const YearlyPage: FC<Props> = ({ user }) => {
       year: targetYear,
       firstVisitDate: null,
     }
-  );
-
-  const lastApplicationData = useLastApplicationsComposition(
-    selecetedMember === "all" ? null : selecetedMember.id
   );
 
   const { applicationData } = useApplicationApi({
@@ -138,15 +132,6 @@ const YearlyPage: FC<Props> = ({ user }) => {
           >
             今年度に戻る
           </Button>
-          <Fab
-            variant="extended"
-            color="primary"
-            onClick={handleDrawerClickOpen}
-            sx={{ position: "fixed", top: 72, right: 56 }}
-          >
-            <VisibilityIcon sx={{ mr: 1 }} />
-            未成立の申込情報
-          </Fab>
         </Stack>
         <YearlyResults
           userId={user.userId}
@@ -162,26 +147,20 @@ const YearlyPage: FC<Props> = ({ user }) => {
           contractBudgetData={contractBudgetData}
           postContractBudgetData={postContractBudgetData}
         />
-        <Drawer
-          anchor="bottom"
-          open={openLastApplicationDrawer}
-          onClose={handleDrawerClose}
+        <Fab
+          variant="extended"
+          color="primary"
+          onClick={handleDrawerClickOpen}
+          sx={{ position: "fixed", top: 72, right: 56 }}
         >
-          <Stack width={400} height={400}>
-            <SimpleSummaryCard
-              values={
-                lastApplicationData !== undefined
-                  ? {
-                      mainValue: lastApplicationData.count,
-                      subValue: "3000円",
-                    }
-                  : undefined
-              }
-              title={"申込残"}
-              mainUnit={"件"}
-            />
-          </Stack>
-        </Drawer>
+          <VisibilityIcon sx={{ mr: 1 }} />
+          未成立の申込情報
+        </Fab>
+        <LastApplicationDrawer
+          open={openLastApplicationDrawer}
+          handleDrawerClose={handleDrawerClose}
+          members={members}
+        />
       </Stack>
     </>
   );

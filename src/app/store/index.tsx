@@ -10,7 +10,9 @@ import Button from "@mui/material/Button";
 import { resolveYear, useSalesResultApi } from "../api/useSalesResultApi";
 import { useApplicationApi } from "../api/useApplicationApi";
 import StoreResults from "./StoreResults";
-import { useContractBudgetApi } from "../api/useContractBudgetApi";
+import LastApplicationDrawer from "../component/LastApplicationDrawer";
+import Fab from "@mui/material/Fab";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 type Props = {
   user: AuthUser;
@@ -44,6 +46,15 @@ const StorePage: FC<Props> = ({ user }) => {
     year: resolveYear(targetMonth),
     establishDate: targetMonth,
   });
+
+  const [openLastApplicationDrawer, setOpenLastApplicationDrawer] =
+    useState(false);
+  const handleDrawerClickOpen = () => {
+    setOpenLastApplicationDrawer(true);
+  };
+  const handleDrawerClose = () => {
+    setOpenLastApplicationDrawer(false);
+  };
 
   const forwardToNextMonth = () => {
     setTargetMonth((v) => dayjs(v).add(1, "month").format("YYYY-MM"));
@@ -91,6 +102,20 @@ const StorePage: FC<Props> = ({ user }) => {
           productMst={productMst}
           companyMst={companyMst}
           statusMst={statusMst}
+        />
+        <Fab
+          variant="extended"
+          color="primary"
+          onClick={handleDrawerClickOpen}
+          sx={{ position: "fixed", top: 72, right: 56 }}
+        >
+          <VisibilityIcon sx={{ mr: 1 }} />
+          未成立の申込情報
+        </Fab>
+        <LastApplicationDrawer
+          open={openLastApplicationDrawer}
+          handleDrawerClose={handleDrawerClose}
+          members={members}
         />
       </Stack>
     </>

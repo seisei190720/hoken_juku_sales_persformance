@@ -90,23 +90,10 @@ const StoreConstract: FC<Props> = ({
           postContractBudgetData={storePostContractBudgetData}
           canEdit={true} //今は誰でもいじれるようにしているが、管理者しかいじれないようにする必要あり
         />
-        <SimpleSummaryCard
-          values={
-            storeConstractData.inProgressApplicationCount === undefined
-              ? undefined
-              : {
-                  mainValue:
-                    storeConstractData.inProgressApplicationCount.count,
-                  subValue: `合計：${storeConstractData.inProgressApplicationCount.sum.toLocaleString()}円`,
-                }
-          }
-          title={"申込残り"}
-          mainUnit={"件"}
-        />
       </Stack>
       <Stack direction="row" gap={2}>
         <YearlyBudgetAndAchievementComposedChart
-          title={""}
+          title={"実績グラフ"}
           values={storeConstractData.constractSumAndAchievementRateData}
         />
         <YearlyBudgetAndAchievementSourceDataList
