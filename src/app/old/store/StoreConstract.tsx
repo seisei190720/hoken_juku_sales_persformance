@@ -8,11 +8,11 @@ import {
 import Stack from "@mui/material/Stack";
 import SimpleSummaryCard from "../mypage/components/SimpleSummaryCard";
 import { useStoreConstractData } from "./hooks/useStoreConstractData";
-import BudgetCard from "../component/BudgetCard";
-import { resolveYear } from "../api/useSalesResultApi";
+import BudgetCard from "../../component/BudgetCard";
+import { resolveYear } from "../../api/useSalesResultApi";
 import YearlyBudgetAndAchievementComposedChart from "../yearly/components/YearlyBudgetAndAchievementComposedChart";
 import YearlyBudgetAndAchievementSourceDataList from "../yearly/components/YearlyBudgetAndAchievementSourceDataList";
-import { useContractBudgetApi } from "../api/useContractBudgetApi";
+import { useContractBudgetApi } from "../../api/useContractBudgetApi";
 
 type Props = {
   userId: string;

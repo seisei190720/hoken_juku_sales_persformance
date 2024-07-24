@@ -17,8 +17,8 @@ import Stack from "@mui/material/Stack";
 import { KeyedMutator } from "swr";
 import Constract from "./contract/Contract";
 import Achievement from "./achievement/Achievement";
-import { useContractBudgetApi } from "../api/useContractBudgetApi";
-import { resolveYear } from "../api/useSalesResultApi";
+import { useContractBudgetApi } from "../../api/useContractBudgetApi";
+import { resolveYear } from "../../api/useSalesResultApi";
 
 type Props = {
   userId: string;

@@ -18,7 +18,7 @@ import {
   ConsultContentMst,
   IndividualSalesResult,
   RouteMst,
-} from "../../types";
+} from "../../../types";
 import { useUpdateVisitor } from "./hooks/useUpdateVisitors";
 
 type Props = {

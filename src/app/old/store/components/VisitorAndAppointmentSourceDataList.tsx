@@ -12,7 +12,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { VisitorAndAppointmentType } from "../hooks/useStoreAchievementData";
 import { styled } from "@mui/material/styles";
-import { YearlyVisitorAndNextAppointmentType } from "@/app/yearly/hooks/useYearlyAchievementComposition";
+import { YearlyVisitorAndNextAppointmentType } from "@/app/old/yearly/hooks/useYearlyAchievementComposition";
 
 type Props = {
   title: string;

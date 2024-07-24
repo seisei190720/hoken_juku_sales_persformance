@@ -16,7 +16,7 @@ import Card from "@mui/material/Card";
 import { blue, yellow } from "@mui/material/colors";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
-import { CountAndPercentType } from "@/app/store/hooks/useStoreAchievementData";
+import { CountAndPercentType } from "@/app/old/store/hooks/useStoreAchievementData";
 
 type Props = {
   title: string;

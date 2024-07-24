@@ -3,58 +3,34 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
 import { FC, useEffect, useState } from "react";
-import { useMockData } from "../mocks";
+import { useMockData } from "../../mocks";
+import IndividualSalesResults from "./IndividualSalesResults";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { resolveYear, useSalesResultApi } from "../../api/useSalesResultApi";
 import Button from "@mui/material/Button";
-import { resolveYear, useSalesResultApi } from "../api/useSalesResultApi";
-import { useApplicationApi } from "../api/useApplicationApi";
-import StoreResults from "./StoreResults";
-import LastApplicationDrawer from "../component/LastApplicationDrawer";
-import Fab from "@mui/material/Fab";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 
 type Props = {
-  user: AuthUser;
+  userId: string;
+  canEdit: boolean;
 };
 
-const StorePage: FC<Props> = ({ user }) => {
-  const {
-    members,
-    routeMst,
-    consultContentMst,
-    productMst,
-    companyMst,
-    statusMst,
-  } = useMockData();
+const MyPage: FC<Props> = ({ userId, canEdit }) => {
+  const { routeMst, consultContentMst, productMst, companyMst, statusMst } =
+    useMockData();
   const [targetMonth, setTargetMonth] = useState<string | null>(null);
-  const { salesResultData } = useSalesResultApi(null, {
+
+  const {
+    salesResultData,
+    postVisitorData,
+    updateSalesResultData,
+    deleteSalesResultData,
+    mutate,
+  } = useSalesResultApi(userId, {
     status: null,
     year: resolveYear(targetMonth),
     firstVisitDate: targetMonth,
   });
-  const { salesResultData: inProgressSalasResultData } = useSalesResultApi(
-    null,
-    {
-      status: "1",
-      firstVisitDate: null,
-      year: null,
-    }
-  );
-  const { applicationData } = useApplicationApi({
-    userId: null,
-    year: resolveYear(targetMonth),
-    establishDate: targetMonth,
-  });
-
-  const [openLastApplicationDrawer, setOpenLastApplicationDrawer] =
-    useState(false);
-  const handleDrawerClickOpen = () => {
-    setOpenLastApplicationDrawer(true);
-  };
-  const handleDrawerClose = () => {
-    setOpenLastApplicationDrawer(false);
-  };
 
   const forwardToNextMonth = () => {
     setTargetMonth((v) => dayjs(v).add(1, "month").format("YYYY-MM"));
@@ -91,35 +67,24 @@ const StorePage: FC<Props> = ({ user }) => {
             今月に戻る
           </Button>
         </Stack>
-        <StoreResults
-          userId={user.userId}
+        <IndividualSalesResults
+          userId={userId}
           targetMonth={targetMonth}
           salesResultData={salesResultData}
-          inProgressSalesResultData={inProgressSalasResultData}
-          applicationData={applicationData}
+          postVisitorData={postVisitorData}
+          updateSalesResultData={updateSalesResultData}
+          deleteSalesResultData={deleteSalesResultData}
+          mutateSalesResultData={mutate}
           routeMst={routeMst}
-          consultContentMst={consultContentMst}
           productMst={productMst}
           companyMst={companyMst}
+          consultContentMst={consultContentMst}
           statusMst={statusMst}
-        />
-        <Fab
-          variant="extended"
-          color="primary"
-          onClick={handleDrawerClickOpen}
-          sx={{ position: "fixed", top: 72, right: 56 }}
-        >
-          <VisibilityIcon sx={{ mr: 1 }} />
-          未成立の申込情報
-        </Fab>
-        <LastApplicationDrawer
-          open={openLastApplicationDrawer}
-          handleDrawerClose={handleDrawerClose}
-          members={members}
+          canEdit={canEdit}
         />
       </Stack>
     </>
   );
 };
 
-export default StorePage;
+export default MyPage;

@@ -13,7 +13,7 @@ import YearlyBudgetAndAchievementComposedChart from "./components/YearlyBudgetAn
 import YearlyConstractStackedChart from "./components/YearlyConstractStackedChart";
 import YearlyConstractSourceDataList from "./components/YearlyConstractSourceDataList";
 import YearlyBudgetAndAchievementSourceDataList from "./components/YearlyBudgetAndAchievementSourceDataList";
-import BudgetCard from "../component/BudgetCard";
+import BudgetCard from "../../component/BudgetCard";
 
 type Props = {
   selecetedMember: Member | "all";

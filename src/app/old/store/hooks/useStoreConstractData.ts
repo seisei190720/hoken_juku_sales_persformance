@@ -5,7 +5,7 @@ import {
   IndividualSalesResult,
   Member,
 } from "@/app/types";
-import { BudgetAndAchievementType } from "@/app/yearly/hooks/useYearlyConstractComposition";
+import { BudgetAndAchievementType } from "@/app/old/yearly/hooks/useYearlyConstractComposition";
 import { amber } from "@mui/material/colors";
 import { useCallback, useMemo } from "react";
 import { CountAndPercentType } from "./useStoreAchievementData";

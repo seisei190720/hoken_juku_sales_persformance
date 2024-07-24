@@ -15,7 +15,7 @@ import {
 import Stack from "@mui/material/Stack";
 import StoreConstract from "./StoreConstract";
 import StoreAchievement from "./StoreAchievement";
-import { useMockData } from "../mocks";
+import { useMockData } from "../../mocks";
 
 type Props = {
   userId: string;

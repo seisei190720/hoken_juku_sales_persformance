@@ -2,12 +2,12 @@ import { AuthUser } from "@aws-amplify/auth/cognito";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FC, useState } from "react";
-import { useMockData } from "../mocks";
+import { useMockData } from "../../mocks";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import { Member } from "../types";
+import { Member } from "../../types";
 import MyPage from "../mypage";
 
 type Props = {

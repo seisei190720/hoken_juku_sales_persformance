@@ -14,7 +14,7 @@ import {
   StatusMst,
 } from "@/app/types";
 import Stack from "@mui/material/Stack";
-import { useMockData } from "../mocks";
+import { useMockData } from "../../mocks";
 import YearlyAchievementResult from "./YearlyAchievementResult";
 import YearlyConstractResult from "./YearlyConstractResult";
 

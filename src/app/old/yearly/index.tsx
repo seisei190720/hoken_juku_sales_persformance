@@ -3,22 +3,22 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
 import { FC, useEffect, useState } from "react";
-import { useMockData } from "../mocks";
+import { useMockData } from "../../mocks";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Button from "@mui/material/Button";
-import { useSalesResultApi } from "../api/useSalesResultApi";
-import { useApplicationApi } from "../api/useApplicationApi";
+import { useSalesResultApi } from "../../api/useSalesResultApi";
+import { useApplicationApi } from "../../api/useApplicationApi";
 import YearlyResults from "./YearlyResults";
-import { Member } from "../types";
+import { Member } from "../../types";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Fab from "@mui/material/Fab";
-import { useContractBudgetApi } from "../api/useContractBudgetApi";
-import LastApplicationDrawer from "../component/LastApplicationDrawer";
+import { useContractBudgetApi } from "../../api/useContractBudgetApi";
+import LastApplicationDrawer from "../../component/LastApplicationDrawer";
 
 type Props = {
   user: AuthUser;

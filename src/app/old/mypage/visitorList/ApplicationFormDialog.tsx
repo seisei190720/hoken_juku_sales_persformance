@@ -1,6 +1,6 @@
 import { IconButton, Typography } from "@mui/material";
 import { FC } from "react";
-import { CompanyMst, IndividualSalesResult, ProductMst } from "../../types";
+import { CompanyMst, IndividualSalesResult, ProductMst } from "../../../types";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";

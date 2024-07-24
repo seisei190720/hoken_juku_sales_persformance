@@ -1,4 +1,4 @@
-import { CountAndPercentType } from "@/app/store/hooks/useStoreAchievementData";
+import { CountAndPercentType } from "@/app/old/store/hooks/useStoreAchievementData";
 import {
   CompanyMst,
   ConsultContentMst,

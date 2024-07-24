@@ -8,16 +8,15 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { useLoginUser } from "./hooks/useLoginUser";
 import { MenuItem, MenuKind } from "./types";
 import { useState } from "react";
-import Dashboard from "./dashboard";
-import MyPage from "./mypage";
+import MyPage from "./old/mypage";
 import TopAndSideBar from "./component/TopAndSideBar";
 import PersonIcon from "@mui/icons-material/Person";
 import TimelineIcon from "@mui/icons-material/Timeline";
 import PeopleIcon from "@mui/icons-material/People";
 import StorefrontIcon from "@mui/icons-material/Storefront";
-import MemberPage from "./member";
-import StorePage from "./store";
-import YearlyPage from "./yearly";
+import MemberPage from "./old/member";
+import StorePage from "./old/store";
+import YearlyPage from "./old/yearly";
 
 Amplify.configure({
   Auth: {

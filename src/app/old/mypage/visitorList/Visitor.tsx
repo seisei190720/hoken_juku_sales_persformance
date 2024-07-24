@@ -10,7 +10,7 @@ import {
   NewVisitor,
   ProductMst,
   RouteMst,
-} from "../../types";
+} from "../../../types";
 import VisitorFormDialog from "./VisitorFormDialog";
 import VisitorList from "./VisitorList";
 import Fab from "@mui/material/Fab";
