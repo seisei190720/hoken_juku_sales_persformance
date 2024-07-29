@@ -8,7 +8,8 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { useLoginUser } from "./hooks/useLoginUser";
 import { MenuItem, MenuKind } from "./types";
 import { useState } from "react";
-import MyPage from "./old/mypage";
+import OldMyPage from "./old/mypage";
+import MyPage from "./mypage";
 import TopAndSideBar from "./component/TopAndSideBar";
 import PersonIcon from "@mui/icons-material/Person";
 import TimelineIcon from "@mui/icons-material/Timeline";
@@ -37,6 +38,7 @@ function Home() {
   };
   const menuList: MenuItem[] = [
     { name: "マイページ", menuKind: "mypage", icon: <PersonIcon /> },
+    { name: "旧マイページ", menuKind: "oldMypage", icon: <PersonIcon /> },
     { name: "メンバーページ", menuKind: "member", icon: <PeopleIcon /> },
     { name: "店舗成績", menuKind: "store", icon: <StorefrontIcon /> },
     { name: "通年成績", menuKind: "year", icon: <TimelineIcon /> },
@@ -59,6 +61,8 @@ function Home() {
           switch (selectedMenu) {
             case "mypage":
               return <MyPage userId={user.userId} canEdit={true} />;
+            case "oldMypage":
+              return <OldMyPage userId={user.userId} canEdit={true} />;
             case "member":
               return <MemberPage user={user} />;
             case "store":

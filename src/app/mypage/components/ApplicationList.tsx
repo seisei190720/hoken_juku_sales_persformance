@@ -20,11 +20,11 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
-import UpdateApplicationFormDialog from "./UpdateApplicationFormDialog";
+import UpdateApplicationFormDialog from "../../old/mypage/applicationList/UpdateApplicationFormDialog";
 import CircularProgress from "@mui/material/CircularProgress";
 import { green, grey, orange, red } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
-import DeleteApplicationDialog from "../../../component/DeleteApplicationDialog";
+import DeleteApplicationDialog from "../../component/DeleteApplicationDialog";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 

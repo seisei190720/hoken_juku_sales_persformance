@@ -5,7 +5,7 @@ import {
   ProductMst,
   StatusMst,
 } from "@/app/types";
-import ApplicationList from "./ApplicationList";
+import ApplicationList from "../../../mypage/components/ApplicationList";
 import { useSalesResultApi } from "@/app/api/useSalesResultApi";
 import { KeyedMutator } from "swr";
 

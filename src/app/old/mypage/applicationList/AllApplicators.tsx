@@ -8,7 +8,7 @@ import {
 import Stack from "@mui/material/Stack";
 import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import ApplicationList from "./ApplicationList";
+import ApplicationList from "../../../mypage/components/ApplicationList";
 import { KeyedMutator } from "swr";
 import InProgressApplicationList from "./InProgressApplicationList";
 
