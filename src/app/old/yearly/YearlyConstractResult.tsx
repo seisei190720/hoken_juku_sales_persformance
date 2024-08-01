@@ -17,6 +17,7 @@ import BudgetCard from "../../component/BudgetCard";
 
 type Props = {
   userId: string; // userId or "1"(storeId)の可能性がある
+  canEdit: boolean;
   targetYear: string | null;
   applicationData: Application[] | undefined;
   productMst: ProductMst[];
@@ -26,6 +27,7 @@ type Props = {
 
 const YearlyConstractResult: FC<Props> = ({
   userId,
+  canEdit,
   targetYear,
   applicationData,
   productMst,
@@ -73,7 +75,7 @@ const YearlyConstractResult: FC<Props> = ({
                 ) || null
           }
           postContractBudgetData={postContractBudgetData}
-          canEdit={true}
+          canEdit={canEdit}
         />
       </Stack>
       <Stack direction="row" gap={2}>

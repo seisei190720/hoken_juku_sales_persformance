@@ -3,10 +3,11 @@ import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
 import { FC, useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
-import SimpleSummaryCardWichHalfPieChart from "../components/charts/SimpleSummaryCardWithHalfPieChart";
-import SimpleSummaryCard from "../components/charts/SimpleSummaryCard";
-import MyPage from "@/app/old/mypage";
-import { TopicBudgetAndAchievementType } from "../top/hooks/useTopicAchievementComposition";
+import { TopicBudgetAndAchievementType } from "../mypage/top/hooks/useTopicAchievementComposition";
+import SimpleSummaryCard from "../mypage/components/charts/SimpleSummaryCard";
+import SimpleSummaryCardWichHalfPieChart from "../mypage/components/charts/SimpleSummaryCardWithHalfPieChart";
+import { IndividualSalesResult } from "../types";
+import StoreMonthlyContents from "./StoreMonthlyContents";
 
 type Props = {
   userId: string;
@@ -23,12 +24,14 @@ type Props = {
         }
       | undefined;
   };
+  inProgressSalesResultData: IndividualSalesResult[] | undefined;
 };
-const MonthlyPage: FC<Props> = ({
+const StoreMonthlyPage: FC<Props> = ({
   userId,
   canEdit,
   topicData,
   lastAppComposition,
+  inProgressSalesResultData,
 }) => {
   const today = useMemo(() => dayjs().format("M月D日"), []);
   const lastDay = useMemo(
@@ -76,9 +79,13 @@ const MonthlyPage: FC<Props> = ({
             />
           </Stack>
         </Box>
-        <MyPage userId={userId} canEdit={canEdit} />
+        <StoreMonthlyContents
+          userId={userId}
+          canEdit={true}
+          inProgressSalesResultData={inProgressSalesResultData}
+        />
       </Stack>
     </>
   );
 };
-export default MonthlyPage;
+export default StoreMonthlyPage;

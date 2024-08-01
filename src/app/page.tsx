@@ -15,9 +15,11 @@ import PersonIcon from "@mui/icons-material/Person";
 import TimelineIcon from "@mui/icons-material/Timeline";
 import PeopleIcon from "@mui/icons-material/People";
 import StorefrontIcon from "@mui/icons-material/Storefront";
-import MemberPage from "./old/member";
-import StorePage from "./old/store";
+import OldMemberPage from "./old/member";
+import OldStorePage from "./old/store";
 import YearlyPage from "./old/yearly";
+import MemberPage from "./member";
+import StorePage from "./store";
 
 Amplify.configure({
   Auth: {
@@ -38,9 +40,11 @@ function Home() {
   };
   const menuList: MenuItem[] = [
     { name: "マイページ", menuKind: "mypage", icon: <PersonIcon /> },
+    { name: "メンバーページ", menuKind: "memberPage", icon: <PeopleIcon /> },
+    { name: "店舗ページ", menuKind: "storePage", icon: <StorefrontIcon /> },
     { name: "旧マイページ", menuKind: "oldMypage", icon: <PersonIcon /> },
-    { name: "メンバーページ", menuKind: "member", icon: <PeopleIcon /> },
-    { name: "店舗成績", menuKind: "store", icon: <StorefrontIcon /> },
+    { name: "旧メンバーページ", menuKind: "member", icon: <PeopleIcon /> },
+    { name: "店舗成績", menuKind: "oldStore", icon: <StorefrontIcon /> },
     { name: "通年成績", menuKind: "year", icon: <TimelineIcon /> },
   ];
   return (
@@ -61,12 +65,16 @@ function Home() {
           switch (selectedMenu) {
             case "mypage":
               return <MyPage userId={user.userId} canEdit={true} />;
+            case "memberPage":
+              return <MemberPage userId={user.userId} canEdit={false} />;
+            case "storePage":
+              return <StorePage userId={user.userId} canEdit={false} />;
             case "oldMypage":
               return <OldMyPage userId={user.userId} canEdit={true} />;
             case "member":
-              return <MemberPage user={user} />;
-            case "store":
-              return <StorePage user={user} />;
+              return <OldMemberPage user={user} />;
+            case "oldStore":
+              return <OldStorePage user={user} />;
             case "year":
               return <YearlyPage user={user} />;
             default:

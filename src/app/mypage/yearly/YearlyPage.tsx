@@ -94,7 +94,7 @@ const YearlyPage: FC<Props> = ({
             />
           </Stack>
         </Box>
-        <YearlyResults userId={userId} canEdit={true} />
+        <YearlyResults userId={userId} canEdit={canEdit} />
       </Stack>
     </>
   );

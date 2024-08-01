@@ -1,27 +1,33 @@
 import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { useApplicationApi } from "@/app/api/useApplicationApi";
-import { useContractBudgetApi } from "@/app/api/useContractBudgetApi";
-import { useSalesResultApi } from "@/app/api/useSalesResultApi";
-import { useMockData } from "@/app/mocks";
-import dayjs from "dayjs";
-import { FC, useCallback, useEffect, useState } from "react";
-import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import YearlyAchievementResult from "@/app/old/yearly/YearlyAchievementResult";
-import YearlyConstractResult from "@/app/old/yearly/YearlyConstractResult";
+import Box from "@mui/material/Box";
+import dayjs from "dayjs";
+import { FC, useCallback, useEffect, useState } from "react";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import Button from "@mui/material/Button";
+import { useMockData } from "../mocks";
+import { resolveYear, useSalesResultApi } from "../api/useSalesResultApi";
+import { useApplicationApi } from "../api/useApplicationApi";
+import StoreAchievement from "../old/store/StoreAchievement";
+import StoreConstract from "../old/store/StoreConstract";
+import { IndividualSalesResult } from "../types";
 
 type Props = {
   userId: string;
   canEdit: boolean;
+  inProgressSalesResultData: IndividualSalesResult[] | undefined;
 };
-type YearlyPageMode = "achievement" | "contract";
 
-const YearlyResults: FC<Props> = ({ userId, canEdit }) => {
+type StorePageMode = "achievement" | "contract";
+
+const StoreMonthlyContents: FC<Props> = ({
+  userId,
+  canEdit,
+  inProgressSalesResultData,
+}) => {
   const {
     members,
     routeMst,
@@ -30,47 +36,39 @@ const YearlyResults: FC<Props> = ({ userId, canEdit }) => {
     companyMst,
     statusMst,
   } = useMockData();
-  const [targetYear, setTargetYear] = useState<string | null>(null);
-  const { salesResultData } = useSalesResultApi(
-    userId === "1" ? null : userId,
-    {
-      status: null,
-      year: targetYear,
-      firstVisitDate: null,
-    }
-  );
-  const { applicationData } = useApplicationApi({
-    userId: userId === "1" ? null : userId,
-    year: targetYear,
-    establishDate: null,
-  });
-  const { contractBudgetData, postContractBudgetData } = useContractBudgetApi({
-    userId: userId,
-    year: targetYear,
-    month: null,
-  });
+  const [targetMonth, setTargetMonth] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<StorePageMode>("achievement");
 
-  const [viewMode, setViewMode] = useState<YearlyPageMode>("achievement");
   const updateViewMode = useCallback(
     (event: React.SyntheticEvent, nextView: string) => {
-      setViewMode(nextView as YearlyPageMode);
+      setViewMode(nextView as StorePageMode);
     },
     []
   );
+  const { salesResultData } = useSalesResultApi(null, {
+    status: null,
+    year: resolveYear(targetMonth),
+    firstVisitDate: targetMonth,
+  });
+  const { applicationData } = useApplicationApi({
+    userId: null,
+    year: resolveYear(targetMonth),
+    establishDate: targetMonth,
+  });
 
   const forwardToNextMonth = () => {
-    setTargetYear((v) => dayjs(v).add(1, "year").format("YYYY"));
+    setTargetMonth((v) => dayjs(v).add(1, "month").format("YYYY-MM"));
   };
   const backToLastMonth = () => {
-    setTargetYear((v) => dayjs(v).subtract(1, "year").format("YYYY"));
+    setTargetMonth((v) => dayjs(v).subtract(1, "month").format("YYYY-MM"));
   };
   const moveToCurrentMonth = () => {
-    setTargetYear(dayjs().format("YYYY"));
+    setTargetMonth(dayjs().format("YYYY-MM"));
   };
 
   useEffect(() => {
-    setTargetYear(dayjs().format("YYYY"));
-  }, [setTargetYear]);
+    setTargetMonth(dayjs().format("YYYY-MM"));
+  }, [setTargetMonth]);
 
   const a11yProps = (index: number) => {
     return {
@@ -78,7 +76,6 @@ const YearlyResults: FC<Props> = ({ userId, canEdit }) => {
       "aria-controls": `simple-tabpanel-${index}`,
     };
   };
-
   return (
     <>
       <Stack sx={{ width: "100%" }}>
@@ -88,7 +85,7 @@ const YearlyResults: FC<Props> = ({ userId, canEdit }) => {
               <ArrowBackIosIcon />
             </Button>
             <Typography variant="h5">
-              {dayjs(targetYear).format("YYYY年度")}
+              {dayjs(targetMonth).format("YYYY年MM月")}
             </Typography>
             <Button>
               <ArrowForwardIosIcon onClick={forwardToNextMonth} />
@@ -96,9 +93,9 @@ const YearlyResults: FC<Props> = ({ userId, canEdit }) => {
             <Button
               variant="outlined"
               onClick={moveToCurrentMonth}
-              disabled={targetYear === dayjs().format("YYYY-MM")}
+              disabled={targetMonth === dayjs().format("YYYY-MM")}
             >
-              今年度に戻る
+              今月に戻る
             </Button>
           </Stack>
           <Stack direction="row" alignItems="center" mr={5}>
@@ -128,22 +125,24 @@ const YearlyResults: FC<Props> = ({ userId, canEdit }) => {
               switch (viewMode) {
                 case "achievement":
                   return (
-                    <YearlyAchievementResult
+                    <StoreAchievement
                       salesResultData={salesResultData}
                       members={members}
                       routeMst={routeMst}
+                      consultContentMst={consultContentMst}
+                      productMst={productMst}
+                      companyMst={companyMst}
+                      statusMst={statusMst}
                     />
                   );
                 case "contract":
                   return (
-                    <YearlyConstractResult
+                    <StoreConstract
                       userId={userId}
-                      canEdit={canEdit}
-                      targetYear={targetYear}
+                      targetMonth={targetMonth}
+                      inProgressSalesResultData={inProgressSalesResultData}
                       applicationData={applicationData}
-                      productMst={productMst}
-                      contractBudgetData={contractBudgetData}
-                      postContractBudgetData={postContractBudgetData}
+                      members={members}
                     />
                   );
                 default:
@@ -152,9 +151,14 @@ const YearlyResults: FC<Props> = ({ userId, canEdit }) => {
             })()}
           </Box>
         </Box>
+        {/* <LastApplicationDrawer
+          open={openLastApplicationDrawer}
+          handleDrawerClose={handleDrawerClose}
+          members={members}
+        /> */}
       </Stack>
     </>
   );
 };
 
-export default YearlyResults;
+export default StoreMonthlyContents;
