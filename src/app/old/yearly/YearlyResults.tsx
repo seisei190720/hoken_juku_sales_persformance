@@ -102,6 +102,7 @@ const YearlyResults: FC<Props> = ({
               return (
                 <YearlyConstractResult
                   userId={selecetedMember === "all" ? "1" : userId}
+                  canEdit={true}
                   targetYear={targetYear}
                   applicationData={applicationData}
                   productMst={productMst}
