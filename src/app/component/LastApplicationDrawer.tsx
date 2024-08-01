@@ -7,9 +7,9 @@ import {
   ProductMst,
 } from "@/app/types";
 import Stack from "@mui/material/Stack";
-import SimpleSummaryCard from "../mypage/components/SimpleSummaryCard";
+import SimpleSummaryCard from "../old/mypage/components/SimpleSummaryCard";
 import Drawer from "@mui/material/Drawer";
-import { useLastApplicationsComposition } from "../mypage/contract/hooks/useLastApplicationsComposition";
+import { useLastApplicationsComposition } from "../old/mypage/contract/hooks/useLastApplicationsComposition";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import blue from "@mui/material/colors/blue";

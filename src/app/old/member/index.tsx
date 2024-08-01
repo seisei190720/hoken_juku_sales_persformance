@@ -1,20 +1,20 @@
+import { AuthUser } from "@aws-amplify/auth/cognito";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FC, useState } from "react";
-import { useMockData } from "../mocks";
-import { Member } from "../types";
+import { useMockData } from "../../mocks";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import IndividualPageContent from "../mypage/IndividualPageContent";
+import { Member } from "../../types";
+import MyPage from "../mypage";
 
 type Props = {
-  userId: string;
-  canEdit: boolean;
+  user: AuthUser;
 };
 
-const MemberPage: FC<Props> = ({ userId, canEdit }) => {
+const MemberPage: FC<Props> = ({ user }) => {
   const { members } = useMockData();
   const [selecetedMember, setSelectedMember] = useState<Member | null>(null);
   const handleMemberSelector = (e: SelectChangeEvent) => {
@@ -23,8 +23,9 @@ const MemberPage: FC<Props> = ({ userId, canEdit }) => {
 
   return (
     <>
-      <Stack direction="row" gap={4} alignItems="flex-start">
-        <Typography variant="h5">メンバーページ</Typography>
+      <Stack gap={1} sx={{ width: "100%" }}>
+        {/* <Stack direction="row" gap={5} alignItems="center"> */}
+        {/* <Typography variant="h5">メンバーの営業成績</Typography> */}
         <Stack direction="row" gap={1} alignItems="center">
           <FormControl size="small">
             <InputLabel id="showing-member-select-label">メンバー</InputLabel>
@@ -38,28 +39,29 @@ const MemberPage: FC<Props> = ({ userId, canEdit }) => {
               label="Member"
               onChange={handleMemberSelector}
             >
-              {members
-                .filter((m) => m.id !== userId)
-                .map((member, idx) => {
-                  return (
-                    <MenuItem value={member.id} key={`${idx}_${member.name}`}>
-                      {member.name}
-                    </MenuItem>
-                  );
-                })}
+              {members.map((member, idx) => {
+                return (
+                  <MenuItem value={member.id} key={`${idx}_${member.name}`}>
+                    {member.name}
+                  </MenuItem>
+                );
+              })}
             </Select>
           </FormControl>
           <Typography variant="subtitle1">を表示中</Typography>
+          {/* </Stack> */}
         </Stack>
-      </Stack>
-      {selecetedMember === null ? (
-        <Stack m={2}>
+        {selecetedMember === null ? (
           <Typography>表示したいメンバーを選択してください。</Typography>
-        </Stack>
-      ) : (
-        <IndividualPageContent userId={selecetedMember.id} canEdit={false} />
-      )}
+        ) : (
+          <MyPage
+            userId={selecetedMember.id}
+            canEdit={selecetedMember.id === user.userId}
+          />
+        )}
+      </Stack>
     </>
   );
 };
+
 export default MemberPage;

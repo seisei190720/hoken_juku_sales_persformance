@@ -8,16 +8,18 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { useLoginUser } from "./hooks/useLoginUser";
 import { MenuItem, MenuKind } from "./types";
 import { useState } from "react";
-import Dashboard from "./dashboard";
+import OldMyPage from "./old/mypage";
 import MyPage from "./mypage";
 import TopAndSideBar from "./component/TopAndSideBar";
 import PersonIcon from "@mui/icons-material/Person";
-import TimelineIcon from "@mui/icons-material/Timeline";
 import PeopleIcon from "@mui/icons-material/People";
 import StorefrontIcon from "@mui/icons-material/Storefront";
+import OldMemberPage from "./old/member";
+import OldStorePage from "./old/store";
+import YearlyPage from "./old/yearly";
 import MemberPage from "./member";
 import StorePage from "./store";
-import YearlyPage from "./yearly";
+import DoDisturbIcon from "@mui/icons-material/DoDisturb";
 
 Amplify.configure({
   Auth: {
@@ -38,9 +40,12 @@ function Home() {
   };
   const menuList: MenuItem[] = [
     { name: "マイページ", menuKind: "mypage", icon: <PersonIcon /> },
-    { name: "メンバーページ", menuKind: "member", icon: <PeopleIcon /> },
-    { name: "店舗成績", menuKind: "store", icon: <StorefrontIcon /> },
-    { name: "通年成績", menuKind: "year", icon: <TimelineIcon /> },
+    { name: "メンバーページ", menuKind: "memberPage", icon: <PeopleIcon /> },
+    { name: "店舗ページ", menuKind: "storePage", icon: <StorefrontIcon /> },
+    { name: "旧マイページ", menuKind: "oldMypage", icon: <DoDisturbIcon /> },
+    { name: "旧メンバーページ", menuKind: "member", icon: <DoDisturbIcon /> },
+    { name: "旧店舗成績", menuKind: "oldStore", icon: <DoDisturbIcon /> },
+    { name: "旧通年成績", menuKind: "year", icon: <DoDisturbIcon /> },
   ];
   return (
     // <button onClick={() => cognitoUser.signOut()}>Sign Out</button>
@@ -60,10 +65,16 @@ function Home() {
           switch (selectedMenu) {
             case "mypage":
               return <MyPage userId={user.userId} canEdit={true} />;
+            case "memberPage":
+              return <MemberPage userId={user.userId} canEdit={false} />;
+            case "storePage":
+              return <StorePage userId={user.userId} canEdit={true} />;
+            case "oldMypage":
+              return <OldMyPage userId={user.userId} canEdit={true} />;
             case "member":
-              return <MemberPage user={user} />;
-            case "store":
-              return <StorePage user={user} />;
+              return <OldMemberPage user={user} />;
+            case "oldStore":
+              return <OldStorePage user={user} />;
             case "year":
               return <YearlyPage user={user} />;
             default:
