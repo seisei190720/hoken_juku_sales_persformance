@@ -65,7 +65,7 @@ const IndividualSalesResults: FC<Props> = ({
     <Box>
       <Box
         sx={{
-          minHeight: "calc(100vh - 350px)",
+          minHeight: "calc(100vh - 525px)",
           background: "#f5f5f5",
         }}
         ml="10px"

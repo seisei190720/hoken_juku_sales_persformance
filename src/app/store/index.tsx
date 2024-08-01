@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 import { FC, useEffect, useMemo, useState } from "react";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
-import { useMockData } from "../mocks";
 import YearlyPage from "../mypage/yearly/YearlyPage";
 import { resolveYear, useSalesResultApi } from "../api/useSalesResultApi";
 import { useContractBudgetApi } from "../api/useContractBudgetApi";
@@ -12,23 +11,16 @@ import { useApplicationApi } from "../api/useApplicationApi";
 import { useTopicAchievementComposition } from "../mypage/top/hooks/useTopicAchievementComposition";
 import { useLastApplicationsComposition } from "../mypage/hooks/useLastApplicationComposition";
 import StoreMonthlyPage from "./StoreMonthlyPage";
-import { IndividualSalesResult } from "../types";
 
 type Props = {
   userId: string;
   canEdit: boolean;
-  inProgressSalesResultData: IndividualSalesResult[] | undefined;
 };
 
-type ToggleMenu = "top" | "monthly" | "yearly";
+type ToggleMenu = "monthly" | "yearly";
 
-const StorePage: FC<Props> = ({
-  userId,
-  canEdit,
-  inProgressSalesResultData,
-}) => {
-  const mstData = useMockData();
-  const [toggleMenu, setToggleMenu] = useState<ToggleMenu>("top");
+const StorePage: FC<Props> = ({ userId, canEdit }) => {
+  const [toggleMenu, setToggleMenu] = useState<ToggleMenu>("monthly");
   const handleChange = (
     event: React.MouseEvent<HTMLElement>,
     newToggleMenu: string
@@ -88,7 +80,7 @@ const StorePage: FC<Props> = ({
                 canEdit={canEdit}
                 topicData={topicData}
                 lastAppComposition={lastAppComposition}
-                inProgressSalesResultData={inProgressSalesResultData}
+                inProgressSalesResultData={lastApp}
               />
             );
           case "yearly":

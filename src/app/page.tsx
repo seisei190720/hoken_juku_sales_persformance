@@ -12,7 +12,6 @@ import OldMyPage from "./old/mypage";
 import MyPage from "./mypage";
 import TopAndSideBar from "./component/TopAndSideBar";
 import PersonIcon from "@mui/icons-material/Person";
-import TimelineIcon from "@mui/icons-material/Timeline";
 import PeopleIcon from "@mui/icons-material/People";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import OldMemberPage from "./old/member";
@@ -20,6 +19,7 @@ import OldStorePage from "./old/store";
 import YearlyPage from "./old/yearly";
 import MemberPage from "./member";
 import StorePage from "./store";
+import DoDisturbIcon from "@mui/icons-material/DoDisturb";
 
 Amplify.configure({
   Auth: {
@@ -42,10 +42,10 @@ function Home() {
     { name: "マイページ", menuKind: "mypage", icon: <PersonIcon /> },
     { name: "メンバーページ", menuKind: "memberPage", icon: <PeopleIcon /> },
     { name: "店舗ページ", menuKind: "storePage", icon: <StorefrontIcon /> },
-    { name: "旧マイページ", menuKind: "oldMypage", icon: <PersonIcon /> },
-    { name: "旧メンバーページ", menuKind: "member", icon: <PeopleIcon /> },
-    { name: "店舗成績", menuKind: "oldStore", icon: <StorefrontIcon /> },
-    { name: "通年成績", menuKind: "year", icon: <TimelineIcon /> },
+    { name: "旧マイページ", menuKind: "oldMypage", icon: <DoDisturbIcon /> },
+    { name: "旧メンバーページ", menuKind: "member", icon: <DoDisturbIcon /> },
+    { name: "旧店舗成績", menuKind: "oldStore", icon: <DoDisturbIcon /> },
+    { name: "旧通年成績", menuKind: "year", icon: <DoDisturbIcon /> },
   ];
   return (
     // <button onClick={() => cognitoUser.signOut()}>Sign Out</button>
@@ -68,7 +68,7 @@ function Home() {
             case "memberPage":
               return <MemberPage userId={user.userId} canEdit={false} />;
             case "storePage":
-              return <StorePage userId={user.userId} canEdit={false} />;
+              return <StorePage userId={user.userId} canEdit={true} />;
             case "oldMypage":
               return <OldMyPage userId={user.userId} canEdit={true} />;
             case "member":

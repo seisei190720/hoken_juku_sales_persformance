@@ -1,10 +1,7 @@
-import { AuthUser } from "@aws-amplify/auth/cognito";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
 import { FC, useEffect, useMemo, useState } from "react";
-import Button from "@mui/material/Button";
-import { red } from "@mui/material/colors";
 import { TopicBudgetAndAchievementType } from "../top/hooks/useTopicAchievementComposition";
 import SimpleSummaryCard from "../components/charts/SimpleSummaryCard";
 import SimpleSummaryCardWichHalfPieChart from "../components/charts/SimpleSummaryCardWithHalfPieChart";
@@ -52,6 +49,14 @@ const YearlyPage: FC<Props> = ({
       lastMonthDays,
     };
   }, []);
+  const progressRate = useMemo(() => {
+    const today = dayjs();
+    // 今日が今月の何日目かを取得
+    const dayOfMonth = today.date();
+    // 経過率を計算
+    const progressRate = (dayOfMonth / 365) * 100;
+    return progressRate.toFixed(1);
+  }, []);
 
   return (
     <>
@@ -73,7 +78,8 @@ const YearlyPage: FC<Props> = ({
             <SimpleSummaryCard
               values={{
                 mainValue: lastDay.lastDay,
-                subValue: `(${lastDay.lastMonths}ヶ月と${lastDay.lastMonthDays}日)`,
+                subValue: `経過率：${progressRate}%`,
+                // subValue: `(${lastDay.lastMonths}ヶ月と${lastDay.lastMonthDays}日)`,
               }}
               title={"残り日数"}
               mainUnit={"日"}

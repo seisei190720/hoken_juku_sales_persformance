@@ -33,11 +33,20 @@ const StoreMonthlyPage: FC<Props> = ({
   lastAppComposition,
   inProgressSalesResultData,
 }) => {
-  const today = useMemo(() => dayjs().format("M月D日"), []);
   const lastDay = useMemo(
     () => dayjs().endOf("month").diff(dayjs(), "day"),
     []
   );
+  const progressRate = useMemo(() => {
+    const today = dayjs();
+    // 今月の日数を取得
+    const daysInMonth = today.daysInMonth();
+    // 今日が今月の何日目かを取得
+    const dayOfMonth = today.date();
+    // 経過率を計算
+    const progressRate = (dayOfMonth / daysInMonth) * 100;
+    return progressRate.toFixed(1);
+  }, []);
   return (
     <>
       <Stack gap={3}>
@@ -58,7 +67,7 @@ const StoreMonthlyPage: FC<Props> = ({
             <SimpleSummaryCard
               values={{
                 mainValue: lastDay,
-                subValue: `本日：${today}`,
+                subValue: `経過率：${progressRate}%`,
               }}
               title={"残り日数"}
               mainUnit={"日"}
