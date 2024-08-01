@@ -33,6 +33,7 @@ type Props = {
   companyMst: CompanyMst[];
   consultContentMst: ConsultContentMst[];
   statusMst: StatusMst[];
+  viewMode: MyPageMode;
   canEdit: boolean;
 };
 
@@ -51,51 +52,24 @@ const IndividualSalesResults: FC<Props> = ({
   companyMst,
   consultContentMst,
   statusMst,
+  viewMode,
   canEdit,
 }) => {
-  const [viewMode, setViewMode] = useState<MyPageMode>("visitor");
   const { contractBudgetData, postContractBudgetData } = useContractBudgetApi({
     userId: userId,
     year: resolveYear(targetMonth),
     month: targetMonth,
   });
 
-  const updateViewMode = useCallback(
-    (event: React.SyntheticEvent, nextView: string) => {
-      setViewMode(nextView as MyPageMode);
-    },
-    []
-  );
-  const a11yProps = (index: number) => {
-    return {
-      id: `simple-tab-${index}`,
-      "aria-controls": `simple-tabpanel-${index}`,
-    };
-  };
-
   return (
-    <Box ml="10px" mr="10px">
-      <Stack direction="row" alignItems="center">
-        <Tabs
-          sx={{
-            marginLeft: "10px",
-            marginBottom: "8px",
-          }}
-          value={viewMode}
-          onChange={updateViewMode}
-          aria-label="sales-result-view-mode-tab"
-        >
-          <Tab label="来店者" value="visitor" {...a11yProps(1)} />
-          <Tab label="申込者" value="applicator" {...a11yProps(2)} />
-          <Tab label="成果" value="achievement" {...a11yProps(0)} />
-          <Tab label="契約実績" value="contract" {...a11yProps(0)} />
-        </Tabs>
-      </Stack>
+    <Box>
       <Box
         sx={{
-          minHeight: "calc(100vh - 200px)",
+          minHeight: "calc(100vh - 350px)",
           background: "#f5f5f5",
         }}
+        ml="10px"
+        mr="10px"
         borderRadius={"12px"}
       >
         {(() => {

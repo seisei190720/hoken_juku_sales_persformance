@@ -15,7 +15,10 @@ import { useContractBudgetApi } from "@/app/api/useContractBudgetApi";
 import { resolveYear } from "@/app/api/useSalesResultApi";
 import dayjs from "dayjs";
 import { useApplicationApi } from "@/app/api/useApplicationApi";
-import { useTopicAchievementComposition } from "./hooks/useTopicAchievementComposition";
+import {
+  TopicBudgetAndAchievementType,
+  useTopicAchievementComposition,
+} from "./hooks/useTopicAchievementComposition";
 
 type Props = {
   userId: string;
@@ -27,6 +30,10 @@ type Props = {
   };
   inProgressApp: IndividualSalesResult[];
   updateInProgressApp: (newData: IndividualSalesResult) => Promise<void>;
+  topicData: {
+    yearBudgetAndAchievementData: TopicBudgetAndAchievementType | undefined;
+    monthBudgetAndAchievementData: TopicBudgetAndAchievementType | undefined;
+  };
   lastAppComposition: {
     lastApplicationData:
       | {
@@ -41,32 +48,10 @@ const TopPage: FC<Props> = ({
   canEdit,
   inProgressApp,
   updateInProgressApp,
-  lastAppComposition,
   mstData,
+  topicData,
+  lastAppComposition,
 }) => {
-  // TODO
-  // - [X] 1. ログインユーザーの今年分と今月分の予算を取得する。
-  // - [X] 2. ログインユーザーの年間の契約情報を取得して、
-  // - [ ] 3. 今年度の実績と、今月の実績を算出する。
-
-  const crrMonth = useMemo(() => dayjs().format("YYYY-MM"), []);
-
-  const { contractBudgetData, postContractBudgetData } = useContractBudgetApi({
-    userId: userId,
-    year: resolveYear(crrMonth),
-    month: null,
-  });
-  const { applicationData } = useApplicationApi({
-    userId: userId,
-    year: resolveYear(crrMonth),
-    establishDate: null,
-  });
-
-  const topicData = useTopicAchievementComposition(
-    contractBudgetData,
-    applicationData
-  );
-
   return (
     <>
       <Stack gap={3}>
@@ -84,18 +69,13 @@ const TopPage: FC<Props> = ({
             <Typography variant="h6">トピック</Typography>
           </Stack>
           <Stack direction="row" gap={2}>
-            {/* <BudgetAchievementHalfPieChart /> */}
-            <SimpleSummaryCardWichHalfPieChart
-              values={topicData.yearBudgetAndAchievementData}
-              title={`今年度の実績`}
-              // title={`今年度の実績(${dayjs(crrMonth).format("YYYY年")})`}
-              // mainUnit={"円"}
-            />
             <SimpleSummaryCardWichHalfPieChart
               values={topicData.monthBudgetAndAchievementData}
               title={`今月の実績`}
-              // title={`今月の実績(${dayjs(crrMonth).format("YYYY年MM月")})`}
-              // mainUnit={"円"}
+            />
+            <SimpleSummaryCardWichHalfPieChart
+              values={topicData.yearBudgetAndAchievementData}
+              title={`今年度の実績`}
             />
             <SimpleSummaryCard
               values={

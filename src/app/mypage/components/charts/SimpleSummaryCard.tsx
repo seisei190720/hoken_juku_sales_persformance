@@ -9,7 +9,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 type Props = {
   values:
     | {
-        mainValue: number;
+        mainValue: number | string;
         subValue: string;
       }
     | undefined;

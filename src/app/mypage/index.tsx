@@ -2,7 +2,7 @@ import { AuthUser } from "@aws-amplify/auth/cognito";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import Button from "@mui/material/Button";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
@@ -10,9 +10,12 @@ import { red } from "@mui/material/colors";
 import TopPage from "./top/topPage";
 import MonthlyPage from "./monthly/MonthlyPage";
 import YearlyPage from "./yearly/YearlyPage";
-import { useSalesResultApi } from "../api/useSalesResultApi";
+import { resolveYear, useSalesResultApi } from "../api/useSalesResultApi";
 import { useMockData } from "../mocks";
 import { useLastApplicationsComposition } from "./hooks/useLastApplicationComposition";
+import { useContractBudgetApi } from "../api/useContractBudgetApi";
+import { useApplicationApi } from "../api/useApplicationApi";
+import { useTopicAchievementComposition } from "./top/hooks/useTopicAchievementComposition";
 
 type Props = {
   userId: string;
@@ -39,6 +42,23 @@ const Mypage: FC<Props> = ({ userId, canEdit }) => {
     firstVisitDate: null,
   });
 
+  const crrMonth = useMemo(() => dayjs().format("YYYY-MM"), []);
+
+  const { contractBudgetData } = useContractBudgetApi({
+    userId: userId,
+    year: resolveYear(crrMonth),
+    month: null,
+  });
+  const { applicationData } = useApplicationApi({
+    userId: userId,
+    year: resolveYear(crrMonth),
+    establishDate: null,
+  });
+
+  const topicData = useTopicAchievementComposition(
+    contractBudgetData,
+    applicationData
+  );
   const lastAppComposition = useLastApplicationsComposition(lastApp);
   return (
     <>
@@ -69,12 +89,27 @@ const Mypage: FC<Props> = ({ userId, canEdit }) => {
                   inProgressApp={lastApp}
                   updateInProgressApp={updateLastApp}
                   lastAppComposition={lastAppComposition}
+                  topicData={topicData}
                 />
               );
             case "monthly":
-              return <MonthlyPage userId={userId} canEdit={true} />;
+              return (
+                <MonthlyPage
+                  userId={userId}
+                  canEdit={true}
+                  topicData={topicData}
+                  lastAppComposition={lastAppComposition}
+                />
+              );
             case "yearly":
-              return <YearlyPage userId={userId} canEdit={true} />;
+              return (
+                <YearlyPage
+                  userId={userId}
+                  canEdit={true}
+                  topicData={topicData}
+                  lastAppComposition={lastAppComposition}
+                />
+              );
             default:
               return <></>;
           }

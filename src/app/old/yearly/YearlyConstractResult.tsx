@@ -16,7 +16,7 @@ import YearlyBudgetAndAchievementSourceDataList from "./components/YearlyBudgetA
 import BudgetCard from "../../component/BudgetCard";
 
 type Props = {
-  selecetedMember: Member | "all";
+  userId: string; // userId or "1"(storeId)の可能性がある
   targetYear: string | null;
   applicationData: Application[] | undefined;
   productMst: ProductMst[];
@@ -25,7 +25,7 @@ type Props = {
 };
 
 const YearlyConstractResult: FC<Props> = ({
-  selecetedMember,
+  userId,
   targetYear,
   applicationData,
   productMst,
@@ -62,17 +62,14 @@ const YearlyConstractResult: FC<Props> = ({
           }
           title={"予算達成まで残り"}
           mainUnit={"円"}
-          userId={selecetedMember === "all" ? "1" : selecetedMember.id}
+          userId={userId === "all" ? "1" : userId}
           targetMonth={null}
           targetYear={targetYear}
           contractBudgetData={
             contractBudgetData === undefined
               ? undefined
               : contractBudgetData.find(
-                  (c: ContractBudget) =>
-                    (c.userId =
-                      selecetedMember === "all" ? "1" : selecetedMember.id) &&
-                    c.month === null
+                  (c: ContractBudget) => (c.userId = userId) && c.month === null
                 ) || null
           }
           postContractBudgetData={postContractBudgetData}

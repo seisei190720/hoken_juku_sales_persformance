@@ -101,7 +101,7 @@ const YearlyResults: FC<Props> = ({
             case "contract":
               return (
                 <YearlyConstractResult
-                  selecetedMember={selecetedMember}
+                  userId={selecetedMember === "all" ? "1" : userId}
                   targetYear={targetYear}
                   applicationData={applicationData}
                   productMst={productMst}

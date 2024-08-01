@@ -2,15 +2,87 @@ import { AuthUser } from "@aws-amplify/auth/cognito";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import Button from "@mui/material/Button";
 import { red } from "@mui/material/colors";
+import Box from "@mui/material/Box";
+import SimpleSummaryCardWichHalfPieChart from "../components/charts/SimpleSummaryCardWithHalfPieChart";
+import SimpleSummaryCard from "../components/charts/SimpleSummaryCard";
+import MyPage from "@/app/old/mypage";
+import { TopicBudgetAndAchievementType } from "../top/hooks/useTopicAchievementComposition";
+import { createDynamicallyTrackedSearchParams } from "next/dist/client/components/search-params";
 
 type Props = {
   userId: string;
   canEdit: boolean;
+  topicData: {
+    yearBudgetAndAchievementData: TopicBudgetAndAchievementType | undefined;
+    monthBudgetAndAchievementData: TopicBudgetAndAchievementType | undefined;
+  };
+  lastAppComposition: {
+    lastApplicationData:
+      | {
+          count: number;
+          sum: number;
+        }
+      | undefined;
+  };
 };
-const MonthlyPage: FC<Props> = ({ userId, canEdit }) => {
-  return <>月別成果作成中</>;
+const MonthlyPage: FC<Props> = ({
+  userId,
+  canEdit,
+  topicData,
+  lastAppComposition,
+}) => {
+  const today = useMemo(() => dayjs().format("M月D日"), []);
+  const lastDay = useMemo(
+    () => dayjs().endOf("month").diff(dayjs(), "day"),
+    []
+  );
+  return (
+    <>
+      <Stack gap={3}>
+        <Box
+          ml={1}
+          mr={1}
+          sx={{
+            // minHeight: "calc(100vh - 200px)",
+            background: "#f5f5f5",
+          }}
+          borderRadius={"12px"}
+          p={2}
+        >
+          <Stack mb={1}>
+            <Typography variant="h6">今月のトピック</Typography>
+          </Stack>
+          <Stack direction="row" gap={3}>
+            <SimpleSummaryCard
+              values={{
+                mainValue: lastDay,
+                subValue: `本日：${today}`,
+              }}
+              title={"残り日数"}
+              mainUnit={"日"}
+            />
+            <SimpleSummaryCardWichHalfPieChart
+              values={topicData.monthBudgetAndAchievementData}
+              title={`今月の実績`}
+            />
+            <SimpleSummaryCard
+              values={
+                lastAppComposition.lastApplicationData && {
+                  mainValue: lastAppComposition.lastApplicationData.sum,
+                  subValue: `${lastAppComposition.lastApplicationData.count}件`,
+                }
+              }
+              title={"未成立の申込残り"}
+              mainUnit={"円"}
+            />
+          </Stack>
+        </Box>
+        <MyPage userId={userId} canEdit={true} />
+      </Stack>
+    </>
+  );
 };
 export default MonthlyPage;
