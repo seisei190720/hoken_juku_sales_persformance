@@ -10,7 +10,7 @@ import BudgetEditorDialog from "./BudgetEditorDialog";
 import { ContractBudget } from "../types";
 
 type Props = {
-  value: number | undefined;
+  subValue: number | undefined;
   title: string;
   mainUnit: string;
   userId: string;
@@ -22,7 +22,7 @@ type Props = {
 };
 
 const BudgetCard: FC<Props> = ({
-  value,
+  subValue,
   title,
   mainUnit,
   userId,
@@ -41,7 +41,8 @@ const BudgetCard: FC<Props> = ({
   };
 
   const contentsPartEml = useMemo(() => {
-    if (value === undefined || contractBudgetData === undefined) return <></>;
+    if (subValue === undefined || contractBudgetData === undefined)
+      return <></>;
     if (contractBudgetData === null) {
       return (
         <Typography variant="h5" fontWeight={"Medium"}>
@@ -58,18 +59,18 @@ const BudgetCard: FC<Props> = ({
           justifyContent="center"
         >
           <Typography variant="h2" fontWeight={"Medium"}>
-            {(contractBudgetData.value - value).toLocaleString()}
+            {contractBudgetData.value.toLocaleString()}
           </Typography>
           <Typography variant="h6">{mainUnit}</Typography>
         </Stack>
         <Typography variant="h5" color="gray">
-          {`予算：${contractBudgetData.value.toLocaleString()}円`}
+          {`達成率：${subValue}%`}
         </Typography>
       </>
     );
-  }, [value, contractBudgetData]);
+  }, [subValue, contractBudgetData]);
 
-  if (value === undefined || contractBudgetData === undefined)
+  if (subValue === undefined || contractBudgetData === undefined)
     return (
       <Card
         sx={{

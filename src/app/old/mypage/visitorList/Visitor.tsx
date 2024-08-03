@@ -67,7 +67,7 @@ const Visitor: FC<Props> = ({
   if (!salesResultData) return <CircularProgress />;
   return (
     <>
-      <Stack gap={2} p={2} ml={2} mr={2}>
+      <Stack gap={2}>
         <Stack direction="row" gap={2} justifyContent="flex-end">
           {canEdit && (
             <Fab

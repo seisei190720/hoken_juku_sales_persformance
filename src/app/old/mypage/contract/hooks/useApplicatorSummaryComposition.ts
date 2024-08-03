@@ -1,11 +1,28 @@
-import { Application, IndividualSalesResult, ProductMst } from "@/app/types";
+import { calcPercent } from "@/app/hooks/util";
+import { Application, ContractBudget, ProductMst } from "@/app/types";
 import { green, orange } from "@mui/material/colors";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export const useApplicatorSummaryComposition = (
   applicationData: Application[] | undefined,
-  productMst: ProductMst[]
+  productMst: ProductMst[],
+  contractBudgetData: ContractBudget[],
+  userId: string
 ) => {
+  const [targetContract, setTargetContract] = useState<
+    ContractBudget | undefined
+  >(undefined);
+
+  useEffect(() => {
+    if (contractBudgetData !== undefined && contractBudgetData.length > 0) {
+      setTargetContract(
+        contractBudgetData.find(
+          (c: ContractBudget) => (c.userId = userId) || null
+        )
+      );
+    }
+  }, [contractBudgetData]);
+
   const calculateTotalFee = (applications: Application[]): number => {
     return applications.reduce(
       (sum, item) => sum + (item.firstYearFee ?? 0),
@@ -22,15 +39,17 @@ export const useApplicatorSummaryComposition = (
 
   const lifeApplications = useMemo(
     () =>
-      applicationData?.filter((v) => resolveProductKind(v.product) === "life"),
+      applicationData
+        ?.filter((a) => a.status === "2")
+        .filter((v) => resolveProductKind(v.product) === "life"),
     [applicationData, resolveProductKind]
   );
 
   const nonLifeApplications = useMemo(
     () =>
-      applicationData?.filter(
-        (v) => resolveProductKind(v.product) === "nonLife"
-      ),
+      applicationData
+        ?.filter((a) => a.status === "2")
+        .filter((v) => resolveProductKind(v.product) === "nonLife"),
     [applicationData, resolveProductKind]
   );
 
@@ -38,7 +57,9 @@ export const useApplicatorSummaryComposition = (
     (productId: string) => {
       if (!applicationData) return;
       return calculateTotalFee(
-        applicationData.filter((a) => a.product === productId)
+        applicationData
+          .filter((a) => a.status === "2")
+          .filter((a) => a.product === productId)
       );
     },
     [applicationData]
@@ -68,15 +89,22 @@ export const useApplicatorSummaryComposition = (
     if (!applicationData || !lifeApplications || !nonLifeApplications) return;
 
     return {
-      all: applicationData.length,
+      all: applicationData.filter((a) => a.status === "2").length,
       life: lifeApplications.length,
       nonLife: nonLifeApplications.length,
     };
   }, [applicationData, lifeApplications, nonLifeApplications]);
 
+  const contractAchievementRate = useMemo(() => {
+    if (fistYearFeeData === undefined || targetContract === undefined) return;
+    return calcPercent(fistYearFeeData.all, targetContract.value);
+  }, [fistYearFeeData, targetContract]);
+
   return {
     productBarChartData,
     fistYearFeeData,
     constractData,
+    targetContract,
+    contractAchievementRate,
   };
 };

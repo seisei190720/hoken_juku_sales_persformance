@@ -1,14 +1,13 @@
-import { useSalesResultApi } from "@/app/api/useSalesResultApi";
 import {
   Application,
   ContractBudget,
   IndividualSalesResult,
   Member,
+  ProductMst,
 } from "@/app/types";
 import { BudgetAndAchievementType } from "@/app/old/yearly/hooks/useYearlyConstractComposition";
-import { amber } from "@mui/material/colors";
-import { useCallback, useMemo } from "react";
-import { CountAndPercentType } from "./useStoreAchievementData";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { calcPercent } from "@/app/hooks/util";
 
 export type ConstractSouceType = {
   name: string;
@@ -19,28 +18,50 @@ export type ConstractSouceType = {
 export const useStoreConstractData = (
   lastSalesResultData: IndividualSalesResult[] | undefined,
   applicationData: Application[] | undefined,
+  productMst: ProductMst[],
   member: Member[],
   storeConstractBudgetData: ContractBudget[],
   memberConstractBudgetData: ContractBudget[]
 ) => {
-  const tempConstractSumAndAchievementRateData:
-    | CountAndPercentType[]
-    | undefined = useMemo(() => {
-    if (!applicationData) return;
-    return member.map((m) => {
-      const targetApp = applicationData.filter((a) => a.userId === m.id);
-      return {
-        name: m.name,
-        件数: targetApp
-          .map((t) =>
-            t.status === "2" && t.firstYearFee !== null ? t.firstYearFee : 0
-          )
-          .reduce((pre, crr) => pre + crr, 0),
-        全体: 0, //使っていないので、適当に
-        率: 0,
-      };
-    });
-  }, [applicationData, member]);
+  const [targetStoreContractBudget, setTargetStoreContractBudget] = useState<
+    ContractBudget | undefined
+  >(undefined);
+
+  useEffect(() => {
+    if (
+      storeConstractBudgetData !== undefined &&
+      storeConstractBudgetData.length > 0
+    ) {
+      setTargetStoreContractBudget(
+        storeConstractBudgetData.find(
+          (c: ContractBudget) => (c.userId = "1") || null
+        )
+      );
+    }
+  }, [storeConstractBudgetData, setTargetStoreContractBudget]);
+
+  const resolveProductKind = useCallback(
+    (v: string | null) => {
+      return productMst.find((r) => r.id == v)?.kind;
+    },
+    [productMst]
+  );
+
+  const lifeApplications = useMemo(
+    () =>
+      applicationData
+        ?.filter((a) => a.status === "2")
+        .filter((v) => resolveProductKind(v.product) === "life"),
+    [applicationData, resolveProductKind]
+  );
+
+  const nonLifeApplications = useMemo(
+    () =>
+      applicationData
+        ?.filter((a) => a.status === "2")
+        .filter((v) => resolveProductKind(v.product) === "nonLife"),
+    [applicationData, resolveProductKind]
+  );
 
   const constractSumAndAchievementRateData:
     | BudgetAndAchievementType[]
@@ -65,10 +86,6 @@ export const useStoreConstractData = (
           達成率: 0,
         };
       }
-      const achievedPercent = (constractSum / targetBudget) * 100;
-      const resultPercent = Math.round(achievedPercent * 10) / 10;
-      const resultPercentUnderHundred =
-        resultPercent > 100 ? 100 : resultPercent;
       const excessSum =
         constractSum - targetBudget < 0 ? 0 : constractSum - targetBudget;
       return {
@@ -80,53 +97,53 @@ export const useStoreConstractData = (
         超過額:
           constractSum - targetBudget < 0 ? 0 : constractSum - targetBudget,
         予算: targetBudget,
-        達成率: isNaN(resultPercent) ? 0 : resultPercentUnderHundred,
+        達成率: calcPercent(constractSum, targetBudget),
       };
     });
   }, [applicationData, memberConstractBudgetData]);
 
-  const calcAchievementPercent = useCallback(
-    (targetMonthContract: ContractBudget[], achivementSum: number) => {
-      if (targetMonthContract.length === 0) return 0;
-
-      const achievedPercent =
-        (achivementSum / targetMonthContract[0].value) * 100;
-      const resultPercent = Math.round(achievedPercent * 10) / 10;
-      const resultPercentUnderHundred =
-        resultPercent > 100 ? 100 : resultPercent;
-      return isNaN(resultPercent) ? 0 : resultPercentUnderHundred;
-    },
-    []
-  );
-
-  const storeConstractSum = useMemo(() => {
-    if (!applicationData || !storeConstractBudgetData) return;
+  const constractSumByProduct = useMemo(() => {
+    if (
+      !applicationData ||
+      !targetStoreContractBudget ||
+      !lifeApplications ||
+      !nonLifeApplications
+    ) {
+      return;
+    }
     const achivementSum = applicationData
       .filter((a) => a.status === "2")
       .reduce((pre, { firstYearFee }) => pre + (firstYearFee ?? 0), 0);
-
     return {
       achivementSum: achivementSum,
-      achivementPercent: calcAchievementPercent(
-        storeConstractBudgetData,
-        achivementSum
+      achivementPercent: calcPercent(
+        achivementSum,
+        targetStoreContractBudget.value
       ),
-    };
-  }, [applicationData, storeConstractBudgetData]);
-
-  const inProgressApplicationCount = useMemo(() => {
-    if (!lastSalesResultData) return;
-    const targetApplications = lastSalesResultData
-      .flatMap((s) => s.applications)
-      .filter((a) => a.status === "1");
-    return {
-      count: targetApplications.length,
-      sum: targetApplications.reduce(
+      life: lifeApplications.reduce(
+        (pre, { firstYearFee }) => pre + (firstYearFee ?? 0),
+        0
+      ),
+      nonLife: nonLifeApplications.reduce(
         (pre, { firstYearFee }) => pre + (firstYearFee ?? 0),
         0
       ),
     };
-  }, [lastSalesResultData]);
+  }, [
+    applicationData,
+    targetStoreContractBudget,
+    lifeApplications,
+    nonLifeApplications,
+  ]);
+
+  const constractCountByProduct = useMemo(() => {
+    if (!applicationData || !lifeApplications || !nonLifeApplications) return;
+    return {
+      all: applicationData.filter((a) => a.status === "2").length,
+      life: lifeApplications.length,
+      nonLife: nonLifeApplications.length,
+    };
+  }, [applicationData, lifeApplications, nonLifeApplications]);
 
   //TODO: statusクエリだけでリクエストを投げて取得できるようにバックエンドを実装する
   const constractSouceData: ConstractSouceType[] | undefined = useMemo(() => {
@@ -164,9 +181,10 @@ export const useStoreConstractData = (
   }, [lastSalesResultData, constractSumAndAchievementRateData, member]);
 
   return {
-    storeConstractSum,
-    constractSumAndAchievementRateData,
-    inProgressApplicationCount,
-    constractSouceData,
+    constractSumByProduct, //実績
+    constractCountByProduct,
+    constractSumAndAchievementRateData, //メンバーごとグラフ用
+    constractSouceData, //メンバーごとグラフ根拠用
+    targetStoreContractBudget, //予算
   };
 };

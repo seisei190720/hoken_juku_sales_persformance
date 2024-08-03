@@ -12,6 +12,7 @@ export type TopicBudgetAndAchievementType = {
   予算: number;
   未達額: number;
   達成率: number;
+  見込額?: number;
   // 実実績: number;
   // 超過額: number;
 };

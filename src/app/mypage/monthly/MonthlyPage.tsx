@@ -1,12 +1,12 @@
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import dayjs from "dayjs";
 import { FC, useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import SimpleSummaryCardWichHalfPieChart from "../components/charts/SimpleSummaryCardWithHalfPieChart";
 import SimpleSummaryCard from "../components/charts/SimpleSummaryCard";
 import MyPage from "@/app/old/mypage";
 import { TopicBudgetAndAchievementType } from "../top/hooks/useTopicAchievementComposition";
+import { useCountDownMonthDate } from "@/app/hooks/util";
 
 type Props = {
   userId: string;
@@ -30,21 +30,7 @@ const MonthlyPage: FC<Props> = ({
   topicData,
   lastAppComposition,
 }) => {
-  const lastDay = useMemo(
-    () => dayjs().endOf("month").diff(dayjs(), "day"),
-    []
-  );
-  const progressRate = useMemo(() => {
-    const today = dayjs();
-    // 今月の日数を取得
-    const daysInMonth = today.daysInMonth();
-    // 今日が今月の何日目かを取得
-    const dayOfMonth = today.date();
-    // 経過率を計算
-    const progressRate = (dayOfMonth / daysInMonth) * 100;
-    return progressRate.toFixed(1);
-  }, []);
-  // const today = useMemo(() => dayjs().format("M月D日"), []);
+  const dateData = useCountDownMonthDate();
   return (
     <>
       <Stack gap={3}>
@@ -64,8 +50,8 @@ const MonthlyPage: FC<Props> = ({
           <Stack direction="row" gap={3}>
             <SimpleSummaryCard
               values={{
-                mainValue: lastDay,
-                subValue: `経過率：${progressRate}%`,
+                mainValue: dateData.lastDays,
+                subValue: `経過率：${dateData.progressRate}%`,
               }}
               title={"残り日数"}
               mainUnit={"日"}

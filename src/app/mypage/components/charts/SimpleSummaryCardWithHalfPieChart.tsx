@@ -1,6 +1,6 @@
 import Typography from "@mui/material/Typography";
 import { blue } from "@mui/material/colors";
-import React from "react";
+import React, { useMemo } from "react";
 import { FC } from "react";
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
@@ -14,7 +14,20 @@ type Props = {
 };
 
 const SimpleSummaryCardWichHalfPieChart: FC<Props> = ({ values, title }) => {
-  if (!values)
+  const displayValues = useMemo(() => {
+    if (!values) return;
+    if (values.見込額 === undefined)
+      return {
+        main: values.実績.toLocaleString(),
+        sub: `目標：${values.予算.toLocaleString()}円`,
+      };
+
+    return {
+      main: (values.実績 + values.見込額).toLocaleString(),
+      sub: `目標：${values.予算.toLocaleString()}円`,
+    };
+  }, [values]);
+  if (!values || !displayValues)
     return (
       <Card
         sx={{
@@ -49,12 +62,12 @@ const SimpleSummaryCardWichHalfPieChart: FC<Props> = ({ values, title }) => {
               justifyContent="center"
             >
               <Typography variant="h2" fontWeight={"Medium"}>
-                {values.実績.toLocaleString()}
+                {displayValues.main}
               </Typography>
               <Typography variant="h6">円</Typography>
             </Stack>
             <Typography variant="h5" color="gray">
-              {`目標：${values.予算.toLocaleString()}円`}
+              {displayValues.sub}
             </Typography>
           </Stack>
           <BudgetAchievementHalfPieChart values={values} />

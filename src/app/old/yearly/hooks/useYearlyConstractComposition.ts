@@ -1,10 +1,11 @@
+import { calcPercent } from "@/app/hooks/util";
 import {
   Application,
   ContractBudget,
   ProductMst,
   yearMonth,
 } from "@/app/types";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 export type BudgetAndAchievementType = {
   name: string;
@@ -26,8 +27,23 @@ export type YearlyConstractSumAndCountType = {
 export const useYearlyConstractComposition = (
   applicationData: Application[] | undefined,
   productMst: ProductMst[],
-  contractBudgetData: ContractBudget[]
+  contractBudgetData: ContractBudget[],
+  userId: string
 ) => {
+  const [targetContractBudget, setTargetContractBudget] = useState<
+    ContractBudget | undefined
+  >(undefined);
+
+  useEffect(() => {
+    if (contractBudgetData !== undefined && contractBudgetData.length > 0) {
+      setTargetContractBudget(
+        contractBudgetData.find(
+          (c: ContractBudget) => (c.userId = userId) || null
+        )
+      );
+    }
+  }, [contractBudgetData]);
+
   const getTargetMonthDateApp = useCallback(
     (target: Application[], monthDate: string) =>
       target.filter((r) => {
@@ -69,7 +85,7 @@ export const useYearlyConstractComposition = (
     []
   );
 
-  const budgetAndAchievementData: BudgetAndAchievementType[] | undefined =
+  const budgetAndAchievement: BudgetAndAchievementType[] | undefined =
     useMemo(() => {
       if (!applicationData || !contractBudgetData) return;
       return yearMonth.map((y) => {
@@ -85,10 +101,6 @@ export const useYearlyConstractComposition = (
           y.keyMonthYear
         );
         const budget = !targetMonthContract ? 0 : targetMonthContract.value;
-        const achievedPercent = (constractSum / budget) * 100;
-        const resultPercent = Math.round(achievedPercent * 10) / 10;
-        const resultPercentUnderHundred =
-          resultPercent > 100 ? 100 : resultPercent;
         const excessSum = constractSum - budget < 0 ? 0 : constractSum - budget;
         return {
           name: y.name,
@@ -97,12 +109,12 @@ export const useYearlyConstractComposition = (
           未達額: budget - constractSum < 0 ? 0 : budget - constractSum,
           超過額: constractSum - budget < 0 ? 0 : constractSum - budget,
           予算: budget,
-          達成率: isNaN(resultPercent) ? 0 : resultPercentUnderHundred,
+          達成率: calcPercent(constractSum, budget),
         };
       });
     }, [applicationData, contractBudgetData, getTargetMonthDateApp]);
 
-  const constractSumData = useMemo(() => {
+  const constractSum = useMemo(() => {
     if (!applicationData) return;
     return yearMonth.map((y) => {
       const targetMonthApp = getTargetMonthDateApp(
@@ -133,7 +145,7 @@ export const useYearlyConstractComposition = (
     nonLifeApplications,
   ]);
 
-  const constractCountData = useMemo(() => {
+  const constractCount = useMemo(() => {
     if (!applicationData) return;
     return yearMonth.map((y) => {
       const targetMonthApp = getTargetMonthDateApp(
@@ -155,43 +167,47 @@ export const useYearlyConstractComposition = (
     nonLifeApplications,
   ]);
 
-  const calcAchievementPercent = useCallback(
-    (
-      targetMonthContract: ContractBudget | undefined,
-      achivementSum: number
-    ) => {
-      if (!targetMonthContract) return 0;
+  const sumAndPercentByProduct = useMemo(() => {
+    if (!budgetAndAchievement || !constractSum) return;
 
-      const achievedPercent = (achivementSum / targetMonthContract.value) * 100;
-      const resultPercent = Math.round(achievedPercent * 10) / 10;
-      const resultPercentUnderHundred =
-        resultPercent > 100 ? 100 : resultPercent;
-      return isNaN(resultPercent) ? 0 : resultPercentUnderHundred;
-    },
-    []
-  );
-
-  const allBudgetAndAchievementData = useMemo(() => {
-    if (!budgetAndAchievementData || !contractBudgetData) return;
-
-    const achivementSum = budgetAndAchievementData
+    const achivementSum = budgetAndAchievement
       .map((b) => b.実実績)
       .reduce((pre, crr) => pre + crr, 0);
-    const targetYearContract = getYearlyContract(contractBudgetData);
 
     return {
       achivementSum: achivementSum,
-      achivementPercent: calcAchievementPercent(
-        targetYearContract,
-        achivementSum
-      ),
+      achivementPercent:
+        targetContractBudget === undefined
+          ? 0
+          : calcPercent(achivementSum, targetContractBudget.value),
+      lifeAchivementSum: constractSum
+        .map((c) => c.生保)
+        .reduce((pre, crr) => pre + crr, 0),
+      nonLifeAchivementSum: constractSum
+        .map((c) => c.損保)
+        .reduce((pre, crr) => pre + crr, 0),
     };
-  }, [budgetAndAchievementData, contractBudgetData]);
+  }, [budgetAndAchievement, constractSum, targetContractBudget]);
+
+  const contractCountByProduct = useMemo(() => {
+    if (!constractCount) return;
+    return {
+      all: constractCount.map((c) => c.合計).reduce((pre, crr) => pre + crr, 0),
+      life: constractCount
+        .map((c) => c.生保)
+        .reduce((pre, crr) => pre + crr, 0),
+      nonLife: constractCount
+        .map((c) => c.損保)
+        .reduce((pre, crr) => pre + crr, 0),
+    };
+  }, [constractCount]);
 
   return {
-    budgetAndAchievementData,
-    allBudgetAndAchievementData,
-    constractSumData,
-    constractCountData,
+    budgetAndAchievement,
+    sumAndPercentByProduct,
+    contractCountByProduct,
+    constractSum,
+    constractCount,
+    targetContractBudget,
   };
 };

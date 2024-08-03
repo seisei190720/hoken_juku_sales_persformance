@@ -13,12 +13,12 @@ import {
   RouteMst,
   StatusMst,
 } from "@/app/types";
-import Stack from "@mui/material/Stack";
 import { KeyedMutator } from "swr";
 import Constract from "./contract/Contract";
 import Achievement from "./achievement/Achievement";
 import { useContractBudgetApi } from "../../api/useContractBudgetApi";
 import { resolveYear } from "../../api/useSalesResultApi";
+import { useApplicationApi } from "@/app/api/useApplicationApi";
 
 type Props = {
   userId: string;
@@ -60,6 +60,11 @@ const IndividualSalesResults: FC<Props> = ({
     year: resolveYear(targetMonth),
     month: targetMonth,
   });
+  const { applicationData } = useApplicationApi({
+    userId: userId,
+    year: resolveYear(targetMonth),
+    establishDate: targetMonth,
+  });
 
   return (
     <Box>
@@ -71,6 +76,7 @@ const IndividualSalesResults: FC<Props> = ({
         ml="10px"
         mr="10px"
         borderRadius={"12px"}
+        p={3}
       >
         {(() => {
           switch (viewMode) {
@@ -120,6 +126,7 @@ const IndividualSalesResults: FC<Props> = ({
                   canEdit={canEdit}
                   contractBudgetData={contractBudgetData}
                   postContractBudgetData={postContractBudgetData}
+                  applicationData={applicationData}
                 />
               );
             default:

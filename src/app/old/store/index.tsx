@@ -77,7 +77,7 @@ const StorePage: FC<Props> = ({ user }) => {
           <Button onClick={backToLastMonth}>
             <ArrowBackIosIcon />
           </Button>
-          <Typography variant="h5">
+          <Typography variant="h6">
             {dayjs(targetMonth).format("YYYY年MM月")}
           </Typography>
           <Button>
