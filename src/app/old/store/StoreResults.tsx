@@ -6,14 +6,12 @@ import {
   Application,
   CompanyMst,
   ConsultContentMst,
-  ContractBudget,
   IndividualSalesResult,
   ProductMst,
   RouteMst,
   StatusMst,
 } from "@/app/types";
 import Stack from "@mui/material/Stack";
-import StoreConstract from "./StoreConstract";
 import StoreAchievement from "./StoreAchievement";
 import { useMockData } from "../../mocks";
 

@@ -76,6 +76,7 @@ const IndividualSalesResults: FC<Props> = ({
         ml="10px"
         mr="10px"
         borderRadius={"12px"}
+        p={3}
       >
         {(() => {
           switch (viewMode) {

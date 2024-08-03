@@ -103,11 +103,36 @@ const StoreMonthlyContents: FC<Props> = ({
     <>
       <Stack sx={{ width: "100%" }}>
         <Stack direction="row" justifyContent="space-between">
-          <Stack direction="row" alignItems="center" ml={3}>
+          <Stack direction="row" alignItems="center" ml={3} gap={2}>
+            <Tabs
+              sx={{
+                marginLeft: "10px",
+                marginBottom: "8px",
+              }}
+              value={viewMode}
+              onChange={updateViewMode}
+              aria-label="sales-result-view-mode-tab"
+            >
+              <Tab label="成果" value="achievement" {...a11yProps(0)} />
+              <Tab label="契約実績" value="contract" {...a11yProps(0)} />
+            </Tabs>
+            <Stack direction="row" justifyContent="flex-end">
+              <FormControlLabel
+                control={
+                  <Switch
+                    value={enableCompareMode}
+                    onClick={toggleenableCompareMode}
+                  />
+                }
+                label="メンバー別に表示する"
+              />
+            </Stack>
+          </Stack>
+          <Stack direction="row" alignItems="center" mr={5}>
             <Button onClick={backToLastMonth}>
               <ArrowBackIosIcon />
             </Button>
-            <Typography variant="h5">
+            <Typography variant="h6">
               {dayjs(targetMonth).format("YYYY年MM月")}
             </Typography>
             <Button>
@@ -121,20 +146,6 @@ const StoreMonthlyContents: FC<Props> = ({
               今月に戻る
             </Button>
           </Stack>
-          <Stack direction="row" alignItems="center" mr={5}>
-            <Tabs
-              sx={{
-                marginLeft: "10px",
-                marginBottom: "8px",
-              }}
-              value={viewMode}
-              onChange={updateViewMode}
-              aria-label="sales-result-view-mode-tab"
-            >
-              <Tab label="成果" value="achievement" {...a11yProps(0)} />
-              <Tab label="契約実績" value="contract" {...a11yProps(0)} />
-            </Tabs>
-          </Stack>
         </Stack>
         <Box ml="10px" mr="10px">
           <Box
@@ -146,17 +157,6 @@ const StoreMonthlyContents: FC<Props> = ({
             p={3}
             pt={1}
           >
-            <Stack direction="row" justifyContent="flex-end">
-              <FormControlLabel
-                control={
-                  <Switch
-                    value={enableCompareMode}
-                    onClick={toggleenableCompareMode}
-                  />
-                }
-                label="メンバー別に表示する"
-              />
-            </Stack>
             <Stack
               gap={2}
               pt={1}

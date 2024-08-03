@@ -84,24 +84,6 @@ const YearlyResults: FC<Props> = ({ userId, canEdit }) => {
       <Stack sx={{ width: "100%" }}>
         <Stack direction="row" justifyContent="space-between">
           <Stack direction="row" alignItems="center" ml={3}>
-            <Button onClick={backToLastMonth}>
-              <ArrowBackIosIcon />
-            </Button>
-            <Typography variant="h5">
-              {dayjs(targetYear).format("YYYY年度")}
-            </Typography>
-            <Button>
-              <ArrowForwardIosIcon onClick={forwardToNextMonth} />
-            </Button>
-            <Button
-              variant="outlined"
-              onClick={moveToCurrentMonth}
-              disabled={targetYear === dayjs().format("YYYY-MM")}
-            >
-              今年度に戻る
-            </Button>
-          </Stack>
-          <Stack direction="row" alignItems="center" mr={5}>
             <Tabs
               sx={{
                 marginLeft: "10px",
@@ -114,6 +96,24 @@ const YearlyResults: FC<Props> = ({ userId, canEdit }) => {
               <Tab label="成果" value="achievement" {...a11yProps(0)} />
               <Tab label="契約実績" value="contract" {...a11yProps(0)} />
             </Tabs>
+          </Stack>
+          <Stack direction="row" alignItems="center" mr={5}>
+            <Button onClick={backToLastMonth}>
+              <ArrowBackIosIcon />
+            </Button>
+            <Typography variant="h6">
+              {dayjs(targetYear).format("YYYY年度")}
+            </Typography>
+            <Button>
+              <ArrowForwardIosIcon onClick={forwardToNextMonth} />
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={moveToCurrentMonth}
+              disabled={targetYear === dayjs().format("YYYY-MM")}
+            >
+              今年度に戻る
+            </Button>
           </Stack>
         </Stack>
         <Box ml="10px" mr="10px">

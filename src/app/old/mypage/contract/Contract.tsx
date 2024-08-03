@@ -35,8 +35,8 @@ const Constract: FC<Props> = ({
 
   return (
     <>
-      <Stack direction="column" gap={2} p={2} pt={3} borderColor={grey[300]}>
-        <Stack direction="column" gap={2} ml="2vw">
+      <Stack direction="column" gap={2} borderColor={grey[300]}>
+        <Stack direction="column" gap={2}>
           <Stack direction="row" gap={2}>
             <BudgetCard
               subValue={

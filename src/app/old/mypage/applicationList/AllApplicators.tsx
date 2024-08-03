@@ -33,31 +33,10 @@ const AllApplicators: FC<Props> = ({
   statusMst,
   canEdit,
 }) => {
-  const [showInProgressApp, setShowInProgressApp] = useState<boolean>(false);
-
-  const toggleShowInProgressApp = () => {
-    setShowInProgressApp((pre) => !pre);
-  };
-
   return (
     <>
-      <Stack gap={2} p={2} ml={2} mr={2}>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-        >
-          <FormControlLabel
-            control={
-              <Switch
-                value={showInProgressApp}
-                onClick={toggleShowInProgressApp}
-              />
-            }
-            label="未成立者のみ表示する"
-          />
-        </Stack>
-        {showInProgressApp ? (
+      <Stack gap={2}>
+        {/* {showInProgressApp ? (
           <InProgressApplicationList
             userId={userId}
             mutateSalesResultData={mutateSalesResultData}
@@ -66,16 +45,16 @@ const AllApplicators: FC<Props> = ({
             statusMst={statusMst}
             canEdit={canEdit}
           />
-        ) : (
-          <ApplicationList
-            salesResultData={salesResultData}
-            updateApplicationsData={updateSalesResultData}
-            productMst={productMst}
-            companyMst={companyMst}
-            statusMst={statusMst}
-            canEdit={canEdit}
-          />
-        )}
+        ) : ( */}
+        <ApplicationList
+          salesResultData={salesResultData}
+          updateApplicationsData={updateSalesResultData}
+          productMst={productMst}
+          companyMst={companyMst}
+          statusMst={statusMst}
+          canEdit={canEdit}
+        />
+        {/* )} */}
       </Stack>
     </>
   );
