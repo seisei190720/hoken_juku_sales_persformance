@@ -28,7 +28,6 @@ type Props = {
       | undefined;
   };
   inProgressSalesResultData: IndividualSalesResult[] | undefined;
-  storeContractBudgetData: ContractBudget[] | undefined;
   memberContractBudgetData: ContractBudget[] | undefined;
   applicationData: Application[] | undefined;
 };
@@ -38,7 +37,6 @@ const TopPage: FC<Props> = ({
   topicData,
   lastAppComposition,
   inProgressSalesResultData,
-  storeContractBudgetData,
   memberContractBudgetData,
   applicationData,
 }) => {

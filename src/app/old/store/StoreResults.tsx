@@ -78,7 +78,7 @@ const StoreResults: FC<Props> = ({
       </Stack>
       <Box
         sx={{
-          minHeight: "calc(100vh - 200px)",
+          minHeight: "calc(100vh - 525px)",
           background: "#f5f5f5",
         }}
         borderRadius={"12px"}
@@ -98,16 +98,17 @@ const StoreResults: FC<Props> = ({
                 />
               );
             case "contract":
-              return (
-                <StoreConstract
-                  userId={userId}
-                  targetMonth={targetMonth}
-                  inProgressSalesResultData={inProgressSalesResultData}
-                  applicationData={applicationData}
-                  productMst={productMst}
-                  members={members}
-                />
-              );
+            //未使用のためコメントアウト
+            // return (
+            //   <StoreConstract
+            //     userId={userId}
+            //     targetMonth={targetMonth}
+            //     inProgressSalesResultData={inProgressSalesResultData}
+            //     applicationData={applicationData}
+            //     productMst={productMst}
+            //     members={members}
+            //   />
+            // );
             default:
               return <></>;
           }

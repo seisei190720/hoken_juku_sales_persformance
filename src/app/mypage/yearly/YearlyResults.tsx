@@ -119,7 +119,7 @@ const YearlyResults: FC<Props> = ({ userId, canEdit }) => {
         <Box ml="10px" mr="10px">
           <Box
             sx={{
-              minHeight: "calc(100vh - 200px)",
+              minHeight: "calc(100vh - 525px)",
               background: "#f5f5f5",
             }}
             borderRadius={"12px"}

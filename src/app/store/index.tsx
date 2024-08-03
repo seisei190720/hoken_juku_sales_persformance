@@ -84,7 +84,6 @@ const StorePage: FC<Props> = ({ userId, canEdit }) => {
                 topicData={topicData}
                 lastAppComposition={lastAppComposition}
                 inProgressSalesResultData={lastApp}
-                storeContractBudgetData={storeContractBudgetData}
                 memberContractBudgetData={memberConstractBudgetData}
                 applicationData={applicationData}
               />

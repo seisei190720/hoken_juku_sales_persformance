@@ -44,7 +44,7 @@ const StoreAchievement: FC<Props> = ({
     statusMst
   );
   return (
-    <Stack gap={2} p={3}>
+    <>
       <Stack direction="row" gap={2}>
         <VisitorAndAppointmentBarChart
           values={storeAchievementData.visitorAndAppointmentData}
@@ -76,7 +76,7 @@ const StoreAchievement: FC<Props> = ({
           columnHeaders={["名前", "件数", "申込数", "割合"]}
         />
       </Stack>
-    </Stack>
+    </>
   );
 };
 

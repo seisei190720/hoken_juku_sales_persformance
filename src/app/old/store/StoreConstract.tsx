@@ -1,6 +1,7 @@
 import { FC } from "react";
 import {
   Application,
+  ContractBudget,
   IndividualSalesResult,
   Member,
   ProductMst,
@@ -21,6 +22,9 @@ type Props = {
   applicationData: Application[] | undefined;
   productMst: ProductMst[];
   members: Member[];
+  storeContractBudgetData: ContractBudget[];
+  storePostContractBudgetData: (newData: ContractBudget) => Promise<void>;
+  memberConstractBudget: ContractBudget[];
 };
 
 const StoreConstract: FC<Props> = ({
@@ -30,22 +34,10 @@ const StoreConstract: FC<Props> = ({
   applicationData,
   productMst,
   members,
+  storeContractBudgetData,
+  storePostContractBudgetData,
+  memberConstractBudget,
 }) => {
-  const {
-    contractBudgetData: storeContractBudgetData,
-    postContractBudgetData: storePostContractBudgetData,
-  } = useContractBudgetApi({
-    userId: "1",
-    year: resolveYear(targetMonth),
-    month: targetMonth,
-  });
-
-  const { contractBudgetData: memberConstractBudget } = useContractBudgetApi({
-    userId: null,
-    year: resolveYear(targetMonth),
-    month: targetMonth,
-  });
-
   const storeConstractData = useStoreConstractData(
     inProgressSalesResultData,
     applicationData,
@@ -56,8 +48,8 @@ const StoreConstract: FC<Props> = ({
   );
 
   return (
-    <Stack gap={2} p={3}>
-      <Stack direction="row" gap={2}>
+    <>
+      {/* <Stack direction="row" gap={2}>
         <BudgetCard
           subValue={
             storeConstractData.constractSumByProduct &&
@@ -100,7 +92,7 @@ const StoreConstract: FC<Props> = ({
           sub2ChipName={"損保"}
           cardFlex={1}
         />
-      </Stack>
+      </Stack> */}
       <Stack direction="row" gap={2}>
         <YearlyBudgetAndAchievementComposedChart
           title={"実績グラフ"}
@@ -112,7 +104,7 @@ const StoreConstract: FC<Props> = ({
           columnHeaders={["名前", "予算", "実績", "達成率"]}
         />
       </Stack>
-    </Stack>
+    </>
   );
 };
 

@@ -1,7 +1,6 @@
-import { useApplicationApi } from "@/app/api/useApplicationApi";
 import { resolveYear } from "@/app/api/useSalesResultApi";
 import BudgetCard from "@/app/component/BudgetCard";
-import { ContractBudget, ProductMst } from "@/app/types";
+import { Application, ContractBudget, ProductMst } from "@/app/types";
 import { grey } from "@mui/material/colors";
 import Stack from "@mui/material/Stack";
 import { FC } from "react";
@@ -16,6 +15,7 @@ type Props = {
   canEdit: boolean;
   contractBudgetData: ContractBudget[];
   postContractBudgetData: (newData: ContractBudget) => Promise<void>;
+  applicationData: Application[] | undefined;
 };
 const Constract: FC<Props> = ({
   userId,
@@ -24,12 +24,8 @@ const Constract: FC<Props> = ({
   canEdit,
   contractBudgetData,
   postContractBudgetData,
+  applicationData,
 }) => {
-  const { applicationData } = useApplicationApi({
-    userId: userId,
-    year: resolveYear(targetMonth),
-    establishDate: targetMonth,
-  });
   const applicatorData = useApplicatorSummaryComposition(
     applicationData,
     productMst,
