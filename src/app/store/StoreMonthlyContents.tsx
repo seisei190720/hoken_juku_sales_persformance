@@ -142,6 +142,7 @@ const StoreMonthlyContents: FC<Props> = ({
                       targetMonth={targetMonth}
                       inProgressSalesResultData={inProgressSalesResultData}
                       applicationData={applicationData}
+                      productMst={productMst}
                       members={members}
                     />
                   );
@@ -151,11 +152,6 @@ const StoreMonthlyContents: FC<Props> = ({
             })()}
           </Box>
         </Box>
-        {/* <LastApplicationDrawer
-          open={openLastApplicationDrawer}
-          handleDrawerClose={handleDrawerClose}
-          members={members}
-        /> */}
       </Stack>
     </>
   );

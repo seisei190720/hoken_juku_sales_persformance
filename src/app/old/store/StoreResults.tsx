@@ -104,6 +104,7 @@ const StoreResults: FC<Props> = ({
                   targetMonth={targetMonth}
                   inProgressSalesResultData={inProgressSalesResultData}
                   applicationData={applicationData}
+                  productMst={productMst}
                   members={members}
                 />
               );

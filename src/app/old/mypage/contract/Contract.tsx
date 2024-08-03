@@ -32,7 +32,9 @@ const Constract: FC<Props> = ({
   });
   const applicatorData = useApplicatorSummaryComposition(
     applicationData,
-    productMst
+    productMst,
+    contractBudgetData,
+    userId
   );
 
   return (
@@ -40,6 +42,19 @@ const Constract: FC<Props> = ({
       <Stack direction="column" gap={2} p={2} pt={3} borderColor={grey[300]}>
         <Stack direction="column" gap={2} ml="2vw">
           <Stack direction="row" gap={2}>
+            <BudgetCard
+              subValue={
+                applicatorData && applicatorData.contractAchievementRate
+              }
+              title={"予算"}
+              mainUnit={"円"}
+              userId={userId}
+              targetMonth={targetMonth}
+              targetYear={resolveYear(targetMonth)}
+              contractBudgetData={applicatorData.targetContract}
+              postContractBudgetData={postContractBudgetData}
+              canEdit={canEdit}
+            />
             <ThreeCompartmentSummaryCard
               values={
                 applicatorData.fistYearFeeData && {
@@ -48,31 +63,11 @@ const Constract: FC<Props> = ({
                   sub2Value: `${applicatorData.fistYearFeeData.nonLife.toLocaleString()}円`,
                 }
               }
-              title={"実績AC"}
+              title={"実績"}
               mainUnit={"円"}
               sub1ChipName={"生保"}
               sub2ChipName={"損保"}
               cardFlex={1.5}
-            />
-            <BudgetCard
-              value={
-                applicatorData.fistYearFeeData &&
-                applicatorData.fistYearFeeData.all
-              }
-              title={"予算達成まで残り"}
-              mainUnit={"円"}
-              userId={userId}
-              targetMonth={targetMonth}
-              targetYear={resolveYear(targetMonth)}
-              contractBudgetData={
-                contractBudgetData === undefined
-                  ? undefined
-                  : contractBudgetData.find(
-                      (c: ContractBudget) => (c.userId = userId)
-                    ) || null
-              }
-              postContractBudgetData={postContractBudgetData}
-              canEdit={canEdit}
             />
             <ThreeCompartmentSummaryCard
               values={
@@ -88,18 +83,6 @@ const Constract: FC<Props> = ({
               sub2ChipName={"損保"}
               cardFlex={1}
             />
-            {/* <SimpleSummaryCard
-              values={
-                lastApplicationData !== undefined
-                  ? {
-                      mainValue: lastApplicationData.count,
-                      subValue: "",
-                    }
-                  : undefined
-              }
-              title={"申込残"}
-              mainUnit={"件"}
-            /> */}
           </Stack>
           <Stack direction="row" gap={2}>
             <ApplicatorBarChart values={applicatorData.productBarChartData} />
