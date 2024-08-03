@@ -11,17 +11,20 @@ type Props = {
 };
 const BudgetAchievementHalfPieChart: FC<Props> = ({ values }) => {
   const RADIAN = Math.PI / 180;
-  const data = useMemo(
-    () => [
+  const data = useMemo(() => {
+    if (values.見込額 === undefined) {
+      return [
+        { name: "実績", value: values.実績, color: blue[300] },
+        { name: "未達分", value: values.未達額, color: grey[300] },
+      ];
+    }
+    return [
       { name: "実績", value: values.実績, color: blue[300] },
-      { name: "未達分", value: values.未達額, color: grey[300] },
-    ],
-    [values]
-  );
-  // const data = [
-  //   { name: "実績", value: 10000, color: blue[300] },
-  //   { name: "未達分", value: 3000, color: grey[300] },
-  // ];
+      { name: "見込額", value: values.見込額, color: orange[300] },
+      { name: "未達額", value: values.未達額, color: grey[300] },
+    ];
+  }, [values]);
+
   const cx = 100;
   const cy = 80;
   const iR = 50;

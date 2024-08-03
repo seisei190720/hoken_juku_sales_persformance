@@ -11,38 +11,41 @@ import { useApplicationApi } from "../api/useApplicationApi";
 import { useTopicAchievementComposition } from "../mypage/top/hooks/useTopicAchievementComposition";
 import { useLastApplicationsComposition } from "../mypage/hooks/useLastApplicationComposition";
 import StoreMonthlyPage from "./StoreMonthlyPage";
+import TopPage from "./TopPage";
 
 type Props = {
   userId: string;
   canEdit: boolean;
 };
 
-type ToggleMenu = "monthly" | "yearly";
+type ToggleMenu = "top" | "monthly" | "yearly";
 
 const StorePage: FC<Props> = ({ userId, canEdit }) => {
-  const [toggleMenu, setToggleMenu] = useState<ToggleMenu>("monthly");
+  const [toggleMenu, setToggleMenu] = useState<ToggleMenu>("top");
   const handleChange = (
     event: React.MouseEvent<HTMLElement>,
     newToggleMenu: string
   ) => {
     setToggleMenu(newToggleMenu as ToggleMenu);
   };
-  const {
-    salesResultData: lastApp,
-    updateSalesResultData: updateLastApp,
-    mutate: mutateLastApp,
-  } = useSalesResultApi(null, {
+  const { salesResultData: lastApp } = useSalesResultApi(null, {
     status: "1",
     year: null,
     firstVisitDate: null,
   });
   const crrMonth = useMemo(() => dayjs().format("YYYY-MM"), []);
 
-  const { contractBudgetData } = useContractBudgetApi({
+  const { contractBudgetData: storeContractBudgetData } = useContractBudgetApi({
     userId: "1",
     year: resolveYear(crrMonth),
     month: null,
   });
+  const { contractBudgetData: memberConstractBudgetData } =
+    useContractBudgetApi({
+      userId: null,
+      year: resolveYear(crrMonth),
+      month: crrMonth,
+    });
   const { applicationData } = useApplicationApi({
     userId: null,
     year: resolveYear(crrMonth),
@@ -50,7 +53,7 @@ const StorePage: FC<Props> = ({ userId, canEdit }) => {
   });
 
   const topicData = useTopicAchievementComposition(
-    contractBudgetData,
+    storeContractBudgetData,
     applicationData
   );
   const lastAppComposition = useLastApplicationsComposition(lastApp);
@@ -66,13 +69,26 @@ const StorePage: FC<Props> = ({ userId, canEdit }) => {
           onChange={handleChange}
           aria-label="Platform"
         >
-          {/* <ToggleButton value="top">トップページ</ToggleButton> */}
+          <ToggleButton value="top">トップページ</ToggleButton>
           <ToggleButton value="monthly">月別成果</ToggleButton>
           <ToggleButton value="yearly">年度別成果</ToggleButton>
         </ToggleButtonGroup>
       </Stack>
       {(() => {
         switch (toggleMenu) {
+          case "top":
+            return (
+              <TopPage
+                userId={userId}
+                canEdit={canEdit}
+                topicData={topicData}
+                lastAppComposition={lastAppComposition}
+                inProgressSalesResultData={lastApp}
+                storeContractBudgetData={storeContractBudgetData}
+                memberContractBudgetData={memberConstractBudgetData}
+                applicationData={applicationData}
+              />
+            );
           case "monthly":
             return (
               <StoreMonthlyPage

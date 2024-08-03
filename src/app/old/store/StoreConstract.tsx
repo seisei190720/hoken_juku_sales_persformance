@@ -6,7 +6,6 @@ import {
   ProductMst,
 } from "@/app/types";
 import Stack from "@mui/material/Stack";
-import SimpleSummaryCard from "../mypage/components/SimpleSummaryCard";
 import { useStoreConstractData } from "./hooks/useStoreConstractData";
 import BudgetCard from "../../component/BudgetCard";
 import { resolveYear } from "../../api/useSalesResultApi";

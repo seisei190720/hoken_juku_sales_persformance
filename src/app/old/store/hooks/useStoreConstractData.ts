@@ -38,7 +38,7 @@ export const useStoreConstractData = (
         )
       );
     }
-  }, [storeConstractBudgetData]);
+  }, [storeConstractBudgetData, setTargetStoreContractBudget]);
 
   const resolveProductKind = useCallback(
     (v: string | null) => {
@@ -86,10 +86,6 @@ export const useStoreConstractData = (
           達成率: 0,
         };
       }
-      const achievedPercent = (constractSum / targetBudget) * 100;
-      const resultPercent = Math.round(achievedPercent * 10) / 10;
-      const resultPercentUnderHundred =
-        resultPercent > 100 ? 100 : resultPercent;
       const excessSum =
         constractSum - targetBudget < 0 ? 0 : constractSum - targetBudget;
       return {
@@ -101,7 +97,7 @@ export const useStoreConstractData = (
         超過額:
           constractSum - targetBudget < 0 ? 0 : constractSum - targetBudget,
         予算: targetBudget,
-        達成率: isNaN(resultPercent) ? 0 : resultPercentUnderHundred,
+        達成率: calcPercent(constractSum, targetBudget),
       };
     });
   }, [applicationData, memberConstractBudgetData]);
@@ -135,7 +131,7 @@ export const useStoreConstractData = (
     };
   }, [
     applicationData,
-    storeConstractBudgetData,
+    targetStoreContractBudget,
     lifeApplications,
     nonLifeApplications,
   ]);
