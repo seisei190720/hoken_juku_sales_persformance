@@ -6,7 +6,7 @@ import ConsultContentPieChart from "../../../component/charts/ConsultContentPieC
 import VisitorBarChart from "../../../component/charts/VisitorBarChart";
 import ThreeCompartmentSummaryCard from "../../../component/charts/ThreeCompartmentSummaryCard";
 import { useVisitorSummaryComposition } from "./hooks/useVisitorSummaryComposition";
-import SimpleSummaryCard from "../../components/charts/SimpleSummaryCard";
+import SimpleSummaryCard from "../../../component/cards/SimpleSummaryCard";
 
 type Props = {
   userId: string;

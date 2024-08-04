@@ -2,9 +2,9 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FC, useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
-import SimpleSummaryCard from "../components/charts/SimpleSummaryCard";
+import SimpleSummaryCard from "../../component/cards/SimpleSummaryCard";
 import SimpleSummaryCardWichHalfPieChart from "../../component/charts/SimpleSummaryCardWithHalfPieChart";
-import ApplicationList from "../components/ApplicationList";
+import ApplicationList from "../ApplicationList";
 import {
   CompanyMst,
   IndividualSalesResult,

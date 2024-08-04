@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import { FC } from "react";
 import Box from "@mui/material/Box";
 import { TopicBudgetAndAchievementType } from "../mypage/top/hooks/useTopicAchievementComposition";
-import SimpleSummaryCard from "../mypage/components/charts/SimpleSummaryCard";
+import SimpleSummaryCard from "../component/cards/SimpleSummaryCard";
 import SimpleSummaryCardWichHalfPieChart from "../component/charts/SimpleSummaryCardWithHalfPieChart";
 import { IndividualSalesResult } from "../types";
 import StoreMonthlyContents from "./StoreMonthlyContents";

@@ -2,7 +2,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
 import { TopicBudgetAndAchievementType } from "../top/hooks/useTopicAchievementComposition";
-import SimpleSummaryCard from "../components/charts/SimpleSummaryCard";
+import SimpleSummaryCard from "../../component/cards/SimpleSummaryCard";
 import SimpleSummaryCardWichHalfPieChart from "../../component/charts/SimpleSummaryCardWithHalfPieChart";
 import Box from "@mui/material/Box";
 import YearlyResults from "./YearlyResults";

@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import { FC, useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import SimpleSummaryCardWichHalfPieChart from "../../component/charts/SimpleSummaryCardWithHalfPieChart";
-import SimpleSummaryCard from "../components/charts/SimpleSummaryCard";
+import SimpleSummaryCard from "../../component/cards/SimpleSummaryCard";
 import MonthlyPageContents from "@/app/mypage/monthly/MonthlyPageContents";
 import { TopicBudgetAndAchievementType } from "../top/hooks/useTopicAchievementComposition";
 import { useCountDownMonthDate } from "@/app/hooks/util";
