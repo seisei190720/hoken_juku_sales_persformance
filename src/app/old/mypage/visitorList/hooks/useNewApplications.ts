@@ -22,9 +22,15 @@ export const useNewApplications = (
   const [newApplications, setNewApplications] = useState<NewApplication[]>([
     DEFAULT_APPLICATION_DATA,
   ]);
+  const [newRemarks, setNewRemarks] = useState<string>("");
+
   useEffect(() => {
-    if (!salesResult) setNewApplications([]);
-  }, [salesResult, setNewApplications]);
+    if (!salesResult) {
+      setNewApplications([]);
+    } else {
+      setNewRemarks(salesResult.remarks === null ? "" : salesResult.remarks);
+    }
+  }, [salesResult, setNewApplications, setNewRemarks]);
 
   const addProduct = useCallback(() => {
     setNewApplications([...newApplications, DEFAULT_APPLICATION_DATA]);
@@ -92,11 +98,19 @@ export const useNewApplications = (
     [companyMst, newApplications, setNewApplications]
   );
 
+  const updateRemarks = useCallback(
+    (v: string) => {
+      setNewRemarks(v);
+    },
+    [setNewRemarks]
+  );
+
   const submitNewApplications = useCallback(() => {
     //TODO: validationを実装する
     if (!salesResult) return;
     updateApplicationsData({
       ...salesResult,
+      remarks: newRemarks === "" ? null : newRemarks,
       applications: newApplications.map((v) => {
         return {
           userId: salesResult.userId,
@@ -109,13 +123,15 @@ export const useNewApplications = (
         };
       }),
     });
-  }, [newApplications, updateApplicationsData]);
+  }, [newApplications, updateApplicationsData, newRemarks]);
 
   return {
     newApplications,
     updateApplicationDate,
     updateProduct,
     updateCompany,
+    updateRemarks,
+    newRemarks,
     addProduct,
     deleteProduct,
     submitNewApplications,

@@ -58,6 +58,8 @@ const UpdateApplicationFormDialog: FC<Props> = ({
     updateEstablishDate,
     thankyouState,
     setThankyouState,
+    newRemarks,
+    updateRemarks,
     submitUpdatedApplications,
   } = useUpdateApplications(
     salesResult,
@@ -80,7 +82,7 @@ const UpdateApplicationFormDialog: FC<Props> = ({
     >
       <DialogTitle>{`${salesResult.name}さんの申込情報登録`}</DialogTitle>
       <DialogContent>
-        <Stack ml={2} gap={3} direction="column">
+        <Stack ml={2} gap={2} direction="column">
           <DialogContentText>申込情報を更新してください。</DialogContentText>
           {updatedApplications.map((app, idx) => {
             return (
@@ -208,6 +210,23 @@ const UpdateApplicationFormDialog: FC<Props> = ({
               label="ありがとう完了済み"
             />
           </Stack>
+        </Stack>
+        <Stack mt={1} pr={1} pl={1}>
+          <TextField
+            key="remarks"
+            id="remarks"
+            name="remarks"
+            label="備考"
+            type="text"
+            size="small"
+            fullWidth
+            multiline
+            minRows={2}
+            maxRows={4}
+            variant="outlined"
+            value={newRemarks}
+            onChange={(e) => updateRemarks(e.target.value)}
+          />
         </Stack>
       </DialogContent>
       <DialogActions>

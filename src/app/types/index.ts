@@ -15,6 +15,7 @@ export type IndividualSalesResult = {
   visitRoute: string; //経路 mst
   name: string; //お名前
   nextAppointment: boolean; //次アポ
+  remarks: string | null;
   consultContent: string; //相談内容 mst(生保、損保、その他)
   applications: Application[];
   thankyou: boolean; //ありがとう
@@ -51,6 +52,7 @@ export type NewVisitor = {
   name: string | null;
   nextAppointment: boolean;
   consultContent: ConsultContentMst | null;
+  remarks: string | null;
 };
 
 export type ContractBudget = {

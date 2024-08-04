@@ -25,6 +25,9 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import UpdateVisitorFormDialog from "./UpdateVisitorFormDialog";
+import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
+import Tooltip, { tooltipClasses, TooltipProps } from "@mui/material/Tooltip";
+import Box from "@mui/material/Box";
 
 type Props = {
   salesResults: IndividualSalesResult[];
@@ -102,6 +105,7 @@ const VisitorList: FC<Props> = ({
               <TableCell>相談内容</TableCell>
               <TableCell>次アポ</TableCell>
               <TableCell>申込件数</TableCell>
+              <TableCell sx={{ width: 70 }}>備考</TableCell>
               <TableCell
                 sx={{ width: 70, ...(!canEdit && { display: "none" }) }}
               >
@@ -145,6 +149,23 @@ const VisitorList: FC<Props> = ({
                     </Button>
                   ) : (
                     `${row.applications.length}件`
+                  )}
+                </TableCell>
+                <TableCell>
+                  {row.remarks !== null && (
+                    <HtmlTooltip
+                      title={
+                        <Box
+                          sx={{
+                            whiteSpace: "pre-wrap",
+                          }}
+                        >
+                          {row.remarks}
+                        </Box>
+                      }
+                    >
+                      <ChatBubbleOutlineIcon />
+                    </HtmlTooltip>
                   )}
                 </TableCell>
                 {/* FIXME: 最悪menuアイコンにしてアンカーで「編集・削除」を選択できるようにする  */}
@@ -233,5 +254,17 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   // hide last border
   "&:last-child td, &:last-child th": {
     border: 0,
+  },
+}));
+
+const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: "white",
+    color: "rgba(0, 0, 0, 0.87)",
+    maxWidth: 440,
+    fontSize: theme.typography.pxToRem(16),
+    border: "2px solid #dadde9",
   },
 }));

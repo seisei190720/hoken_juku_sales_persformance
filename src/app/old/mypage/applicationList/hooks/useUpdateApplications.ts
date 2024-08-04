@@ -20,6 +20,7 @@ export const useUpdateApplications = (
     UpdateApplication[]
   >([]);
   const [thankyouState, setThankyouState] = useState<boolean>(false);
+  const [newRemarks, setNewRemarks] = useState<string>("");
 
   useEffect(() => {
     if (salesResult) {
@@ -36,6 +37,7 @@ export const useUpdateApplications = (
         })
       );
       setThankyouState(salesResult.thankyou);
+      setNewRemarks(salesResult.remarks === null ? "" : salesResult.remarks);
     }
   }, [salesResult, setUpdatedApplications, setThankyouState]);
 
@@ -164,11 +166,19 @@ export const useUpdateApplications = (
     [updatedApplications, setUpdatedApplications]
   );
 
+  const updateRemarks = useCallback(
+    (v: string) => {
+      setNewRemarks(v);
+    },
+    [setNewRemarks]
+  );
+
   const submitUpdatedApplications = useCallback(() => {
     //TODO: validationを実装する
     if (!salesResult) return;
     updateApplicationsData({
       ...salesResult,
+      remarks: newRemarks === "" ? null : newRemarks,
       thankyou: thankyouState,
       applications: updatedApplications.map((v) => {
         return {
@@ -182,7 +192,7 @@ export const useUpdateApplications = (
         };
       }),
     });
-  }, [updatedApplications, updateApplicationsData, thankyouState]);
+  }, [updatedApplications, updateApplicationsData, thankyouState, newRemarks]);
 
   return {
     updatedApplications,
@@ -196,6 +206,8 @@ export const useUpdateApplications = (
     updateEstablishDate,
     thankyouState,
     setThankyouState,
+    newRemarks,
+    updateRemarks,
     submitUpdatedApplications,
   };
 };
