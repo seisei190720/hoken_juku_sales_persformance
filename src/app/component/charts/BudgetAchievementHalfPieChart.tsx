@@ -101,6 +101,14 @@ const BudgetAchievementHalfPieChart: FC<Props> = ({ values }) => {
       </text>
     );
   };
+  if (values.予算 === 0)
+    return (
+      <Stack justifyContent="center" alignItems="center" flex={1}>
+        <Typography variant="h5" fontWeight={"Medium"}>
+          予算未設定
+        </Typography>
+      </Stack>
+    );
   return (
     <>
       <Box height={90} flex={1}>

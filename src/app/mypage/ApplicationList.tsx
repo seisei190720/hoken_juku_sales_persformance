@@ -28,6 +28,7 @@ import DeleteApplicationDialog from "../component/DeleteApplicationDialog";
 import Box from "@mui/material/Box";
 import SuccessSnacBar from "@/app/component/SuccessSnacBar";
 import { useBoolean } from "@/app/hooks/util";
+import EmptyState from "../component/EmptyState";
 
 type Props = {
   salesResultData: IndividualSalesResult[] | undefined;
@@ -108,6 +109,19 @@ const ApplicationList: FC<Props> = ({
   };
 
   if (!salesResultData) return <CircularProgress />;
+  if (salesResultData.length < 1)
+    return (
+      <Box pt={2}>
+        <EmptyState
+          message={"申込情報が存在しません"}
+          subMessage={
+            canEdit
+              ? "来店者一覧の「新規申込」から申込情報を追加してください。"
+              : ""
+          }
+        />
+      </Box>
+    );
   return (
     <>
       <Stack gap={1}>
