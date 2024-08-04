@@ -8,6 +8,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { Button } from "@mui/material";
 import BudgetEditorDialog from "../BudgetEditorDialog";
 import { ContractBudget } from "../../types";
+import SuccessSnacBar from "../SuccessSnacBar";
+import { useBoolean } from "@/app/hooks/util";
 
 type Props = {
   subValue: number | undefined;
@@ -32,12 +34,11 @@ const BudgetCard: FC<Props> = ({
   postContractBudgetData,
   canEdit,
 }) => {
-  const [openEditor, setOpenEditor] = useState(false);
-  const handleEditClickOpen = () => {
-    setOpenEditor(true);
-  };
-  const handleEditClose = () => {
-    setOpenEditor(false);
+  const openEditor = useBoolean(false);
+
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+  const handleClickSnacBar = () => {
+    setOpenSnackBar(true);
   };
 
   const contentsPartEml = useMemo(() => {
@@ -86,39 +87,47 @@ const BudgetCard: FC<Props> = ({
       </Card>
     );
   return (
-    <Card sx={{ padding: 2, borderRadius: "12px", flex: 1 }}>
-      <Stack height="100%">
-        <Typography variant="h6" color={blue[600]}>
-          {title}
-        </Typography>
-        <Stack
-          direction="column"
-          alignItems="center"
-          justifyContent="center"
-          flex={1}
-        >
-          {contentsPartEml}
-        </Stack>
-        {canEdit && (
-          <Stack direction="row" justifyContent="flex-end">
-            <Button size="small" onClick={handleEditClickOpen}>
-              予算を編集する
-            </Button>
+    <>
+      <Card sx={{ padding: 2, borderRadius: "12px", flex: 1 }}>
+        <Stack height="100%">
+          <Typography variant="h6" color={blue[600]}>
+            {title}
+          </Typography>
+          <Stack
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            flex={1}
+          >
+            {contentsPartEml}
           </Stack>
+          {canEdit && (
+            <Stack direction="row" justifyContent="flex-end">
+              <Button size="small" onClick={openEditor.handleTrue}>
+                予算を編集する
+              </Button>
+            </Stack>
+          )}
+        </Stack>
+        {openEditor && (
+          <BudgetEditorDialog
+            openFormDialog={openEditor.bool}
+            handleClose={openEditor.handleFalse}
+            userId={userId}
+            targetMonth={targetMonth}
+            targetYear={targetYear}
+            contractBudgetData={contractBudgetData}
+            postContractBudgetData={postContractBudgetData}
+            handleClickSnacBar={handleClickSnacBar}
+          />
         )}
-      </Stack>
-      {openEditor && (
-        <BudgetEditorDialog
-          openFormDialog={openEditor}
-          handleClose={handleEditClose}
-          userId={userId}
-          targetMonth={targetMonth}
-          targetYear={targetYear}
-          contractBudgetData={contractBudgetData}
-          postContractBudgetData={postContractBudgetData}
-        />
-      )}
-    </Card>
+      </Card>
+      <SuccessSnacBar
+        openSnackBar={openSnackBar}
+        setOpenSnackBar={setOpenSnackBar}
+        message={"保存が完了しました。"}
+      />
+    </>
   );
 };
 

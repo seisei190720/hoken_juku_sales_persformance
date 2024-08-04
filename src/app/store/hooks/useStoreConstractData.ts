@@ -97,7 +97,7 @@ export const useStoreConstractData = (
         超過額:
           constractSum - targetBudget < 0 ? 0 : constractSum - targetBudget,
         予算: targetBudget,
-        達成率: calcPercent(constractSum, targetBudget),
+        達成率: calcPercent(constractSum, targetBudget, true),
       };
     });
   }, [applicationData, memberConstractBudgetData]);
@@ -118,7 +118,8 @@ export const useStoreConstractData = (
       achivementSum: achivementSum,
       achivementPercent: calcPercent(
         achivementSum,
-        targetStoreContractBudget.value
+        targetStoreContractBudget.value,
+        true
       ),
       life: lifeApplications.reduce(
         (pre, { firstYearFee }) => pre + (firstYearFee ?? 0),

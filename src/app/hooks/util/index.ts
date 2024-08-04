@@ -1,10 +1,20 @@
 import dayjs from "dayjs";
+import { useState } from "react";
 
-export const calcPercent = (child: number, parent: number) => {
+export const calcPercent = (
+  child: number,
+  parent: number,
+  exceedHundred: boolean
+) => {
   const percent = (child / parent) * 100;
   const resultPercent = Math.round(percent * 10) / 10;
-  const resultPercentUnderHundred = resultPercent > 100 ? 100 : resultPercent;
-  return isNaN(resultPercent) ? 0 : resultPercentUnderHundred;
+  if (isNaN(resultPercent)) {
+    return 0;
+  }
+  if (exceedHundred) {
+    return resultPercent;
+  }
+  return resultPercent > 100 ? 100 : resultPercent;
 };
 
 export const useCountDownMonthDate = () => {
@@ -37,5 +47,26 @@ export const useCountDownYearDate = () => {
   return {
     lastDays: nextJune30.diff(today, "day"),
     progressRate: progressRate.toFixed(1),
+  };
+};
+
+export const useBoolean = (defaultBool: boolean) => {
+  const [bool, setBool] = useState(defaultBool);
+  const handleTrue = () => {
+    setBool(true);
+  };
+  const handleFalse = () => {
+    setBool(false);
+  };
+
+  const handleToggle = () => {
+    setBool((pre) => !pre);
+  };
+  return {
+    bool,
+    setBool,
+    handleTrue,
+    handleFalse,
+    handleToggle,
   };
 };

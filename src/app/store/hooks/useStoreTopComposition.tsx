@@ -56,7 +56,8 @@ export const useStoreTopComposition = (
       未達額: shortFallAmount < 0 ? 0 : shortFallAmount,
       達成率: calcPercent(
         monthBudgetAndAchievementData.実績 + expectSum,
-        monthBudgetAndAchievementData.予算
+        monthBudgetAndAchievementData.予算,
+        true
       ),
       見込額: expectSum,
     };

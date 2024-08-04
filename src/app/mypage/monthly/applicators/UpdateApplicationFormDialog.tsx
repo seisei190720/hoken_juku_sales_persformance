@@ -35,6 +35,7 @@ type Props = {
   companyMst: CompanyMst[];
   statusMst: StatusMst[];
   updateApplicationsData: (newData: IndividualSalesResult) => Promise<void>;
+  handleClickSnacBar: () => void;
 };
 
 const UpdateApplicationFormDialog: FC<Props> = ({
@@ -45,6 +46,7 @@ const UpdateApplicationFormDialog: FC<Props> = ({
   companyMst,
   statusMst,
   updateApplicationsData,
+  handleClickSnacBar,
 }) => {
   const {
     updatedApplications,
@@ -249,6 +251,7 @@ const UpdateApplicationFormDialog: FC<Props> = ({
             variant="contained"
             onClick={() => {
               submitUpdatedApplications();
+              handleClickSnacBar();
               handleClose();
             }}
           >

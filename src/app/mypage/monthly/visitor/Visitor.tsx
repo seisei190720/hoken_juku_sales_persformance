@@ -15,6 +15,8 @@ import VisitorFormDialog from "./VisitorFormDialog";
 import VisitorList from "./VisitorList";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
+import SuccessSnacBar from "@/app/component/SuccessSnacBar";
+import { useBoolean } from "@/app/hooks/util";
 
 type Props = {
   userId: string;
@@ -41,27 +43,11 @@ const Visitor: FC<Props> = ({
   consultContentMst,
   canEdit,
 }) => {
-  const [openFormDialog, setOpenFormDialog] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpenFormDialog(true);
-  };
-  const handleClose = () => {
-    setOpenFormDialog(false);
-  };
+  const openFormDialog = useBoolean(false);
 
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const handleClickSnacBar = () => {
     setOpenSnackBar(true);
-  };
-  const handleCloseSnacBar = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpenSnackBar(false);
   };
 
   if (!salesResultData) return <CircularProgress />;
@@ -74,7 +60,7 @@ const Visitor: FC<Props> = ({
               variant="extended"
               size="medium"
               color="primary"
-              onClick={handleClickOpen}
+              onClick={openFormDialog.handleTrue}
               sx={{ position: "fixed", bottom: 72, right: 56 }}
             >
               <AddIcon sx={{ mr: 1 }} />
@@ -95,28 +81,19 @@ const Visitor: FC<Props> = ({
       </Stack>
       {openFormDialog && (
         <VisitorFormDialog
-          openFormDialog={openFormDialog}
-          handleClose={handleClose}
+          openFormDialog={openFormDialog.bool}
+          handleClose={openFormDialog.handleFalse}
           routeMst={routeMst}
           consultContentMst={consultContentMst}
           postVisitorData={postVisitorData}
           handleClickSnacBar={handleClickSnacBar}
         />
       )}
-      <Snackbar
-        open={openSnackBar}
-        autoHideDuration={6000}
-        onClose={handleCloseSnacBar}
-      >
-        <Alert
-          onClose={handleCloseSnacBar}
-          severity="success"
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          保存が完了しました
-        </Alert>
-      </Snackbar>
+      <SuccessSnacBar
+        openSnackBar={openSnackBar}
+        setOpenSnackBar={setOpenSnackBar}
+        message={"保存が完了しました。"}
+      />
     </>
   );
 };

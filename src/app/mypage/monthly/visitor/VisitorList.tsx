@@ -22,12 +22,12 @@ import { blue, grey } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
 import DeleteApplicationDialog from "@/app/component/DeleteApplicationDialog";
 import CircularProgress from "@mui/material/CircularProgress";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
 import UpdateVisitorFormDialog from "./UpdateVisitorFormDialog";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import Tooltip, { tooltipClasses, TooltipProps } from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
+import SuccessSnacBar from "@/app/component/SuccessSnacBar";
+import { useBoolean } from "@/app/hooks/util";
 
 type Props = {
   salesResults: IndividualSalesResult[];
@@ -53,42 +53,13 @@ const VisitorList: FC<Props> = ({
     IndividualSalesResult | undefined
   >(undefined);
 
-  const [openFormDialog, setOpenFormDialog] = useState(false);
-  const handleFormClickOpen = () => {
-    setOpenFormDialog(true);
-  };
-  const handleFormClose = () => {
-    setOpenFormDialog(false);
-  };
-
-  const [openUpdateFormDialog, setOpenUpdateFormDialog] = useState(false);
-  const handleUpdateFormClickOpen = () => {
-    setOpenUpdateFormDialog(true);
-  };
-  const handleUpdateFormClose = () => {
-    setOpenUpdateFormDialog(false);
-  };
-
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const handleDeleteClickOpen = () => {
-    setOpenDeleteDialog(true);
-  };
-  const handleDeleteClose = () => {
-    setOpenDeleteDialog(false);
-  };
+  const openFormDialog = useBoolean(false);
+  const openUpdateFormDialog = useBoolean(false);
+  const openDeleteDialog = useBoolean(false);
 
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const handleClickSnacBar = () => {
     setOpenSnackBar(true);
-  };
-  const handleCloseSnacBar = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpenSnackBar(false);
   };
 
   if (!selectedSalesResult) <CircularProgress />;
@@ -142,7 +113,7 @@ const VisitorList: FC<Props> = ({
                       variant="outlined"
                       onClick={() => {
                         setSelectedSalesResult(row);
-                        handleFormClickOpen();
+                        openFormDialog.handleTrue();
                       }}
                     >
                       新規申込
@@ -174,7 +145,7 @@ const VisitorList: FC<Props> = ({
                     <EditIcon
                       onClick={() => {
                         setSelectedSalesResult(row);
-                        handleUpdateFormClickOpen();
+                        openUpdateFormDialog.handleTrue();
                       }}
                     />
                   </IconButton>
@@ -183,7 +154,7 @@ const VisitorList: FC<Props> = ({
                   <IconButton
                     onClick={() => {
                       setSelectedSalesResult(row);
-                      handleDeleteClickOpen();
+                      openDeleteDialog.handleTrue();
                     }}
                   >
                     <DeleteIcon />
@@ -196,8 +167,8 @@ const VisitorList: FC<Props> = ({
       </TableContainer>
       {openFormDialog && (
         <ApplicationFormDialog
-          openFormDialog={openFormDialog}
-          handleClose={handleFormClose}
+          openFormDialog={openFormDialog.bool}
+          handleClose={openFormDialog.handleFalse}
           salesResult={selectedSalesResult}
           productMst={productMst}
           companyMst={companyMst}
@@ -207,8 +178,8 @@ const VisitorList: FC<Props> = ({
       )}
       {openUpdateFormDialog && (
         <UpdateVisitorFormDialog
-          openFormDialog={openUpdateFormDialog}
-          handleClose={handleUpdateFormClose}
+          openFormDialog={openUpdateFormDialog.bool}
+          handleClose={openUpdateFormDialog.handleFalse}
           salesResult={selectedSalesResult}
           routeMst={routeMst}
           consultContentMst={consultContentMst}
@@ -218,8 +189,8 @@ const VisitorList: FC<Props> = ({
       )}
       {openDeleteDialog && (
         <DeleteApplicationDialog
-          openDialog={openDeleteDialog}
-          handleClose={handleDeleteClose}
+          openDialog={openDeleteDialog.bool}
+          handleClose={openDeleteDialog.handleFalse}
           titleDeleteTarget={"来店記録"}
           dialogMessage={`${selectedSalesResult?.name}さんに紐づく情報(申込情報も含む)は全て削除されます。削除後は元に戻すことができません。本当によろしいですか？`}
           salesResult={selectedSalesResult}
@@ -227,20 +198,11 @@ const VisitorList: FC<Props> = ({
           handleClickSnacBar={handleClickSnacBar}
         />
       )}
-      <Snackbar
-        open={openSnackBar}
-        autoHideDuration={6000}
-        onClose={handleCloseSnacBar}
-      >
-        <Alert
-          onClose={handleCloseSnacBar}
-          severity="success"
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          保存が完了しました
-        </Alert>
-      </Snackbar>
+      <SuccessSnacBar
+        openSnackBar={openSnackBar}
+        setOpenSnackBar={setOpenSnackBar}
+        message={"保存が完了しました。"}
+      />
     </>
   );
 };

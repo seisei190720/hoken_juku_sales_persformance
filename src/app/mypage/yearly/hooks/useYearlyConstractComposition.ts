@@ -108,7 +108,7 @@ export const useYearlyConstractComposition = (
           未達額: budget - constractSum < 0 ? 0 : budget - constractSum,
           超過額: constractSum - budget < 0 ? 0 : constractSum - budget,
           予算: budget,
-          達成率: calcPercent(constractSum, budget),
+          達成率: calcPercent(constractSum, budget, false),
         };
       });
     }, [applicationData, contractBudgetData, getTargetMonthDateApp]);
@@ -178,7 +178,7 @@ export const useYearlyConstractComposition = (
       achivementPercent:
         targetContractBudget === undefined || targetContractBudget === null
           ? 0
-          : calcPercent(achivementSum, targetContractBudget.value),
+          : calcPercent(achivementSum, targetContractBudget.value, true),
       lifeAchivementSum: constractSum
         .map((c) => c.生保)
         .reduce((pre, crr) => pre + crr, 0),

@@ -98,7 +98,7 @@ export const useApplicatorSummaryComposition = (
     if (fistYearFeeData === undefined || targetContract === undefined) return;
 
     if (targetContract === null) return 0;
-    return calcPercent(fistYearFeeData.all, targetContract.value);
+    return calcPercent(fistYearFeeData.all, targetContract.value, true);
   }, [fistYearFeeData, targetContract]);
 
   return {

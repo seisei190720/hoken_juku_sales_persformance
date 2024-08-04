@@ -1,14 +1,5 @@
 import { CountAndPercentType } from "@/app/store/hooks/useStoreAchievementData";
-import {
-  CompanyMst,
-  ConsultContentMst,
-  IndividualSalesResult,
-  Member,
-  ProductMst,
-  RouteMst,
-  StatusMst,
-  yearMonth,
-} from "@/app/types";
+import { IndividualSalesResult, RouteMst, yearMonth } from "@/app/types";
 import { useCallback, useMemo } from "react";
 
 export type YearlyVisitorAndNextAppointmentType = {
@@ -22,12 +13,7 @@ export type YearlyVisitorAndNextAppointmentType = {
 
 export const useYearlyAchievementComposition = (
   results: IndividualSalesResult[] | undefined,
-  // members: Member[],
   routeMst: RouteMst[]
-  // consultContentMst: ConsultContentMst[],
-  // productMst: ProductMst[],
-  // companyMst: CompanyMst[],
-  // statusMst: StatusMst[]
 ) => {
   const resolveRouteKind = useCallback(
     (v: string) => {
