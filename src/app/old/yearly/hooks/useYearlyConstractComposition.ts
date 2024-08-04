@@ -31,15 +31,14 @@ export const useYearlyConstractComposition = (
   userId: string
 ) => {
   const [targetContractBudget, setTargetContractBudget] = useState<
-    ContractBudget | undefined
+    ContractBudget | null | undefined
   >(undefined);
 
   useEffect(() => {
-    if (contractBudgetData !== undefined && contractBudgetData.length > 0) {
+    if (contractBudgetData !== undefined) {
       setTargetContractBudget(
-        contractBudgetData.find(
-          (c: ContractBudget) => (c.userId = userId) || null
-        )
+        contractBudgetData.find((c: ContractBudget) => (c.userId = userId)) ||
+          null
       );
     }
   }, [contractBudgetData]);
@@ -177,7 +176,7 @@ export const useYearlyConstractComposition = (
     return {
       achivementSum: achivementSum,
       achivementPercent:
-        targetContractBudget === undefined
+        targetContractBudget === undefined || targetContractBudget === null
           ? 0
           : calcPercent(achivementSum, targetContractBudget.value),
       lifeAchivementSum: constractSum

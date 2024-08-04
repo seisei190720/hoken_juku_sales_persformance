@@ -107,15 +107,17 @@ const BudgetCard: FC<Props> = ({
           </Stack>
         )}
       </Stack>
-      <BudgetEditorDialog
-        openFormDialog={openEditor}
-        handleClose={handleEditClose}
-        userId={userId}
-        targetMonth={targetMonth}
-        targetYear={targetYear}
-        contractBudgetData={contractBudgetData}
-        postContractBudgetData={postContractBudgetData}
-      />
+      {openEditor && (
+        <BudgetEditorDialog
+          openFormDialog={openEditor}
+          handleClose={handleEditClose}
+          userId={userId}
+          targetMonth={targetMonth}
+          targetYear={targetYear}
+          contractBudgetData={contractBudgetData}
+          postContractBudgetData={postContractBudgetData}
+        />
+      )}
     </Card>
   );
 };
