@@ -36,8 +36,13 @@ const ViewModeTabs: FC<Props> = ({ viewMode, setViewMode, tabValues }) => {
       onChange={updateViewMode}
       aria-label="sales-result-view-mode-tab"
     >
-      {tabValues.map((t) => (
-        <Tab label={t.label} value={t.value} {...a11yProps(0)} />
+      {tabValues.map((t, idx) => (
+        <Tab
+          label={t.label}
+          value={t.value}
+          {...a11yProps(0)}
+          key={`tab_${idx}_${t.label}`}
+        />
       ))}
     </Tabs>
   );
