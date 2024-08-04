@@ -27,6 +27,7 @@ export type Application = {
   product: string | null; //mst
   company: string | null; //mst
   firstYearFee: number | null; //初年度手数料
+  insuranceFee: number | null; //保険料
   status: string; //ステータス mst(未成立、成立、不成立)
   establishDate: string | null; //成立日
 };
@@ -36,6 +37,7 @@ export type UpdateApplication = {
   product: ProductMst | null;
   company: CompanyMst | null;
   firstYearFee: number | null;
+  insuranceFee: number | null;
   status: StatusMst | null;
   establishDate: string | null;
 };
@@ -44,6 +46,8 @@ export type NewApplication = {
   applicationDate: string;
   product: ProductMst | null;
   company: CompanyMst | null;
+  firstYearFee: number | null;
+  insuranceFee: number | null;
 };
 
 export type NewVisitor = {

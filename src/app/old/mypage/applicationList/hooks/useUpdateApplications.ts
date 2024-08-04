@@ -31,6 +31,7 @@ export const useUpdateApplications = (
             product: productMst.find((p) => p.id === a.product) || null,
             company: companyMst.find((c) => c.id === a.company) || null,
             firstYearFee: a.firstYearFee,
+            insuranceFee: a.insuranceFee,
             status: statusMst.find((s) => s.id === a.status) || null,
             establishDate: a.establishDate,
           };
@@ -149,6 +150,23 @@ export const useUpdateApplications = (
     [updatedApplications, setUpdatedApplications]
   );
 
+  const updateInsuranceFee = useCallback(
+    (newData: number, targetIdx: number) => {
+      setUpdatedApplications(
+        updatedApplications.map((v, i) => {
+          if (i === targetIdx) {
+            return {
+              ...v,
+              insuranceFee: newData,
+            };
+          }
+          return v;
+        })
+      );
+    },
+    [updatedApplications, setUpdatedApplications]
+  );
+
   const updateEstablishDate = useCallback(
     (newData: string, targetIdx: number) => {
       setUpdatedApplications(
@@ -187,6 +205,7 @@ export const useUpdateApplications = (
           product: v.product?.id || "",
           company: v.company?.id || "",
           firstYearFee: v.firstYearFee,
+          insuranceFee: v.insuranceFee,
           status: v.status?.id || "",
           establishDate: v.establishDate,
         };
@@ -203,6 +222,7 @@ export const useUpdateApplications = (
     updateCompany,
     updateStatus,
     updateFirstYearFee,
+    updateInsuranceFee,
     updateEstablishDate,
     thankyouState,
     setThankyouState,

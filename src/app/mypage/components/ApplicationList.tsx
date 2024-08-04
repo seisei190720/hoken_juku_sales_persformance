@@ -190,9 +190,10 @@ const ApplicationList: FC<Props> = ({
                         <TableCell sx={{ flex: 1 }}>申込日</TableCell>
                         <TableCell sx={{ flex: 1 }}>会社</TableCell>
                         <TableCell sx={{ flex: 1 }}>商品</TableCell>
+                        <TableCell sx={{ flex: 1 }}>初回手数料</TableCell>
+                        <TableCell sx={{ flex: 1 }}>保険料</TableCell>
                         <TableCell sx={{ flex: 1 }}>状態</TableCell>
                         <TableCell sx={{ flex: 1 }}>成立日</TableCell>
-                        <TableCell sx={{ flex: 1 }}>初回手数料</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -218,17 +219,22 @@ const ApplicationList: FC<Props> = ({
                               ?.name || "マスタが見つかりません"}
                           </TableCell>
                           <TableCell sx={{ flex: 1 }}>
+                            {app.firstYearFee === null
+                              ? "-"
+                              : app.firstYearFee.toLocaleString()}
+                          </TableCell>
+                          <TableCell sx={{ flex: 1 }}>
+                            {app.insuranceFee === null
+                              ? "-"
+                              : app.insuranceFee.toLocaleString()}
+                          </TableCell>
+                          <TableCell sx={{ flex: 1 }}>
                             {statusChip(app.status)}
                           </TableCell>
                           <TableCell sx={{ flex: 1 }}>
                             {app.establishDate === null
                               ? "-"
                               : app.establishDate}
-                          </TableCell>
-                          <TableCell sx={{ flex: 1 }}>
-                            {app.firstYearFee === null
-                              ? "-"
-                              : app.firstYearFee.toLocaleString()}
                           </TableCell>
                         </StyledTableRow>
                       ))}

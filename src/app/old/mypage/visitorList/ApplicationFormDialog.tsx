@@ -41,8 +41,10 @@ const ApplicationFormDialog: FC<Props> = ({
     updateApplicationDate,
     updateProduct,
     updateCompany,
-    updateRemarks,
+    updateFirstYearFee,
+    updateInsuranceFee,
     newRemarks,
+    updateRemarks,
     addProduct,
     deleteProduct,
     submitNewApplications,
@@ -126,7 +128,7 @@ const ApplicationFormDialog: FC<Props> = ({
                     ))}
                   </Select>
                 </FormControl>
-                {/* <TextField
+                <TextField
                   required={idx === 0}
                   key={`${idx}_firstYearFee`}
                   id={`${idx}_firstYearFee`}
@@ -153,7 +155,7 @@ const ApplicationFormDialog: FC<Props> = ({
                   type="number"
                   fullWidth
                   variant="standard"
-                /> */}
+                />
                 {newApplications.length > 1 && (
                   <IconButton onClick={() => deleteProduct(idx)}>
                     <DeleteIcon />

@@ -55,6 +55,7 @@ const UpdateApplicationFormDialog: FC<Props> = ({
     updateCompany,
     updateStatus,
     updateFirstYearFee,
+    updateInsuranceFee,
     updateEstablishDate,
     thankyouState,
     setThankyouState,
@@ -138,6 +139,34 @@ const UpdateApplicationFormDialog: FC<Props> = ({
                     ))}
                   </Select>
                 </FormControl>
+                <TextField
+                  required={idx === 0}
+                  key={`${idx}_firstYearFee`}
+                  id={`${idx}_firstYearFee`}
+                  name={`${idx}_firstYearFee`}
+                  label={idx === 0 && "初回手数料"}
+                  value={app.firstYearFee || ""}
+                  onChange={(e) =>
+                    updateFirstYearFee(Number(e.target.value), idx)
+                  }
+                  type="number"
+                  fullWidth
+                  variant="standard"
+                />
+                <TextField
+                  required={idx === 0}
+                  key={`${idx}_insuranceFee`}
+                  id={`${idx}_insuranceFee`}
+                  name={`${idx}_insuranceFee`}
+                  label={idx === 0 && "保険料"}
+                  value={app.insuranceFee || ""}
+                  onChange={(e) =>
+                    updateInsuranceFee(Number(e.target.value), idx)
+                  }
+                  type="number"
+                  fullWidth
+                  variant="standard"
+                />
                 <FormControl required={idx === 0} variant="standard" fullWidth>
                   {idx === 0 && <InputLabel>状態</InputLabel>}
                   <Select
@@ -164,20 +193,6 @@ const UpdateApplicationFormDialog: FC<Props> = ({
                   value={app.establishDate === null ? "" : app.establishDate}
                   onChange={(e) => updateEstablishDate(e.target.value, idx)}
                   type="date"
-                  fullWidth
-                  variant="standard"
-                />
-                <TextField
-                  required={idx === 0}
-                  key={`${idx}_firstYearFee`}
-                  id={`${idx}_firstYearFee`}
-                  name={`${idx}_firstYearFee`}
-                  label={idx === 0 && "初回手数料"}
-                  value={app.firstYearFee || ""}
-                  onChange={(e) =>
-                    updateFirstYearFee(Number(e.target.value), idx)
-                  }
-                  type="number"
                   fullWidth
                   variant="standard"
                 />
