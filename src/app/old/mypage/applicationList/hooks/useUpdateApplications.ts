@@ -6,7 +6,7 @@ import {
   UpdateApplication,
 } from "@/app/types";
 import { SelectChangeEvent } from "@mui/material/Select";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { DEFAULT_APPLICATION_DATA } from "../../visitorList/hooks/useNewApplications";
 
 export const useUpdateApplications = (
@@ -124,6 +124,7 @@ export const useUpdateApplications = (
             return {
               ...v,
               status: statusMst.find((s) => e.target.value === s.id) || null,
+              establishDate: e.target.value !== "2" ? "" : v.establishDate,
             };
           }
           return v;
@@ -134,13 +135,13 @@ export const useUpdateApplications = (
   );
 
   const updateFirstYearFee = useCallback(
-    (newData: number, targetIdx: number) => {
+    (newData: string, targetIdx: number) => {
       setUpdatedApplications(
         updatedApplications.map((v, i) => {
           if (i === targetIdx) {
             return {
               ...v,
-              firstYearFee: newData,
+              firstYearFee: newData === "" ? null : Number(newData),
             };
           }
           return v;
@@ -151,13 +152,13 @@ export const useUpdateApplications = (
   );
 
   const updateInsuranceFee = useCallback(
-    (newData: number, targetIdx: number) => {
+    (newData: string, targetIdx: number) => {
       setUpdatedApplications(
         updatedApplications.map((v, i) => {
           if (i === targetIdx) {
             return {
               ...v,
-              insuranceFee: newData,
+              insuranceFee: newData === "" ? null : Number(newData),
             };
           }
           return v;
@@ -191,8 +192,20 @@ export const useUpdateApplications = (
     [setNewRemarks]
   );
 
+  const enableSaveButton = useMemo(() => {
+    return updatedApplications.every(
+      (a) =>
+        a.applicationDate !== "" &&
+        a.company !== null &&
+        a.product !== null &&
+        a.firstYearFee !== null &&
+        a.insuranceFee !== null &&
+        ((a.establishDate !== null && a.establishDate !== "") ||
+          a.status?.id !== "2")
+    );
+  }, [updatedApplications]);
+
   const submitUpdatedApplications = useCallback(() => {
-    //TODO: validationを実装する
     if (!salesResult) return;
     updateApplicationsData({
       ...salesResult,
@@ -229,5 +242,6 @@ export const useUpdateApplications = (
     newRemarks,
     updateRemarks,
     submitUpdatedApplications,
+    enableSaveButton,
   };
 };

@@ -5,7 +5,7 @@ import {
   RouteMst,
 } from "@/app/types";
 import { SelectChangeEvent } from "@mui/material/Select";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 export const useUpdateVisitor = (
   salesResultData: IndividualSalesResult | undefined,
@@ -89,6 +89,28 @@ export const useUpdateVisitor = (
     [updatedVisitorData, setUpdatedVisitorData]
   );
 
+  const enableSaveButton = useMemo(
+    () =>
+      updatedVisitorData !== undefined &&
+      updatedVisitorData.firstVisitDate !== null &&
+      updatedVisitorData.firstVisitDate !== "" &&
+      updatedVisitorData.name !== null &&
+      updatedVisitorData.name !== "" &&
+      updatedVisitorData.consultContent !== null &&
+      updatedVisitorData.visitRoute !== null,
+    [updatedVisitorData]
+  );
+
+  const nameErrorMessage = useMemo(() => {
+    if (
+      updatedVisitorData === undefined ||
+      updatedVisitorData.name === null ||
+      updatedVisitorData.name === ""
+    )
+      return "お名前を入力してください。";
+    return;
+  }, [updatedVisitorData]);
+
   const submitUpdatedVisitor = useCallback(() => {
     //TODO: validationを実装する
     if (!salesResultData || !updatedVisitorData) return;
@@ -112,5 +134,7 @@ export const useUpdateVisitor = (
     updateNextAppointment,
     updateRemarks,
     submitUpdatedVisitor,
+    nameErrorMessage,
+    enableSaveButton,
   };
 };

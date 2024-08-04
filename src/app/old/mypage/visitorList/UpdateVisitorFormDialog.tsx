@@ -48,6 +48,8 @@ const UpdateVisitorFormDialog: FC<Props> = ({
     updateNextAppointment,
     updateRemarks,
     submitUpdatedVisitor,
+    nameErrorMessage,
+    enableSaveButton,
   } = useUpdateVisitor(
     salesResult,
     updateSalesResultData,
@@ -98,6 +100,8 @@ const UpdateVisitorFormDialog: FC<Props> = ({
               variant="standard"
               value={updatedVisitorData.name || ""}
               onChange={(e) => updateName(e.target.value)}
+              error={nameErrorMessage !== undefined}
+              helperText={nameErrorMessage}
             />
             <FormControl required variant="standard" fullWidth>
               <InputLabel>経路</InputLabel>
@@ -170,6 +174,7 @@ const UpdateVisitorFormDialog: FC<Props> = ({
         <DialogActions>
           <Button onClick={handleClose}>キャンセル</Button>
           <Button
+            disabled={!enableSaveButton}
             variant="contained"
             onClick={() => {
               submitUpdatedVisitor();

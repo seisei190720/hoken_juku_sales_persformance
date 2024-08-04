@@ -62,6 +62,7 @@ const UpdateApplicationFormDialog: FC<Props> = ({
     newRemarks,
     updateRemarks,
     submitUpdatedApplications,
+    enableSaveButton,
   } = useUpdateApplications(
     salesResult,
     productMst,
@@ -146,9 +147,7 @@ const UpdateApplicationFormDialog: FC<Props> = ({
                   name={`${idx}_firstYearFee`}
                   label={idx === 0 && "初回手数料"}
                   value={app.firstYearFee || ""}
-                  onChange={(e) =>
-                    updateFirstYearFee(Number(e.target.value), idx)
-                  }
+                  onChange={(e) => updateFirstYearFee(e.target.value, idx)}
                   type="number"
                   fullWidth
                   variant="standard"
@@ -160,9 +159,7 @@ const UpdateApplicationFormDialog: FC<Props> = ({
                   name={`${idx}_insuranceFee`}
                   label={idx === 0 && "保険料"}
                   value={app.insuranceFee || ""}
-                  onChange={(e) =>
-                    updateInsuranceFee(Number(e.target.value), idx)
-                  }
+                  onChange={(e) => updateInsuranceFee(e.target.value, idx)}
                   type="number"
                   fullWidth
                   variant="standard"
@@ -185,7 +182,7 @@ const UpdateApplicationFormDialog: FC<Props> = ({
                   </Select>
                 </FormControl>
                 <TextField
-                  autoFocus
+                  disabled={app.status?.id !== "2"}
                   required={idx === 0}
                   id={`${idx}_establishDate`}
                   name={`${idx}_establishDate`}
@@ -248,6 +245,7 @@ const UpdateApplicationFormDialog: FC<Props> = ({
         <Stack gap={1} direction="row">
           <Button onClick={handleClose}>キャンセル</Button>
           <Button
+            disabled={!enableSaveButton}
             variant="contained"
             onClick={() => {
               submitUpdatedApplications();

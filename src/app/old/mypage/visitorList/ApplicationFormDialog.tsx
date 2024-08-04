@@ -48,6 +48,7 @@ const ApplicationFormDialog: FC<Props> = ({
     addProduct,
     deleteProduct,
     submitNewApplications,
+    enableSaveButton,
   } = useNewApplications(
     salesResult,
     productMst,
@@ -135,9 +136,7 @@ const ApplicationFormDialog: FC<Props> = ({
                   name={`${idx}_firstYearFee`}
                   label={"初回手数料"}
                   value={app.firstYearFee || ""}
-                  onChange={(e) =>
-                    updateFirstYearFee(Number(e.target.value), idx)
-                  }
+                  onChange={(e) => updateFirstYearFee(e.target.value, idx)}
                   type="number"
                   fullWidth
                   variant="standard"
@@ -149,9 +148,7 @@ const ApplicationFormDialog: FC<Props> = ({
                   name={`${idx}_insuranceFee`}
                   label={"保険料"}
                   value={app.insuranceFee || ""}
-                  onChange={(e) =>
-                    updateInsuranceFee(Number(e.target.value), idx)
-                  }
+                  onChange={(e) => updateInsuranceFee(e.target.value, idx)}
                   type="number"
                   fullWidth
                   variant="standard"
@@ -197,6 +194,7 @@ const ApplicationFormDialog: FC<Props> = ({
         <Stack gap={1} direction="row">
           <Button onClick={handleClose}>キャンセル</Button>
           <Button
+            disabled={!enableSaveButton}
             variant="contained"
             onClick={() => {
               submitNewApplications();

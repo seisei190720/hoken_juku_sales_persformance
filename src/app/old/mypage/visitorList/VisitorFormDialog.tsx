@@ -12,7 +12,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { ConsultContentMst, NewVisitor, RouteMst } from "../../../types";
 import { useNewVisitor } from "./hooks/useNewVisitor";
 
@@ -33,6 +33,13 @@ const VisitorFormDialog: FC<Props> = ({
   postVisitorData,
   handleClickSnacBar,
 }) => {
+  const [onBluredName, setOnBluredName] = useState<boolean>(false);
+  const handleBlur = (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    setOnBluredName(true);
+  };
+
   const {
     newVisitorData,
     updateFirstVisitDate,
@@ -42,8 +49,10 @@ const VisitorFormDialog: FC<Props> = ({
     updateNextAppointment,
     updateRemarks,
     submitNewVisitor,
+    firstVisitDateErrorMessage,
+    nameErrorMessage,
+    enableSaveButton,
   } = useNewVisitor(postVisitorData, routeMst, consultContentMst);
-
   return (
     <>
       <Dialog
@@ -62,7 +71,6 @@ const VisitorFormDialog: FC<Props> = ({
               来店されたお客様の情報を入力してください。登録後にも内容を編集できます。
             </DialogContentText>
             <TextField
-              // autoFocus
               key="visitDate"
               required
               id="visitDate"
@@ -73,6 +81,8 @@ const VisitorFormDialog: FC<Props> = ({
               type="date"
               fullWidth
               variant="standard"
+              error={firstVisitDateErrorMessage !== undefined}
+              helperText={firstVisitDateErrorMessage}
             />
             <TextField
               required
@@ -85,6 +95,9 @@ const VisitorFormDialog: FC<Props> = ({
               variant="standard"
               value={newVisitorData.name || ""}
               onChange={(e) => updateName(e.target.value)}
+              error={onBluredName && nameErrorMessage !== undefined}
+              helperText={onBluredName && nameErrorMessage}
+              onBlur={handleBlur}
             />
             <FormControl required variant="standard" fullWidth>
               <InputLabel>経路</InputLabel>
@@ -157,6 +170,7 @@ const VisitorFormDialog: FC<Props> = ({
         <DialogActions>
           <Button onClick={handleClose}>キャンセル</Button>
           <Button
+            disabled={!enableSaveButton}
             variant="contained"
             onClick={() => {
               submitNewVisitor();

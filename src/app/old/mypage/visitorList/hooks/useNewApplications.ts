@@ -6,7 +6,7 @@ import {
 } from "@/app/types";
 import { SelectChangeEvent } from "@mui/material/Select";
 import dayjs from "dayjs";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 export const DEFAULT_APPLICATION_DATA = {
   applicationDate: dayjs().format("YYYY-MM-DD"),
@@ -101,13 +101,13 @@ export const useNewApplications = (
   );
 
   const updateFirstYearFee = useCallback(
-    (newData: number, targetIdx: number) => {
+    (newData: string, targetIdx: number) => {
       setNewApplications(
         newApplications.map((v, i) => {
           if (i === targetIdx) {
             return {
               ...v,
-              firstYearFee: newData,
+              firstYearFee: newData === "" ? null : Number(newData),
             };
           }
           return v;
@@ -118,13 +118,13 @@ export const useNewApplications = (
   );
 
   const updateInsuranceFee = useCallback(
-    (newData: number, targetIdx: number) => {
+    (newData: string, targetIdx: number) => {
       setNewApplications(
         newApplications.map((v, i) => {
           if (i === targetIdx) {
             return {
               ...v,
-              insuranceFee: newData,
+              insuranceFee: newData === "" ? null : Number(newData),
             };
           }
           return v;
@@ -141,8 +141,18 @@ export const useNewApplications = (
     [setNewRemarks]
   );
 
+  const enableSaveButton = useMemo(() => {
+    return newApplications.every(
+      (a) =>
+        a.applicationDate !== "" &&
+        a.company !== null &&
+        a.product !== null &&
+        a.firstYearFee !== null &&
+        a.insuranceFee !== null
+    );
+  }, [newApplications]);
+
   const submitNewApplications = useCallback(() => {
-    //TODO: validationを実装する
     if (!salesResult) return;
     updateApplicationsData({
       ...salesResult,
@@ -174,5 +184,6 @@ export const useNewApplications = (
     addProduct,
     deleteProduct,
     submitNewApplications,
+    enableSaveButton,
   };
 };

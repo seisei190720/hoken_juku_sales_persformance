@@ -65,7 +65,7 @@ export const useApplicatorSummaryComposition = (
   );
 
   const productBarChartData = useMemo(() => {
-    if (!applicationData || productMst.length === 0) return;
+    if (productMst.length === 0) return;
     return productMst.map((r) => {
       return {
         name: r.name,
@@ -73,7 +73,7 @@ export const useApplicatorSummaryComposition = (
         color: r.kind === "life" ? green[400] : orange[400],
       };
     });
-  }, [applicationData, getProductAmountByName, productMst]);
+  }, [getProductAmountByName, productMst]);
 
   const fistYearFeeData = useMemo(() => {
     if (!applicationData || !lifeApplications || !nonLifeApplications) return;
