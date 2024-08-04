@@ -96,7 +96,7 @@ const BudgetCard: FC<Props> = ({
             </Stack>
           )}
         </Stack>
-        {openEditor && (
+        {openEditor.bool && (
           <BudgetEditorDialog
             openFormDialog={openEditor.bool}
             handleClose={openEditor.handleFalse}

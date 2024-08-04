@@ -62,7 +62,7 @@ const VisitorList: FC<Props> = ({
     setOpenSnackBar(true);
   };
 
-  if (!selectedSalesResult) <CircularProgress />;
+  // if (!selectedSalesResult) <CircularProgress />;
   return (
     <>
       <TableContainer component={Paper} style={{ marginBottom: 30 }}>
@@ -165,7 +165,7 @@ const VisitorList: FC<Props> = ({
           </TableBody>
         </Table>
       </TableContainer>
-      {openFormDialog && (
+      {openFormDialog.bool && (
         <ApplicationFormDialog
           openFormDialog={openFormDialog.bool}
           handleClose={openFormDialog.handleFalse}
@@ -176,7 +176,7 @@ const VisitorList: FC<Props> = ({
           handleClickSnacBar={handleClickSnacBar}
         />
       )}
-      {openUpdateFormDialog && (
+      {openUpdateFormDialog.bool && (
         <UpdateVisitorFormDialog
           openFormDialog={openUpdateFormDialog.bool}
           handleClose={openUpdateFormDialog.handleFalse}
@@ -187,7 +187,7 @@ const VisitorList: FC<Props> = ({
           handleClickSnacBar={handleClickSnacBar}
         />
       )}
-      {openDeleteDialog && (
+      {openDeleteDialog.bool && (
         <DeleteApplicationDialog
           openDialog={openDeleteDialog.bool}
           handleClose={openDeleteDialog.handleFalse}

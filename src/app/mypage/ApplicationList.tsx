@@ -52,13 +52,6 @@ const ApplicationList: FC<Props> = ({
 
   const openEditDailog = useBoolean(false);
   const openDeleteDailog = useBoolean(false);
-  // const [openDeleteDailog, setOpenDeleteDailog] = useState(false);
-  // const handleDeleteClickOpen = () => {
-  //   setOpenDeleteDailog(true);
-  // };
-  // const handleDeleteClose = () => {
-  //   setOpenDeleteDailog(false);
-  // };
 
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const handleClickSnacBar = () => {
@@ -281,7 +274,7 @@ const ApplicationList: FC<Props> = ({
             </Accordion>
           ))}
       </Stack>
-      {openEditDailog && (
+      {openEditDailog.bool && (
         <UpdateApplicationFormDialog
           salesResult={targetSalesResult}
           statusMst={statusMst}
@@ -293,7 +286,7 @@ const ApplicationList: FC<Props> = ({
           handleClickSnacBar={handleClickSnacBar}
         />
       )}
-      {openDeleteDailog && (
+      {openDeleteDailog.bool && (
         <DeleteApplicationDialog
           salesResult={targetSalesResult}
           openDialog={openDeleteDailog.bool}
