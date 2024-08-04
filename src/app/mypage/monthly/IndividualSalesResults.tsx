@@ -16,7 +16,7 @@ import Achievement from "./achievement/Achievement";
 import { useContractBudgetApi } from "../../api/useContractBudgetApi";
 import { resolveYear } from "../../api/useSalesResultApi";
 import { useApplicationApi } from "@/app/api/useApplicationApi";
-import ApplicationList from "../components/ApplicationList";
+import ApplicationList from "../ApplicationList";
 
 type Props = {
   userId: string;

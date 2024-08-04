@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import { FC } from "react";
 import Box from "@mui/material/Box";
 import { TopicBudgetAndAchievementType } from "../mypage/top/hooks/useTopicAchievementComposition";
-import SimpleSummaryCard from "../mypage/components/charts/SimpleSummaryCard";
+import SimpleSummaryCard from "../component/cards/SimpleSummaryCard";
 import SimpleSummaryCardWichHalfPieChart from "../component/charts/SimpleSummaryCardWithHalfPieChart";
 import { IndividualSalesResult } from "../types";
 import StoreMonthlyContents from "./StoreMonthlyContents";
@@ -58,6 +58,7 @@ const StoreMonthlyPage: FC<Props> = ({
               }}
               title={"残り日数"}
               mainUnit={"日"}
+              height={180}
             />
             <SimpleSummaryCardWichHalfPieChart
               values={topicData.monthBudgetAndAchievementData}
@@ -72,6 +73,7 @@ const StoreMonthlyPage: FC<Props> = ({
               }
               title={"未成立の申込残り"}
               mainUnit={"円"}
+              height={180}
             />
           </Stack>
         </Box>

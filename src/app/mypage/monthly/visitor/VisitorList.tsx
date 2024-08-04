@@ -21,13 +21,13 @@ import ApplicationFormDialog from "./ApplicationFormDialog";
 import { blue, grey } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
 import DeleteApplicationDialog from "@/app/component/DeleteApplicationDialog";
-import CircularProgress from "@mui/material/CircularProgress";
 import UpdateVisitorFormDialog from "./UpdateVisitorFormDialog";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import Tooltip, { tooltipClasses, TooltipProps } from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
 import SuccessSnacBar from "@/app/component/SuccessSnacBar";
 import { useBoolean } from "@/app/hooks/util";
+import EmptyState from "@/app/component/EmptyState";
 
 type Props = {
   salesResults: IndividualSalesResult[];
@@ -62,7 +62,17 @@ const VisitorList: FC<Props> = ({
     setOpenSnackBar(true);
   };
 
-  if (!selectedSalesResult) <CircularProgress />;
+  if (salesResults.length < 1)
+    return (
+      <EmptyState
+        message={"来店者情報が存在しません"}
+        subMessage={
+          canEdit
+            ? "画面右下の「＋新規追加」ボタンから来店者情報を入力してください。"
+            : ""
+        }
+      />
+    );
   return (
     <>
       <TableContainer component={Paper} style={{ marginBottom: 30 }}>
@@ -165,7 +175,7 @@ const VisitorList: FC<Props> = ({
           </TableBody>
         </Table>
       </TableContainer>
-      {openFormDialog && (
+      {openFormDialog.bool && (
         <ApplicationFormDialog
           openFormDialog={openFormDialog.bool}
           handleClose={openFormDialog.handleFalse}
@@ -176,7 +186,7 @@ const VisitorList: FC<Props> = ({
           handleClickSnacBar={handleClickSnacBar}
         />
       )}
-      {openUpdateFormDialog && (
+      {openUpdateFormDialog.bool && (
         <UpdateVisitorFormDialog
           openFormDialog={openUpdateFormDialog.bool}
           handleClose={openUpdateFormDialog.handleFalse}
@@ -187,7 +197,7 @@ const VisitorList: FC<Props> = ({
           handleClickSnacBar={handleClickSnacBar}
         />
       )}
-      {openDeleteDialog && (
+      {openDeleteDialog.bool && (
         <DeleteApplicationDialog
           openDialog={openDeleteDialog.bool}
           handleClose={openDeleteDialog.handleFalse}

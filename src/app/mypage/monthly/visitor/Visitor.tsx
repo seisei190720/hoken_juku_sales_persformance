@@ -79,7 +79,7 @@ const Visitor: FC<Props> = ({
           canEdit={canEdit}
         />
       </Stack>
-      {openFormDialog && (
+      {openFormDialog.bool && (
         <VisitorFormDialog
           openFormDialog={openFormDialog.bool}
           handleClose={openFormDialog.handleFalse}

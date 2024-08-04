@@ -20,14 +20,15 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
-import UpdateApplicationFormDialog from "../monthly/applicators/UpdateApplicationFormDialog";
+import UpdateApplicationFormDialog from "./monthly/applicators/UpdateApplicationFormDialog";
 import CircularProgress from "@mui/material/CircularProgress";
 import { green, grey, orange, red } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
-import DeleteApplicationDialog from "../../component/DeleteApplicationDialog";
+import DeleteApplicationDialog from "../component/DeleteApplicationDialog";
 import Box from "@mui/material/Box";
 import SuccessSnacBar from "@/app/component/SuccessSnacBar";
 import { useBoolean } from "@/app/hooks/util";
+import EmptyState from "../component/EmptyState";
 
 type Props = {
   salesResultData: IndividualSalesResult[] | undefined;
@@ -52,13 +53,6 @@ const ApplicationList: FC<Props> = ({
 
   const openEditDailog = useBoolean(false);
   const openDeleteDailog = useBoolean(false);
-  // const [openDeleteDailog, setOpenDeleteDailog] = useState(false);
-  // const handleDeleteClickOpen = () => {
-  //   setOpenDeleteDailog(true);
-  // };
-  // const handleDeleteClose = () => {
-  //   setOpenDeleteDailog(false);
-  // };
 
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const handleClickSnacBar = () => {
@@ -115,6 +109,19 @@ const ApplicationList: FC<Props> = ({
   };
 
   if (!salesResultData) return <CircularProgress />;
+  if (salesResultData.length < 1)
+    return (
+      <Box pt={2}>
+        <EmptyState
+          message={"申込情報が存在しません"}
+          subMessage={
+            canEdit
+              ? "来店者一覧の「新規申込」から申込情報を追加してください。"
+              : ""
+          }
+        />
+      </Box>
+    );
   return (
     <>
       <Stack gap={1}>
@@ -281,7 +288,7 @@ const ApplicationList: FC<Props> = ({
             </Accordion>
           ))}
       </Stack>
-      {openEditDailog && (
+      {openEditDailog.bool && (
         <UpdateApplicationFormDialog
           salesResult={targetSalesResult}
           statusMst={statusMst}
@@ -293,7 +300,7 @@ const ApplicationList: FC<Props> = ({
           handleClickSnacBar={handleClickSnacBar}
         />
       )}
-      {openDeleteDailog && (
+      {openDeleteDailog.bool && (
         <DeleteApplicationDialog
           salesResult={targetSalesResult}
           openDialog={openDeleteDailog.bool}

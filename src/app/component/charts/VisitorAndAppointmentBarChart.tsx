@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from "react";
+import { FC } from "react";
 import Stack from "@mui/material/Stack";
 import { green, orange, blue } from "@mui/material/colors";
 import {
@@ -13,7 +13,7 @@ import {
 } from "recharts";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
-import CircularProgress from "@mui/material/CircularProgress";
+import LoadingCard from "../cards/LoadingCard";
 
 type Props = {
   values:
@@ -28,22 +28,7 @@ type Props = {
 };
 
 const VisitorAndAppointmentBarChart: FC<Props> = ({ values }) => {
-  if (!values)
-    return (
-      <Card
-        sx={{
-          padding: 2,
-          borderRadius: "12px",
-          flex: 2,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: 400,
-        }}
-      >
-        <CircularProgress />
-      </Card>
-    );
+  if (!values) return <LoadingCard height={400} flex={2} />;
   return (
     <Card sx={{ padding: 2, borderRadius: "12px", flex: 2, gap: 2 }}>
       <Typography variant="h6" color={blue[600]}>

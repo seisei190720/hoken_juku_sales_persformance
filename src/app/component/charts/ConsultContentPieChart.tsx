@@ -12,7 +12,7 @@ import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { blue } from "@mui/material/colors";
-import CircularProgress from "@mui/material/CircularProgress";
+import LoadingCard from "../cards/LoadingCard";
 
 type Props = {
   values:
@@ -63,21 +63,7 @@ const ConsultContentPieChart: FC<Props> = ({ values }) => {
     );
   };
 
-  if (!values)
-    return (
-      <Card
-        sx={{
-          borderRadius: "12px",
-          flex: 1,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: 400,
-        }}
-      >
-        <CircularProgress />
-      </Card>
-    );
+  if (!values) return <LoadingCard height={400} flex={1} />;
   return (
     <Card sx={{ padding: 2, borderRadius: "12px", flex: 1 }}>
       <Stack gap={2} padding={1}>

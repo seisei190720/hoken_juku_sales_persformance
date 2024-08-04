@@ -57,7 +57,7 @@ const UpdateVisitorFormDialog: FC<Props> = ({
     consultContentMst
   );
 
-  if (!updatedVisitorData) return <CircularProgress />;
+  if (!updatedVisitorData) return <></>;
   return (
     <>
       <Dialog

@@ -2,7 +2,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
 import { TopicBudgetAndAchievementType } from "../top/hooks/useTopicAchievementComposition";
-import SimpleSummaryCard from "../components/charts/SimpleSummaryCard";
+import SimpleSummaryCard from "../../component/cards/SimpleSummaryCard";
 import SimpleSummaryCardWichHalfPieChart from "../../component/charts/SimpleSummaryCardWithHalfPieChart";
 import Box from "@mui/material/Box";
 import YearlyResults from "./YearlyResults";
@@ -55,6 +55,7 @@ const YearlyPage: FC<Props> = ({
               }}
               title={"残り日数"}
               mainUnit={"日"}
+              height={180}
             />
             <SimpleSummaryCardWichHalfPieChart
               values={topicData.yearBudgetAndAchievementData}
@@ -69,6 +70,7 @@ const YearlyPage: FC<Props> = ({
               }
               title={"未成立の申込残り"}
               mainUnit={"円"}
+              height={180}
             />
           </Stack>
         </Box>

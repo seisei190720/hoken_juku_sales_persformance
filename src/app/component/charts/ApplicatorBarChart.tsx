@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React from "react";
 import {
   BarChart,
   Bar,
@@ -16,7 +16,7 @@ import Card from "@mui/material/Card";
 import { blue, yellow } from "@mui/material/colors";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import CircularProgress from "@mui/material/CircularProgress";
+import LoadingCard from "../cards/LoadingCard";
 
 type Props = {
   values:
@@ -29,22 +29,7 @@ type Props = {
 };
 
 const ApplicatorBarChart: FC<Props> = ({ values }) => {
-  if (!values)
-    return (
-      <Card
-        sx={{
-          padding: 2,
-          borderRadius: "12px",
-          flex: 1,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: 400,
-        }}
-      >
-        <CircularProgress />
-      </Card>
-    );
+  if (!values) return <LoadingCard height={400} flex={1} />;
   return (
     <Card sx={{ padding: 2, borderRadius: "12px", flex: 1 }}>
       <Stack gap={4} padding={1}>
