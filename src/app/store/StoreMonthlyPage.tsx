@@ -42,7 +42,6 @@ const StoreMonthlyPage: FC<Props> = ({
           ml={1}
           mr={1}
           sx={{
-            // minHeight: "calc(100vh - 200px)",
             background: "#f5f5f5",
           }}
           borderRadius={"12px"}

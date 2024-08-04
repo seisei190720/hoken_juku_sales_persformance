@@ -1,7 +1,6 @@
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import dayjs from "dayjs";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC } from "react";
 import { TopicBudgetAndAchievementType } from "../top/hooks/useTopicAchievementComposition";
 import SimpleSummaryCard from "../components/charts/SimpleSummaryCard";
 import SimpleSummaryCardWichHalfPieChart from "../../component/charts/SimpleSummaryCardWithHalfPieChart";
@@ -40,7 +39,6 @@ const YearlyPage: FC<Props> = ({
           ml={1}
           mr={1}
           sx={{
-            // minHeight: "calc(100vh - 200px)",
             background: "#f5f5f5",
           }}
           borderRadius={"12px"}
@@ -54,7 +52,6 @@ const YearlyPage: FC<Props> = ({
               values={{
                 mainValue: dateData.lastDays,
                 subValue: `経過率：${dateData.progressRate}%`,
-                // subValue: `(${lastDay.lastMonths}ヶ月と${lastDay.lastMonthDays}日)`,
               }}
               title={"残り日数"}
               mainUnit={"日"}

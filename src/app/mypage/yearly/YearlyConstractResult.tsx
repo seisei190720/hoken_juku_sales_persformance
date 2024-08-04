@@ -81,20 +81,6 @@ const YearlyConstractResult: FC<Props> = ({
           sub2ChipName={"損保"}
           cardFlex={1}
         />
-        {/* <SimpleSummaryCard
-          values={
-            yearlyConstractComposition.allBudgetAndAchievementData === undefined
-              ? undefined
-              : {
-                  mainValue:
-                    yearlyConstractComposition.allBudgetAndAchievementData
-                      .achivementSum,
-                  subValue: `達成率：${yearlyConstractComposition.allBudgetAndAchievementData.achivementPercent}%`,
-                }
-          }
-          title={"今年度実績"}
-          mainUnit={"円"}
-        /> */}
       </Stack>
       <Stack direction="row" gap={2}>
         <YearlyBudgetAndAchievementComposedChart
