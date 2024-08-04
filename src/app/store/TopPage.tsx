@@ -5,12 +5,12 @@ import { FC, useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import { TopicBudgetAndAchievementType } from "../mypage/top/hooks/useTopicAchievementComposition";
 import SimpleSummaryCard from "../mypage/components/charts/SimpleSummaryCard";
-import SimpleSummaryCardWichHalfPieChart from "../mypage/components/charts/SimpleSummaryCardWithHalfPieChart";
+import SimpleSummaryCardWichHalfPieChart from "../component/charts/SimpleSummaryCardWithHalfPieChart";
 import { Application, ContractBudget, IndividualSalesResult } from "../types";
 import { useStoreTopComposition } from "./hooks/useStoreTopComposition";
 import { useMockData } from "../mocks";
-import BudgetAndAchievementExpectBarChart from "../component/BudgetAndAchievementExpectBarChart";
-import BudgetAndAchievementExpectedSouceList from "../component/BudgetAndAchievementExpectedSouceList";
+import BudgetAndAchievementExpectBarChart from "../component/charts/BudgetAndAchievementExpectBarChart";
+import BudgetAndAchievementExpectedSouceList from "../component/lists/BudgetAndAchievementExpectedSouceList";
 
 type Props = {
   userId: string;

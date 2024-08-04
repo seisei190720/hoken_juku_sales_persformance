@@ -12,8 +12,8 @@ import { FC, useCallback, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import YearlyAchievementResult from "@/app/old/yearly/YearlyAchievementResult";
-import YearlyConstractResult from "@/app/old/yearly/YearlyConstractResult";
+import YearlyAchievementResult from "@/app/mypage/yearly/YearlyAchievementResult";
+import YearlyConstractResult from "@/app/mypage/yearly/YearlyConstractResult";
 
 type Props = {
   userId: string;

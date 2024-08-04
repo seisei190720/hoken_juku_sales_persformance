@@ -4,7 +4,7 @@ import { FC } from "react";
 import Box from "@mui/material/Box";
 import { TopicBudgetAndAchievementType } from "../mypage/top/hooks/useTopicAchievementComposition";
 import SimpleSummaryCard from "../mypage/components/charts/SimpleSummaryCard";
-import SimpleSummaryCardWichHalfPieChart from "../mypage/components/charts/SimpleSummaryCardWithHalfPieChart";
+import SimpleSummaryCardWichHalfPieChart from "../component/charts/SimpleSummaryCardWithHalfPieChart";
 import { IndividualSalesResult } from "../types";
 import StoreMonthlyContents from "./StoreMonthlyContents";
 import { useCountDownMonthDate } from "../hooks/util";

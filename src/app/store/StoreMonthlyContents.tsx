@@ -11,14 +11,14 @@ import Button from "@mui/material/Button";
 import { useMockData } from "../mocks";
 import { resolveYear, useSalesResultApi } from "../api/useSalesResultApi";
 import { useApplicationApi } from "../api/useApplicationApi";
-import StoreAchievement from "../old/store/StoreAchievement";
-import StoreConstract from "../old/store/StoreConstract";
+import StoreAchievement from "./StoreAchievement";
+import StoreConstract from "./StoreConstract";
 import { IndividualSalesResult } from "../types";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import Achievement from "../old/mypage/achievement/Achievement";
+import Achievement from "../mypage/monthly/achievement/Achievement";
 import { useContractBudgetApi } from "../api/useContractBudgetApi";
-import Constract from "../old/mypage/contract/Contract";
+import Constract from "../mypage/monthly/contract/Contract";
 
 type Props = {
   userId: string;

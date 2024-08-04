@@ -1,7 +1,6 @@
 import {
   CompanyMst,
   ConsultContentMst,
-  IndividualSalesResult,
   Member,
   ProductMst,
   RouteMst,
@@ -9,121 +8,6 @@ import {
 } from "../types";
 
 export const useMockData = () => {
-  // const salesResults: IndividualSalesResult[] = [
-  //   {
-  //     uuid: "uuid001",
-  //     userId: "userId001",
-  //     firstVisitDate: "2024-06-05",
-  //     visitRoute: "ネット・電話",
-  //     name: "山田太郎",
-  //     nextAppointment: true,
-  //     consultContent: "生保",
-  //     applications: [
-  //       {
-  //         userId: "userId001",
-  //         applicationDate: "2024-06-07",
-  //         product: "医療保険",
-  //         company: "ソニー損保",
-  //         status: "成立",
-  //         firstYearFee: 24000,
-  //         establishDate: "2024-06-13",
-  //       },
-  //       {
-  //         userId: "userId001",
-  //         applicationDate: "2024-06-07",
-  //         product: "がん保険",
-  //         company: "東京海上日動",
-  //         status: "未成立",
-  //         firstYearFee: null,
-  //         establishDate: null,
-  //       },
-  //       {
-  //         userId: "userId001",
-  //         applicationDate: "2024-06-07",
-  //         product: "収入保障",
-  //         company: "第一生命",
-  //         status: "不成立",
-  //         firstYearFee: null,
-  //         establishDate: null,
-  //       },
-  //     ],
-  //     thankyou: true,
-  //   },
-  //   {
-  //     uuid: "uuid002",
-  //     userId: "userId002",
-  //     firstVisitDate: "2024-06-15",
-  //     visitRoute: "直来",
-  //     name: "鈴木一朗",
-  //     nextAppointment: false,
-  //     consultContent: "生保",
-  //     applications: [],
-  //     thankyou: true,
-  //   },
-  //   {
-  //     uuid: "uuid003",
-  //     userId: "userId003",
-  //     firstVisitDate: "2024-06-05",
-  //     visitRoute: "セミナー",
-  //     name: "田中裕二",
-  //     nextAppointment: true,
-  //     consultContent: "損保",
-  //     applications: [
-  //       {
-  //         userId: "userId001",
-  //         applicationDate: "2024-06-07",
-  //         product: "医療保険",
-  //         company: "ソニー損保",
-  //         status: "成立",
-  //         firstYearFee: 24000,
-  //         establishDate: "2024-06-13",
-  //       },
-  //       {
-  //         userId: "userId001",
-  //         applicationDate: "2024-06-07",
-  //         product: "がん保険",
-  //         company: "東京海上日動",
-  //         status: "成立",
-  //         firstYearFee: 30000,
-  //         establishDate: "2024-06-29",
-  //       },
-  //     ],
-  //     thankyou: true,
-  //   },
-  //   {
-  //     uuid: "uuid004",
-  //     userId: "userId004",
-  //     firstVisitDate: "2024-06-05",
-  //     visitRoute: "ご紹介",
-  //     name: "山本康裕",
-  //     nextAppointment: true,
-  //     consultContent: "損保",
-  //     applications: [],
-  //     thankyou: true,
-  //   },
-  //   {
-  //     uuid: "uuid005",
-  //     userId: "userId005",
-  //     firstVisitDate: "2024-06-05",
-  //     visitRoute: "自発的",
-  //     name: "麻生太郎",
-  //     nextAppointment: false,
-  //     consultContent: "その他",
-  //     applications: [
-  //       {
-  //         userId: "userId005",
-  //         applicationDate: "2024-07-07",
-  //         product: "医療保険",
-  //         company: "ソニー損保",
-  //         status: "未成立",
-  //         firstYearFee: null,
-  //         establishDate: null,
-  //       },
-  //     ],
-  //     thankyou: false,
-  //   },
-  // ];
-
   const routeMst: RouteMst[] = [
     {
       id: "1",
@@ -459,7 +343,6 @@ export const useMockData = () => {
     },
   ];
   return {
-    // salesResults,
     routeMst,
     consultContentMst,
     productMst,

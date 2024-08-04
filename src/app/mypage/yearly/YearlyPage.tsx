@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import { FC, useEffect, useMemo, useState } from "react";
 import { TopicBudgetAndAchievementType } from "../top/hooks/useTopicAchievementComposition";
 import SimpleSummaryCard from "../components/charts/SimpleSummaryCard";
-import SimpleSummaryCardWichHalfPieChart from "../components/charts/SimpleSummaryCardWithHalfPieChart";
+import SimpleSummaryCardWichHalfPieChart from "../../component/charts/SimpleSummaryCardWithHalfPieChart";
 import Box from "@mui/material/Box";
 import YearlyResults from "./YearlyResults";
 import { useCountDownYearDate } from "@/app/hooks/util";
