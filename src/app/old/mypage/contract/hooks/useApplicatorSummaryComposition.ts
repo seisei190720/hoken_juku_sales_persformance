@@ -10,15 +10,14 @@ export const useApplicatorSummaryComposition = (
   userId: string
 ) => {
   const [targetContract, setTargetContract] = useState<
-    ContractBudget | undefined
+    ContractBudget | null | undefined
   >(undefined);
 
   useEffect(() => {
-    if (contractBudgetData !== undefined && contractBudgetData.length > 0) {
+    if (contractBudgetData !== undefined) {
       setTargetContract(
-        contractBudgetData.find(
-          (c: ContractBudget) => (c.userId = userId) || null
-        )
+        contractBudgetData.find((c: ContractBudget) => (c.userId = userId)) ||
+          null
       );
     }
   }, [contractBudgetData]);
@@ -97,6 +96,8 @@ export const useApplicatorSummaryComposition = (
 
   const contractAchievementRate = useMemo(() => {
     if (fistYearFeeData === undefined || targetContract === undefined) return;
+
+    if (targetContract === null) return 0;
     return calcPercent(fistYearFeeData.all, targetContract.value);
   }, [fistYearFeeData, targetContract]);
 
