@@ -55,6 +55,7 @@ const YearlyPage: FC<Props> = ({
               }}
               title={"残り日数"}
               mainUnit={"日"}
+              height={180}
             />
             <SimpleSummaryCardWichHalfPieChart
               values={topicData.yearBudgetAndAchievementData}
@@ -69,6 +70,7 @@ const YearlyPage: FC<Props> = ({
               }
               title={"未成立の申込残り"}
               mainUnit={"円"}
+              height={180}
             />
           </Stack>
         </Box>

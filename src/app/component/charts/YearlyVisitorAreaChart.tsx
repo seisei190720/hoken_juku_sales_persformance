@@ -13,10 +13,10 @@ import {
 import Card from "@mui/material/Card";
 import { blue, yellow } from "@mui/material/colors";
 import Typography from "@mui/material/Typography";
-import CircularProgress from "@mui/material/CircularProgress";
 import { YearlyVisitorAndNextAppointmentType } from "../../mypage/yearly/hooks/useYearlyAchievementComposition";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import LoadingCard from "../cards/LoadingCard";
 
 type Props = {
   title: string;
@@ -36,22 +36,7 @@ const YearlyVisitorAreaChart: FC<Props> = ({ title, values }) => {
     },
     []
   );
-  if (!values)
-    return (
-      <Card
-        sx={{
-          padding: 2,
-          borderRadius: "12px",
-          flex: 2,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: 400,
-        }}
-      >
-        <CircularProgress />
-      </Card>
-    );
+  if (!values) return <LoadingCard height={400} flex={2} />;
 
   return (
     <Card sx={{ padding: 2, borderRadius: "12px", flex: 2, gap: 2 }}>

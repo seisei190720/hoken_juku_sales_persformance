@@ -79,6 +79,7 @@ const TopPage: FC<Props> = ({
               }
               title={"未成立の申込残り"}
               mainUnit={"円"}
+              height={180}
             />
           </Stack>
         </Box>

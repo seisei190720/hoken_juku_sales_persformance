@@ -4,9 +4,9 @@ import Stack from "@mui/material/Stack";
 import { FC } from "react";
 import ConsultContentPieChart from "../../../component/charts/ConsultContentPieChart";
 import VisitorBarChart from "../../../component/charts/VisitorBarChart";
-import SimpleSummaryCard from "../../../component/cards/SimpleSummaryCard";
 import ThreeCompartmentSummaryCard from "../../../component/charts/ThreeCompartmentSummaryCard";
 import { useVisitorSummaryComposition } from "./hooks/useVisitorSummaryComposition";
+import SimpleSummaryCard from "../../components/charts/SimpleSummaryCard";
 
 type Props = {
   userId: string;
@@ -51,6 +51,7 @@ const Achievement: FC<Props> = ({
               }
               title={"次アポ取得率"}
               mainUnit={"%"}
+              height={215}
             />
             <SimpleSummaryCard
               values={
@@ -61,6 +62,7 @@ const Achievement: FC<Props> = ({
               }
               title={"新規成約率"}
               mainUnit={"%"}
+              height={215}
             />
             <SimpleSummaryCard
               values={
@@ -71,6 +73,7 @@ const Achievement: FC<Props> = ({
               }
               title={"ありがとう率"}
               mainUnit={"%"}
+              height={215}
             />
           </Stack>
           <Stack direction="row" gap={2}>

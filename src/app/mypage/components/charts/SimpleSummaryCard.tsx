@@ -4,7 +4,7 @@ import React from "react";
 import { FC } from "react";
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
-import CircularProgress from "@mui/material/CircularProgress";
+import LoadingCard from "@/app/component/cards/LoadingCard";
 
 type Props = {
   values:
@@ -15,26 +15,13 @@ type Props = {
     | undefined;
   title: string;
   mainUnit: string;
+  height: number;
 };
 
-const SimpleSummaryCard: FC<Props> = ({ values, title, mainUnit }) => {
-  if (!values)
-    return (
-      <Card
-        sx={{
-          borderRadius: "12px",
-          flex: 1,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: 180,
-        }}
-      >
-        <CircularProgress />
-      </Card>
-    );
+const SimpleSummaryCard: FC<Props> = ({ values, title, mainUnit, height }) => {
+  if (!values) return <LoadingCard height={height} flex={1} />;
   return (
-    <Card sx={{ padding: 2, borderRadius: "12px", flex: 1, height: "180px" }}>
+    <Card sx={{ padding: 2, borderRadius: "12px", flex: 1, height: height }}>
       <Stack height="100%">
         <Typography variant="h6" color={blue[600]}>
           {title}

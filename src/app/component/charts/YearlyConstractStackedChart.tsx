@@ -14,8 +14,8 @@ import {
 import Card from "@mui/material/Card";
 import { blue, yellow } from "@mui/material/colors";
 import Typography from "@mui/material/Typography";
-import CircularProgress from "@mui/material/CircularProgress";
 import { YearlyConstractSumAndCountType } from "../../mypage/yearly/hooks/useYearlyConstractComposition";
+import LoadingCard from "../cards/LoadingCard";
 
 type Props = {
   title: string;
@@ -23,22 +23,7 @@ type Props = {
 };
 
 const YearlyConstractStackedChart: FC<Props> = ({ title, values }) => {
-  if (!values)
-    return (
-      <Card
-        sx={{
-          padding: 2,
-          borderRadius: "12px",
-          flex: 2,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: 400,
-        }}
-      >
-        <CircularProgress />
-      </Card>
-    );
+  if (!values) return <LoadingCard height={400} flex={2} />;
 
   return (
     <Card sx={{ padding: 2, borderRadius: "12px", flex: 2, gap: 2 }}>

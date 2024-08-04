@@ -6,7 +6,7 @@ import { blue } from "@mui/material/colors";
 import { FC } from "react";
 import React from "react";
 import Chip from "@mui/material/Chip";
-import CircularProgress from "@mui/material/CircularProgress";
+import LoadingCard from "../cards/LoadingCard";
 
 type Props = {
   values:
@@ -30,21 +30,7 @@ const ThreeCompartmentSummaryCard: FC<Props> = ({
   sub2ChipName,
   cardFlex,
 }) => {
-  if (!values)
-    return (
-      <Card
-        sx={{
-          borderRadius: "12px",
-          flex: cardFlex,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: 215,
-        }}
-      >
-        <CircularProgress />
-      </Card>
-    );
+  if (!values) return <LoadingCard height={215} flex={cardFlex} />;
   return (
     <Card
       sx={{

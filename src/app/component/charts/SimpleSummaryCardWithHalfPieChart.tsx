@@ -4,9 +4,9 @@ import React, { useMemo } from "react";
 import { FC } from "react";
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
-import CircularProgress from "@mui/material/CircularProgress";
 import BudgetAchievementHalfPieChart from "./BudgetAchievementHalfPieChart";
 import { TopicBudgetAndAchievementType } from "../../mypage/top/hooks/useTopicAchievementComposition";
+import LoadingCard from "../cards/LoadingCard";
 
 type Props = {
   values: TopicBudgetAndAchievementType | undefined;
@@ -27,21 +27,7 @@ const SimpleSummaryCardWichHalfPieChart: FC<Props> = ({ values, title }) => {
       sub: `目標：${values.予算.toLocaleString()}円`,
     };
   }, [values]);
-  if (!values || !displayValues)
-    return (
-      <Card
-        sx={{
-          borderRadius: "12px",
-          flex: 1,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: 180,
-        }}
-      >
-        <CircularProgress />
-      </Card>
-    );
+  if (!values || !displayValues) return <LoadingCard height={180} flex={1} />;
   return (
     <Card sx={{ padding: 2, borderRadius: "12px", flex: 1.5, height: "180px" }}>
       <Stack height="100%">

@@ -4,12 +4,12 @@ import React, { useMemo, useState } from "react";
 import { FC } from "react";
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
-import CircularProgress from "@mui/material/CircularProgress";
 import { Button } from "@mui/material";
 import BudgetEditorDialog from "../BudgetEditorDialog";
 import { ContractBudget } from "../../types";
 import SuccessSnacBar from "../SuccessSnacBar";
 import { useBoolean } from "@/app/hooks/util";
+import LoadingCard from "./LoadingCard";
 
 type Props = {
   subValue: number | undefined;
@@ -72,20 +72,7 @@ const BudgetCard: FC<Props> = ({
   }, [subValue, contractBudgetData]);
 
   if (subValue === undefined || contractBudgetData === undefined)
-    return (
-      <Card
-        sx={{
-          borderRadius: "12px",
-          flex: 1,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: 215,
-        }}
-      >
-        <CircularProgress />
-      </Card>
-    );
+    return <LoadingCard height={215} flex={1} />;
   return (
     <>
       <Card sx={{ padding: 2, borderRadius: "12px", flex: 1 }}>
