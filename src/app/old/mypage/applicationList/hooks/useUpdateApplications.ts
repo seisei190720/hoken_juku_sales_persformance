@@ -20,6 +20,7 @@ export const useUpdateApplications = (
     UpdateApplication[]
   >([]);
   const [thankyouState, setThankyouState] = useState<boolean>(false);
+  const [newRemarks, setNewRemarks] = useState<string>("");
 
   useEffect(() => {
     if (salesResult) {
@@ -30,12 +31,14 @@ export const useUpdateApplications = (
             product: productMst.find((p) => p.id === a.product) || null,
             company: companyMst.find((c) => c.id === a.company) || null,
             firstYearFee: a.firstYearFee,
+            insuranceFee: a.insuranceFee,
             status: statusMst.find((s) => s.id === a.status) || null,
             establishDate: a.establishDate,
           };
         })
       );
       setThankyouState(salesResult.thankyou);
+      setNewRemarks(salesResult.remarks === null ? "" : salesResult.remarks);
     }
   }, [salesResult, setUpdatedApplications, setThankyouState]);
 
@@ -147,6 +150,23 @@ export const useUpdateApplications = (
     [updatedApplications, setUpdatedApplications]
   );
 
+  const updateInsuranceFee = useCallback(
+    (newData: number, targetIdx: number) => {
+      setUpdatedApplications(
+        updatedApplications.map((v, i) => {
+          if (i === targetIdx) {
+            return {
+              ...v,
+              insuranceFee: newData,
+            };
+          }
+          return v;
+        })
+      );
+    },
+    [updatedApplications, setUpdatedApplications]
+  );
+
   const updateEstablishDate = useCallback(
     (newData: string, targetIdx: number) => {
       setUpdatedApplications(
@@ -164,11 +184,19 @@ export const useUpdateApplications = (
     [updatedApplications, setUpdatedApplications]
   );
 
+  const updateRemarks = useCallback(
+    (v: string) => {
+      setNewRemarks(v);
+    },
+    [setNewRemarks]
+  );
+
   const submitUpdatedApplications = useCallback(() => {
     //TODO: validationを実装する
     if (!salesResult) return;
     updateApplicationsData({
       ...salesResult,
+      remarks: newRemarks === "" ? null : newRemarks,
       thankyou: thankyouState,
       applications: updatedApplications.map((v) => {
         return {
@@ -177,12 +205,13 @@ export const useUpdateApplications = (
           product: v.product?.id || "",
           company: v.company?.id || "",
           firstYearFee: v.firstYearFee,
+          insuranceFee: v.insuranceFee,
           status: v.status?.id || "",
           establishDate: v.establishDate,
         };
       }),
     });
-  }, [updatedApplications, updateApplicationsData, thankyouState]);
+  }, [updatedApplications, updateApplicationsData, thankyouState, newRemarks]);
 
   return {
     updatedApplications,
@@ -193,9 +222,12 @@ export const useUpdateApplications = (
     updateCompany,
     updateStatus,
     updateFirstYearFee,
+    updateInsuranceFee,
     updateEstablishDate,
     thankyouState,
     setThankyouState,
+    newRemarks,
+    updateRemarks,
     submitUpdatedApplications,
   };
 };

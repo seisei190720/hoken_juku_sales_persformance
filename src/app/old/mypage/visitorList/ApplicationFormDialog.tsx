@@ -41,6 +41,10 @@ const ApplicationFormDialog: FC<Props> = ({
     updateApplicationDate,
     updateProduct,
     updateCompany,
+    updateFirstYearFee,
+    updateInsuranceFee,
+    newRemarks,
+    updateRemarks,
     addProduct,
     deleteProduct,
     submitNewApplications,
@@ -124,6 +128,34 @@ const ApplicationFormDialog: FC<Props> = ({
                     ))}
                   </Select>
                 </FormControl>
+                <TextField
+                  required={idx === 0}
+                  key={`${idx}_firstYearFee`}
+                  id={`${idx}_firstYearFee`}
+                  name={`${idx}_firstYearFee`}
+                  label={"初回手数料"}
+                  value={app.firstYearFee || ""}
+                  onChange={(e) =>
+                    updateFirstYearFee(Number(e.target.value), idx)
+                  }
+                  type="number"
+                  fullWidth
+                  variant="standard"
+                />
+                <TextField
+                  required={idx === 0}
+                  key={`${idx}_insuranceFee`}
+                  id={`${idx}_insuranceFee`}
+                  name={`${idx}_insuranceFee`}
+                  label={"保険料"}
+                  value={app.insuranceFee || ""}
+                  onChange={(e) =>
+                    updateInsuranceFee(Number(e.target.value), idx)
+                  }
+                  type="number"
+                  fullWidth
+                  variant="standard"
+                />
                 {newApplications.length > 1 && (
                   <IconButton onClick={() => deleteProduct(idx)}>
                     <DeleteIcon />
@@ -142,6 +174,23 @@ const ApplicationFormDialog: FC<Props> = ({
               追加
             </Button>
           </Stack>
+        </Stack>
+        <Stack mt={1}>
+          <TextField
+            key="remarks"
+            id="remarks"
+            name="remarks"
+            label="備考"
+            type="text"
+            size="small"
+            fullWidth
+            multiline
+            minRows={2}
+            maxRows={4}
+            variant="outlined"
+            value={newRemarks}
+            onChange={(e) => updateRemarks(e.target.value)}
+          />
         </Stack>
       </DialogContent>
       <DialogActions>

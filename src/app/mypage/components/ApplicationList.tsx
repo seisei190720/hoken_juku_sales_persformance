@@ -27,6 +27,7 @@ import { styled } from "@mui/material/styles";
 import DeleteApplicationDialog from "../../component/DeleteApplicationDialog";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
 
 type Props = {
   salesResultData: IndividualSalesResult[] | undefined;
@@ -179,82 +180,118 @@ const ApplicationList: FC<Props> = ({
                 </Stack>
               </AccordionSummary>
               <AccordionDetails>
-                <Table size="small">
-                  <TableHead>
-                    <TableRow
-                      key={"applicator_header"}
-                      sx={{ display: "flex" }}
-                    >
-                      <TableCell sx={{ flex: 1 }}>申込日</TableCell>
-                      <TableCell sx={{ flex: 1 }}>会社</TableCell>
-                      <TableCell sx={{ flex: 1 }}>商品</TableCell>
-                      <TableCell sx={{ flex: 1 }}>状態</TableCell>
-                      <TableCell sx={{ flex: 1 }}>成立日</TableCell>
-                      <TableCell sx={{ flex: 1 }}>初回手数料</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {result.applications.map((app, idx) => (
-                      <StyledTableRow
-                        hover
-                        key={`${result.name}_${idx}`}
+                <Stack gap={1}>
+                  <Table size="small">
+                    <TableHead>
+                      <TableRow
+                        key={"applicator_header"}
                         sx={{ display: "flex" }}
                       >
-                        <TableCell component="th" scope="row" sx={{ flex: 1 }}>
-                          {app.applicationDate}
-                        </TableCell>
-                        <TableCell sx={{ flex: 1 }}>
-                          {companyMst.find((c) => c.id === app.company)?.name ||
-                            "マスタが見つかりません"}
-                        </TableCell>
-                        <TableCell sx={{ flex: 1 }}>
-                          {productMst.find((c) => c.id === app.product)?.name ||
-                            "マスタが見つかりません"}
-                        </TableCell>
-                        <TableCell sx={{ flex: 1 }}>
-                          {statusChip(app.status)}
-                        </TableCell>
-                        <TableCell sx={{ flex: 1 }}>
-                          {app.establishDate === null ? "-" : app.establishDate}
-                        </TableCell>
-                        <TableCell sx={{ flex: 1 }}>
-                          {app.firstYearFee === null
-                            ? "-"
-                            : app.firstYearFee.toLocaleString()}
-                        </TableCell>
-                      </StyledTableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-                {canEdit && (
-                  <Stack
-                    mt={1}
-                    gap={1}
-                    direction="row"
-                    justifyContent="flex-end"
-                  >
-                    <Button
-                      variant="outlined"
-                      startIcon={<EditIcon />}
-                      onClick={() => {
-                        setTargetSalesResult(result);
-                        handleEditClickOpen();
-                      }}
+                        <TableCell sx={{ flex: 1 }}>申込日</TableCell>
+                        <TableCell sx={{ flex: 1 }}>会社</TableCell>
+                        <TableCell sx={{ flex: 1 }}>商品</TableCell>
+                        <TableCell sx={{ flex: 1 }}>初回手数料</TableCell>
+                        <TableCell sx={{ flex: 1 }}>保険料</TableCell>
+                        <TableCell sx={{ flex: 1 }}>状態</TableCell>
+                        <TableCell sx={{ flex: 1 }}>成立日</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {result.applications.map((app, idx) => (
+                        <StyledTableRow
+                          hover
+                          key={`${result.name}_${idx}`}
+                          sx={{ display: "flex" }}
+                        >
+                          <TableCell
+                            component="th"
+                            scope="row"
+                            sx={{ flex: 1 }}
+                          >
+                            {app.applicationDate}
+                          </TableCell>
+                          <TableCell sx={{ flex: 1 }}>
+                            {companyMst.find((c) => c.id === app.company)
+                              ?.name || "マスタが見つかりません"}
+                          </TableCell>
+                          <TableCell sx={{ flex: 1 }}>
+                            {productMst.find((c) => c.id === app.product)
+                              ?.name || "マスタが見つかりません"}
+                          </TableCell>
+                          <TableCell sx={{ flex: 1 }}>
+                            {app.firstYearFee === null
+                              ? "-"
+                              : app.firstYearFee.toLocaleString()}
+                          </TableCell>
+                          <TableCell sx={{ flex: 1 }}>
+                            {app.insuranceFee === null
+                              ? "-"
+                              : app.insuranceFee.toLocaleString()}
+                          </TableCell>
+                          <TableCell sx={{ flex: 1 }}>
+                            {statusChip(app.status)}
+                          </TableCell>
+                          <TableCell sx={{ flex: 1 }}>
+                            {app.establishDate === null
+                              ? "-"
+                              : app.establishDate}
+                          </TableCell>
+                        </StyledTableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                  {result.remarks !== null && (
+                    <Stack direction="column" pr={1} pl={1}>
+                      <Typography
+                        pl={1}
+                        variant="subtitle2"
+                        color="rgba(0, 0, 0, 0.87)"
+                      >
+                        備考
+                      </Typography>
+                      <Box
+                        sx={{
+                          whiteSpace: "pre-wrap",
+                          padding: "8px",
+                          color: "rgba(0, 0, 0, 0.87)",
+                          border: "1px solid rgba(224, 224, 224, 1)",
+                          borderRadius: "4px",
+                        }}
+                      >
+                        {result.remarks}
+                      </Box>
+                    </Stack>
+                  )}
+                  {canEdit && (
+                    <Stack
+                      gap={1}
+                      pr={1}
+                      direction="row"
+                      justifyContent="flex-end"
                     >
-                      編集
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      startIcon={<DeleteIcon />}
-                      onClick={() => {
-                        setTargetSalesResult(result);
-                        handleDeleteClickOpen();
-                      }}
-                    >
-                      削除
-                    </Button>
-                  </Stack>
-                )}
+                      <Button
+                        variant="outlined"
+                        startIcon={<EditIcon />}
+                        onClick={() => {
+                          setTargetSalesResult(result);
+                          handleEditClickOpen();
+                        }}
+                      >
+                        編集
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        startIcon={<DeleteIcon />}
+                        onClick={() => {
+                          setTargetSalesResult(result);
+                          handleDeleteClickOpen();
+                        }}
+                      >
+                        削除
+                      </Button>
+                    </Stack>
+                  )}
+                </Stack>
               </AccordionDetails>
             </Accordion>
           ))}

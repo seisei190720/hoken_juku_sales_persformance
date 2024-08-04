@@ -35,11 +35,13 @@ const fetcher = async ([url, userId, status, year, firstVisitDate]: [
       name: v.name,
       nextAppointment: v.nextAppointment,
       consultContent: v.consultContent,
+      remarks: v.remarks,
       applications: v.applications.map((a: Application) => ({
         userId: userId,
         product: a.product || null,
         company: a.company || null,
         firstYearFee: a.firstYearFee || null,
+        insuranceFee: a.insuranceFee || null,
         applicationDate: a.applicationDate || null,
         status: a.status || null,
         establishDate: a.establishDate || null,
@@ -91,6 +93,7 @@ export const useSalesResultApi = (
           name: newData.name,
           nextAppointment: newData.nextAppointment,
           consultContent: newData.consultContent?.id,
+          remarks: newData.remarks === "" ? null : newData.remarks,
         });
         await mutate(); //uuidが必要になるため、ローカルデータでmutateができない。
       } catch (error) {

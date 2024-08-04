@@ -16,6 +16,7 @@ export const useNewVisitor = (
     name: null,
     nextAppointment: false,
     consultContent: null,
+    remarks: null,
   });
 
   const updateFirstVisitDate = useCallback(
@@ -71,6 +72,16 @@ export const useNewVisitor = (
     [newVisitorData, setNewVisitorData]
   );
 
+  const updateRemarks = useCallback(
+    (v: string) => {
+      setNewVisitorData({
+        ...newVisitorData,
+        remarks: v,
+      });
+    },
+    [newVisitorData, setNewVisitorData]
+  );
+
   const submitNewVisitor = useCallback(() => {
     //TODO: validationを実装する
     postVisitorData(newVisitorData);
@@ -83,6 +94,7 @@ export const useNewVisitor = (
     updateRoute,
     updateConsultContent,
     updateNextAppointment,
+    updateRemarks,
     submitNewVisitor,
   };
 };

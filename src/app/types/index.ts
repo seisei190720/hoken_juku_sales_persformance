@@ -15,6 +15,7 @@ export type IndividualSalesResult = {
   visitRoute: string; //経路 mst
   name: string; //お名前
   nextAppointment: boolean; //次アポ
+  remarks: string | null;
   consultContent: string; //相談内容 mst(生保、損保、その他)
   applications: Application[];
   thankyou: boolean; //ありがとう
@@ -26,6 +27,7 @@ export type Application = {
   product: string | null; //mst
   company: string | null; //mst
   firstYearFee: number | null; //初年度手数料
+  insuranceFee: number | null; //保険料
   status: string; //ステータス mst(未成立、成立、不成立)
   establishDate: string | null; //成立日
 };
@@ -35,6 +37,7 @@ export type UpdateApplication = {
   product: ProductMst | null;
   company: CompanyMst | null;
   firstYearFee: number | null;
+  insuranceFee: number | null;
   status: StatusMst | null;
   establishDate: string | null;
 };
@@ -43,6 +46,8 @@ export type NewApplication = {
   applicationDate: string;
   product: ProductMst | null;
   company: CompanyMst | null;
+  firstYearFee: number | null;
+  insuranceFee: number | null;
 };
 
 export type NewVisitor = {
@@ -51,6 +56,7 @@ export type NewVisitor = {
   name: string | null;
   nextAppointment: boolean;
   consultContent: ConsultContentMst | null;
+  remarks: string | null;
 };
 
 export type ContractBudget = {

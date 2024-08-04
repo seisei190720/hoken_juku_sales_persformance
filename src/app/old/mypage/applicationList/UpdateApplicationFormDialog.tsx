@@ -55,9 +55,12 @@ const UpdateApplicationFormDialog: FC<Props> = ({
     updateCompany,
     updateStatus,
     updateFirstYearFee,
+    updateInsuranceFee,
     updateEstablishDate,
     thankyouState,
     setThankyouState,
+    newRemarks,
+    updateRemarks,
     submitUpdatedApplications,
   } = useUpdateApplications(
     salesResult,
@@ -80,7 +83,7 @@ const UpdateApplicationFormDialog: FC<Props> = ({
     >
       <DialogTitle>{`${salesResult.name}さんの申込情報登録`}</DialogTitle>
       <DialogContent>
-        <Stack ml={2} gap={3} direction="column">
+        <Stack ml={2} gap={2} direction="column">
           <DialogContentText>申込情報を更新してください。</DialogContentText>
           {updatedApplications.map((app, idx) => {
             return (
@@ -136,6 +139,34 @@ const UpdateApplicationFormDialog: FC<Props> = ({
                     ))}
                   </Select>
                 </FormControl>
+                <TextField
+                  required={idx === 0}
+                  key={`${idx}_firstYearFee`}
+                  id={`${idx}_firstYearFee`}
+                  name={`${idx}_firstYearFee`}
+                  label={idx === 0 && "初回手数料"}
+                  value={app.firstYearFee || ""}
+                  onChange={(e) =>
+                    updateFirstYearFee(Number(e.target.value), idx)
+                  }
+                  type="number"
+                  fullWidth
+                  variant="standard"
+                />
+                <TextField
+                  required={idx === 0}
+                  key={`${idx}_insuranceFee`}
+                  id={`${idx}_insuranceFee`}
+                  name={`${idx}_insuranceFee`}
+                  label={idx === 0 && "保険料"}
+                  value={app.insuranceFee || ""}
+                  onChange={(e) =>
+                    updateInsuranceFee(Number(e.target.value), idx)
+                  }
+                  type="number"
+                  fullWidth
+                  variant="standard"
+                />
                 <FormControl required={idx === 0} variant="standard" fullWidth>
                   {idx === 0 && <InputLabel>状態</InputLabel>}
                   <Select
@@ -162,20 +193,6 @@ const UpdateApplicationFormDialog: FC<Props> = ({
                   value={app.establishDate === null ? "" : app.establishDate}
                   onChange={(e) => updateEstablishDate(e.target.value, idx)}
                   type="date"
-                  fullWidth
-                  variant="standard"
-                />
-                <TextField
-                  required={idx === 0}
-                  key={`${idx}_firstYearFee`}
-                  id={`${idx}_firstYearFee`}
-                  name={`${idx}_firstYearFee`}
-                  label={idx === 0 && "初回手数料"}
-                  value={app.firstYearFee || ""}
-                  onChange={(e) =>
-                    updateFirstYearFee(Number(e.target.value), idx)
-                  }
-                  type="number"
                   fullWidth
                   variant="standard"
                 />
@@ -208,6 +225,23 @@ const UpdateApplicationFormDialog: FC<Props> = ({
               label="ありがとう完了済み"
             />
           </Stack>
+        </Stack>
+        <Stack mt={1} pr={1} pl={1}>
+          <TextField
+            key="remarks"
+            id="remarks"
+            name="remarks"
+            label="備考"
+            type="text"
+            size="small"
+            fullWidth
+            multiline
+            minRows={2}
+            maxRows={4}
+            variant="outlined"
+            value={newRemarks}
+            onChange={(e) => updateRemarks(e.target.value)}
+          />
         </Stack>
       </DialogContent>
       <DialogActions>

@@ -29,6 +29,7 @@ export const useUpdateVisitor = (
         consultContentMst.find(
           (c) => c.id === salesResultData.consultContent
         ) || null,
+      remarks: salesResultData.remarks === null ? "" : salesResultData.remarks,
     });
   }, [salesResultData, setUpdatedVisitorData, routeMst, consultContentMst]);
 
@@ -77,6 +78,17 @@ export const useUpdateVisitor = (
     [updatedVisitorData, setUpdatedVisitorData]
   );
 
+  const updateRemarks = useCallback(
+    (v: string) => {
+      if (!updatedVisitorData) return;
+      setUpdatedVisitorData({
+        ...updatedVisitorData,
+        remarks: v,
+      });
+    },
+    [updatedVisitorData, setUpdatedVisitorData]
+  );
+
   const submitUpdatedVisitor = useCallback(() => {
     //TODO: validationを実装する
     if (!salesResultData || !updatedVisitorData) return;
@@ -87,6 +99,8 @@ export const useUpdateVisitor = (
       name: updatedVisitorData.name || "",
       nextAppointment: updatedVisitorData.nextAppointment,
       consultContent: updatedVisitorData.consultContent?.id || "",
+      remarks:
+        updatedVisitorData.remarks === "" ? null : updatedVisitorData.remarks,
     });
   }, [updateSalesResultData, updatedVisitorData, salesResultData]);
 
@@ -96,6 +110,7 @@ export const useUpdateVisitor = (
     updateRoute,
     updateConsultContent,
     updateNextAppointment,
+    updateRemarks,
     submitUpdatedVisitor,
   };
 };

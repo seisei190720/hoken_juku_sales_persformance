@@ -35,6 +35,7 @@ export const useApplicationApi = (param: {
             product: a.product || null,
             company: a.company || null,
             firstYearFee: a.firstYearFee || null,
+            insuranceFee: a.insuranceFee || null,
             applicationDate: a.applicationDate || null,
             status: a.status || null,
             establishDate: a.establishDate || null,

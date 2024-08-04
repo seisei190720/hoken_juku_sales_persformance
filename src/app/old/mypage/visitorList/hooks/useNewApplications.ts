@@ -12,6 +12,8 @@ export const DEFAULT_APPLICATION_DATA = {
   applicationDate: dayjs().format("YYYY-MM-DD"),
   product: null,
   company: null,
+  firstYearFee: null,
+  insuranceFee: null,
 };
 export const useNewApplications = (
   salesResult: IndividualSalesResult | undefined,
@@ -22,9 +24,15 @@ export const useNewApplications = (
   const [newApplications, setNewApplications] = useState<NewApplication[]>([
     DEFAULT_APPLICATION_DATA,
   ]);
+  const [newRemarks, setNewRemarks] = useState<string>("");
+
   useEffect(() => {
-    if (!salesResult) setNewApplications([]);
-  }, [salesResult, setNewApplications]);
+    if (!salesResult) {
+      setNewApplications([]);
+    } else {
+      setNewRemarks(salesResult.remarks === null ? "" : salesResult.remarks);
+    }
+  }, [salesResult, setNewApplications, setNewRemarks]);
 
   const addProduct = useCallback(() => {
     setNewApplications([...newApplications, DEFAULT_APPLICATION_DATA]);
@@ -92,30 +100,77 @@ export const useNewApplications = (
     [companyMst, newApplications, setNewApplications]
   );
 
+  const updateFirstYearFee = useCallback(
+    (newData: number, targetIdx: number) => {
+      setNewApplications(
+        newApplications.map((v, i) => {
+          if (i === targetIdx) {
+            return {
+              ...v,
+              firstYearFee: newData,
+            };
+          }
+          return v;
+        })
+      );
+    },
+    [newApplications, setNewApplications]
+  );
+
+  const updateInsuranceFee = useCallback(
+    (newData: number, targetIdx: number) => {
+      setNewApplications(
+        newApplications.map((v, i) => {
+          if (i === targetIdx) {
+            return {
+              ...v,
+              insuranceFee: newData,
+            };
+          }
+          return v;
+        })
+      );
+    },
+    [newApplications, setNewApplications]
+  );
+
+  const updateRemarks = useCallback(
+    (v: string) => {
+      setNewRemarks(v);
+    },
+    [setNewRemarks]
+  );
+
   const submitNewApplications = useCallback(() => {
     //TODO: validationを実装する
     if (!salesResult) return;
     updateApplicationsData({
       ...salesResult,
+      remarks: newRemarks === "" ? null : newRemarks,
       applications: newApplications.map((v) => {
         return {
           userId: salesResult.userId,
           applicationDate: v.applicationDate,
           product: v.product?.id || "",
           company: v.company?.id || "",
-          firstYearFee: null,
+          firstYearFee: v.firstYearFee,
+          insuranceFee: v.insuranceFee,
           status: "1",
           establishDate: null,
         };
       }),
     });
-  }, [newApplications, updateApplicationsData]);
+  }, [newApplications, updateApplicationsData, newRemarks]);
 
   return {
     newApplications,
     updateApplicationDate,
     updateProduct,
     updateCompany,
+    updateFirstYearFee,
+    updateInsuranceFee,
+    updateRemarks,
+    newRemarks,
     addProduct,
     deleteProduct,
     submitNewApplications,

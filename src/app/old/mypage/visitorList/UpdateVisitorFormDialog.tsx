@@ -46,6 +46,7 @@ const UpdateVisitorFormDialog: FC<Props> = ({
     updateRoute,
     updateConsultContent,
     updateNextAppointment,
+    updateRemarks,
     submitUpdatedVisitor,
   } = useUpdateVisitor(
     salesResult,
@@ -148,6 +149,21 @@ const UpdateVisitorFormDialog: FC<Props> = ({
                 />
               }
               label="次アポ取得済み"
+            />
+            <TextField
+              key="remarks"
+              id="remarks"
+              name="remarks"
+              label="備考"
+              type="text"
+              size="small"
+              fullWidth
+              multiline
+              minRows={2}
+              maxRows={4}
+              variant="outlined"
+              value={updatedVisitorData.remarks || ""}
+              onChange={(e) => updateRemarks(e.target.value)}
             />
           </Stack>
         </DialogContent>
