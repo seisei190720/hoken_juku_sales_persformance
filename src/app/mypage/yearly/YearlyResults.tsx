@@ -1,25 +1,20 @@
 import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { useApplicationApi } from "@/app/api/useApplicationApi";
 import { useContractBudgetApi } from "@/app/api/useContractBudgetApi";
 import { useSalesResultApi } from "@/app/api/useSalesResultApi";
 import { useMockData } from "@/app/mocks";
 import dayjs from "dayjs";
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import Box from "@mui/material/Box";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import YearlyAchievementResult from "@/app/old/yearly/YearlyAchievementResult";
-import YearlyConstractResult from "@/app/old/yearly/YearlyConstractResult";
+import YearlyAchievementResult from "@/app/mypage/yearly/YearlyAchievementResult";
+import YearlyConstractResult from "@/app/mypage/yearly/YearlyConstractResult";
+import TargetYearButtons from "@/app/component/TargetYearButtons";
+import ViewModeTabs, { PageMode } from "@/app/component/ViewModeTabs";
 
 type Props = {
   userId: string;
   canEdit: boolean;
 };
-type YearlyPageMode = "achievement" | "contract";
 
 const YearlyResults: FC<Props> = ({ userId, canEdit }) => {
   const {
@@ -30,7 +25,9 @@ const YearlyResults: FC<Props> = ({ userId, canEdit }) => {
     companyMst,
     statusMst,
   } = useMockData();
-  const [targetYear, setTargetYear] = useState<string | null>(null);
+  const [targetYear, setTargetYear] = useState<string>(dayjs().format("YYYY"));
+  const [viewMode, setViewMode] = useState<PageMode>("achievement");
+
   const { salesResultData } = useSalesResultApi(
     userId === "1" ? null : userId,
     {
@@ -50,71 +47,24 @@ const YearlyResults: FC<Props> = ({ userId, canEdit }) => {
     month: null,
   });
 
-  const [viewMode, setViewMode] = useState<YearlyPageMode>("achievement");
-  const updateViewMode = useCallback(
-    (event: React.SyntheticEvent, nextView: string) => {
-      setViewMode(nextView as YearlyPageMode);
-    },
-    []
-  );
-
-  const forwardToNextMonth = () => {
-    setTargetYear((v) => dayjs(v).add(1, "year").format("YYYY"));
-  };
-  const backToLastMonth = () => {
-    setTargetYear((v) => dayjs(v).subtract(1, "year").format("YYYY"));
-  };
-  const moveToCurrentMonth = () => {
-    setTargetYear(dayjs().format("YYYY"));
-  };
-
-  useEffect(() => {
-    setTargetYear(dayjs().format("YYYY"));
-  }, [setTargetYear]);
-
-  const a11yProps = (index: number) => {
-    return {
-      id: `simple-tab-${index}`,
-      "aria-controls": `simple-tabpanel-${index}`,
-    };
-  };
-
   return (
     <>
       <Stack sx={{ width: "100%" }}>
         <Stack direction="row" justifyContent="space-between">
           <Stack direction="row" alignItems="center" ml={3}>
-            <Tabs
-              sx={{
-                marginLeft: "10px",
-                marginBottom: "8px",
-              }}
-              value={viewMode}
-              onChange={updateViewMode}
-              aria-label="sales-result-view-mode-tab"
-            >
-              <Tab label="成果" value="achievement" {...a11yProps(0)} />
-              <Tab label="契約実績" value="contract" {...a11yProps(0)} />
-            </Tabs>
+            <ViewModeTabs
+              viewMode={viewMode}
+              setViewMode={setViewMode}
+              tabValues={[
+                { label: "成果", value: "achievement" },
+                { label: "契約実績", value: "contract" },
+              ]}
+            />
           </Stack>
-          <Stack direction="row" alignItems="center" mr={5}>
-            <Button onClick={backToLastMonth}>
-              <ArrowBackIosIcon />
-            </Button>
-            <Typography variant="h6">
-              {dayjs(targetYear).format("YYYY年度")}
-            </Typography>
-            <Button>
-              <ArrowForwardIosIcon onClick={forwardToNextMonth} />
-            </Button>
-            <Button
-              variant="outlined"
-              onClick={moveToCurrentMonth}
-              disabled={targetYear === dayjs().format("YYYY-MM")}
-            >
-              今年度に戻る
-            </Button>
-          </Stack>
+          <TargetYearButtons
+            targetYear={targetYear}
+            setTargetYear={setTargetYear}
+          />
         </Stack>
         <Box ml="10px" mr="10px">
           <Box

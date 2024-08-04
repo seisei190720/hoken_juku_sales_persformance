@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import { FC, useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import SimpleSummaryCard from "../components/charts/SimpleSummaryCard";
-import SimpleSummaryCardWichHalfPieChart from "../components/charts/SimpleSummaryCardWithHalfPieChart";
+import SimpleSummaryCardWichHalfPieChart from "../../component/charts/SimpleSummaryCardWithHalfPieChart";
 import ApplicationList from "../components/ApplicationList";
 import {
   CompanyMst,

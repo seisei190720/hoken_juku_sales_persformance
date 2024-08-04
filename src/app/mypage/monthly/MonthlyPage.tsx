@@ -2,9 +2,9 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FC, useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
-import SimpleSummaryCardWichHalfPieChart from "../components/charts/SimpleSummaryCardWithHalfPieChart";
+import SimpleSummaryCardWichHalfPieChart from "../../component/charts/SimpleSummaryCardWithHalfPieChart";
 import SimpleSummaryCard from "../components/charts/SimpleSummaryCard";
-import MyPage from "@/app/old/mypage";
+import MonthlyPageContents from "@/app/mypage/monthly/MonthlyPageContents";
 import { TopicBudgetAndAchievementType } from "../top/hooks/useTopicAchievementComposition";
 import { useCountDownMonthDate } from "@/app/hooks/util";
 
@@ -71,7 +71,7 @@ const MonthlyPage: FC<Props> = ({
             />
           </Stack>
         </Box>
-        <MyPage userId={userId} canEdit={canEdit} />
+        <MonthlyPageContents userId={userId} canEdit={canEdit} />
       </Stack>
     </>
   );

@@ -1,16 +1,17 @@
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useMemo } from "react";
 import Box from "@mui/material/Box";
 import { TopicBudgetAndAchievementType } from "../mypage/top/hooks/useTopicAchievementComposition";
 import SimpleSummaryCard from "../mypage/components/charts/SimpleSummaryCard";
-import SimpleSummaryCardWichHalfPieChart from "../mypage/components/charts/SimpleSummaryCardWithHalfPieChart";
+import SimpleSummaryCardWichHalfPieChart from "../component/charts/SimpleSummaryCardWithHalfPieChart";
 import { Application, ContractBudget, IndividualSalesResult } from "../types";
 import { useStoreTopComposition } from "./hooks/useStoreTopComposition";
 import { useMockData } from "../mocks";
-import BudgetAndAchievementExpectBarChart from "../component/BudgetAndAchievementExpectBarChart";
-import BudgetAndAchievementExpectedSouceList from "../component/BudgetAndAchievementExpectedSouceList";
+import BudgetAndAchievementExpectBarChart from "../component/charts/BudgetAndAchievementExpectBarChart";
+import BudgetAndAchievementExpectedSouceList from "../component/lists/BudgetAndAchievementExpectedSouceList";
+import { useCountDownMonthDate } from "../hooks/util";
 
 type Props = {
   userId: string;
@@ -40,19 +41,11 @@ const TopPage: FC<Props> = ({
   memberContractBudgetData,
   applicationData,
 }) => {
-  const {
-    members,
-    // routeMst,
-    // consultContentMst,
-    // productMst,
-    // companyMst,
-    // statusMst,
-  } = useMockData();
+  const { members } = useMockData();
   const storeTopData = useStoreTopComposition(
     members,
     inProgressSalesResultData,
     topicData.monthBudgetAndAchievementData,
-    // storeContractBudgetData,
     memberContractBudgetData,
     applicationData
   );
@@ -60,13 +53,7 @@ const TopPage: FC<Props> = ({
     () => dayjs().endOf("month").diff(dayjs(), "day"),
     []
   );
-  const progressRate = useMemo(() => {
-    const today = dayjs();
-    const daysInMonth = today.daysInMonth();
-    const dayOfMonth = today.date();
-    const progressRate = (dayOfMonth / daysInMonth) * 100;
-    return progressRate.toFixed(1);
-  }, []);
+  const dateData = useCountDownMonthDate();
   return (
     <>
       <Stack gap={3}>
@@ -112,7 +99,7 @@ const TopPage: FC<Props> = ({
               <SimpleSummaryCard
                 values={{
                   mainValue: lastDay,
-                  subValue: `経過率：${progressRate}%`,
+                  subValue: `経過率：${dateData.progressRate}%`,
                 }}
                 title={"残り日数"}
                 mainUnit={"日"}

@@ -1,11 +1,5 @@
-import { useSalesResultApi } from "@/app/api/useSalesResultApi";
-import {
-  Application,
-  IndividualSalesResult,
-  Member,
-  RouteMst,
-} from "@/app/types";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { IndividualSalesResult } from "@/app/types";
+import { useMemo } from "react";
 
 export const useLastApplicationsComposition = (
   lastApp: IndividualSalesResult[]

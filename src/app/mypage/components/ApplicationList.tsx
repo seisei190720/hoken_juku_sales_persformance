@@ -20,14 +20,14 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
-import UpdateApplicationFormDialog from "../../old/mypage/applicationList/UpdateApplicationFormDialog";
+import UpdateApplicationFormDialog from "../monthly/applicators/UpdateApplicationFormDialog";
 import CircularProgress from "@mui/material/CircularProgress";
 import { green, grey, orange, red } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
 import DeleteApplicationDialog from "../../component/DeleteApplicationDialog";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
+import SuccessSnacBar from "@/app/component/SuccessSnacBar";
+import { useBoolean } from "@/app/hooks/util";
 
 type Props = {
   salesResultData: IndividualSalesResult[] | undefined;
@@ -50,34 +50,19 @@ const ApplicationList: FC<Props> = ({
     IndividualSalesResult | undefined
   >(undefined);
 
-  const [openEditDailog, setOpenEditDailog] = useState(false);
-  const handleEditClickOpen = () => {
-    setOpenEditDailog(true);
-  };
-  const handleEditClose = () => {
-    setOpenEditDailog(false);
-  };
-
-  const [openDeleteDailog, setOpenDeleteDailog] = useState(false);
-  const handleDeleteClickOpen = () => {
-    setOpenDeleteDailog(true);
-  };
-  const handleDeleteClose = () => {
-    setOpenDeleteDailog(false);
-  };
+  const openEditDailog = useBoolean(false);
+  const openDeleteDailog = useBoolean(false);
+  // const [openDeleteDailog, setOpenDeleteDailog] = useState(false);
+  // const handleDeleteClickOpen = () => {
+  //   setOpenDeleteDailog(true);
+  // };
+  // const handleDeleteClose = () => {
+  //   setOpenDeleteDailog(false);
+  // };
 
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const handleClickSnacBar = () => {
     setOpenSnackBar(true);
-  };
-  const handleCloseSnacBar = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpenSnackBar(false);
   };
 
   const existsInProgressConstract = (target: IndividualSalesResult) => {
@@ -274,7 +259,7 @@ const ApplicationList: FC<Props> = ({
                         startIcon={<EditIcon />}
                         onClick={() => {
                           setTargetSalesResult(result);
-                          handleEditClickOpen();
+                          openEditDailog.handleTrue();
                         }}
                       >
                         編集
@@ -284,7 +269,7 @@ const ApplicationList: FC<Props> = ({
                         startIcon={<DeleteIcon />}
                         onClick={() => {
                           setTargetSalesResult(result);
-                          handleDeleteClickOpen();
+                          openDeleteDailog.handleTrue();
                         }}
                       >
                         削除
@@ -300,38 +285,30 @@ const ApplicationList: FC<Props> = ({
         <UpdateApplicationFormDialog
           salesResult={targetSalesResult}
           statusMst={statusMst}
-          openFormDialog={openEditDailog}
-          handleClose={handleEditClose}
+          openFormDialog={openEditDailog.bool}
+          handleClose={openEditDailog.handleFalse}
           productMst={productMst}
           companyMst={companyMst}
           updateApplicationsData={updateApplicationsData}
+          handleClickSnacBar={handleClickSnacBar}
         />
       )}
       {openDeleteDailog && (
         <DeleteApplicationDialog
           salesResult={targetSalesResult}
-          openDialog={openDeleteDailog}
+          openDialog={openDeleteDailog.bool}
           titleDeleteTarget={"申込情報"}
           dialogMessage="削除した申込情報は元に戻すことはできません。本当によろしいですか？"
-          handleClose={handleDeleteClose}
+          handleClose={openDeleteDailog.handleFalse}
           updateApplicationsData={updateApplicationsData}
           handleClickSnacBar={handleClickSnacBar}
         />
       )}
-      <Snackbar
-        open={openSnackBar}
-        autoHideDuration={6000}
-        onClose={handleCloseSnacBar}
-      >
-        <Alert
-          onClose={handleCloseSnacBar}
-          severity="success"
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          保存が完了しました
-        </Alert>
-      </Snackbar>
+      <SuccessSnacBar
+        openSnackBar={openSnackBar}
+        setOpenSnackBar={setOpenSnackBar}
+        message={"保存が完了しました。"}
+      />
     </>
   );
 };

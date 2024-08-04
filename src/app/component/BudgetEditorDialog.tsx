@@ -17,6 +17,7 @@ type Props = {
   targetYear: string | null;
   contractBudgetData: ContractBudget | null;
   postContractBudgetData: (newData: ContractBudget) => Promise<void>;
+  handleClickSnacBar: () => void;
 };
 
 const BudgetEditorDialog: FC<Props> = ({
@@ -27,6 +28,7 @@ const BudgetEditorDialog: FC<Props> = ({
   targetYear,
   contractBudgetData,
   postContractBudgetData,
+  handleClickSnacBar,
 }) => {
   const budget = useUpdateContractBudget(
     userId,
@@ -36,7 +38,6 @@ const BudgetEditorDialog: FC<Props> = ({
     postContractBudgetData
   );
 
-  //   if (!salesResult) return <></>;
   return (
     <Dialog
       open={openFormDialog}
@@ -47,7 +48,7 @@ const BudgetEditorDialog: FC<Props> = ({
         component: "form",
       }}
     >
-      <DialogTitle>責任挙績の更新</DialogTitle>
+      <DialogTitle>予算の更新</DialogTitle>
       <DialogContent>
         <Stack ml={1} gap={3} direction="column">
           {/* <DialogContentText>責任挙績を更新してください。</DialogContentText> */}
@@ -56,7 +57,7 @@ const BudgetEditorDialog: FC<Props> = ({
             key={"budget_sum"}
             id={"budget_sum"}
             name={"budget_sum"}
-            label={"責任挙績(円)"}
+            label={"予算(円)"}
             value={budget.updatedBudget || ""}
             onChange={(e) =>
               budget.updateContractBudgetDate(Number(e.target.value))
@@ -73,6 +74,7 @@ const BudgetEditorDialog: FC<Props> = ({
             variant="contained"
             onClick={() => {
               budget.submitUpdatedBudget();
+              handleClickSnacBar();
               handleClose();
             }}
           >

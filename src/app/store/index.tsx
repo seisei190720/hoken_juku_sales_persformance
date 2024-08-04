@@ -1,7 +1,7 @@
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import dayjs from "dayjs";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
 import YearlyPage from "../mypage/yearly/YearlyPage";

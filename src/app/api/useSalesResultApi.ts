@@ -1,5 +1,5 @@
 import { Application, IndividualSalesResult, NewVisitor } from "../types";
-import useSWR, { KeyedMutator } from "swr";
+import useSWR from "swr";
 import axios from "axios";
 import { useCallback } from "react";
 import dayjs from "dayjs";
