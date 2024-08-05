@@ -6,6 +6,7 @@ import {
   IndividualSalesResult,
   Member,
 } from "@/app/types";
+import dayjs from "dayjs";
 
 import { useCallback, useMemo } from "react";
 
@@ -36,11 +37,7 @@ export const useStoreTopComposition = (
   const storeBudgetAndAchievementExpect:
     | TopicBudgetAndAchievementType
     | undefined = useMemo(() => {
-    if (
-      !inProgressSalesResultData ||
-      !monthBudgetAndAchievementData ||
-      !applicationData
-    ) {
+    if (!inProgressSalesResultData || !monthBudgetAndAchievementData) {
       return;
     }
     const expectSum = inProgressSalesResultData
@@ -61,11 +58,7 @@ export const useStoreTopComposition = (
       ),
       見込額: expectSum,
     };
-  }, [
-    inProgressSalesResultData,
-    monthBudgetAndAchievementData,
-    applicationData,
-  ]);
+  }, [inProgressSalesResultData, monthBudgetAndAchievementData]);
 
   const budgetAndAchievementExpectByMember:
     | BudgetAndAchievementExpectByMemberType[]
@@ -76,8 +69,11 @@ export const useStoreTopComposition = (
       !inProgressSalesResultData
     )
       return;
+    const crrMontStr = dayjs().format("YYYY-MM");
+    const targetConstract = getTargetMonthDateApp(applicationData, crrMontStr);
+
     return members.map((m) => {
-      const targetApp = applicationData.filter((a) => a.userId === m.id);
+      const targetApp = targetConstract.filter((a) => a.userId === m.id);
       const constractSum = targetApp
         .filter((t) => t.status === "2")
         .reduce((pre, { firstYearFee }) => pre + (firstYearFee ?? 0), 0);

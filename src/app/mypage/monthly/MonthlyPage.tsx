@@ -1,6 +1,6 @@
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC } from "react";
 import Box from "@mui/material/Box";
 import SimpleSummaryCardWichHalfPieChart from "../../component/charts/SimpleSummaryCardWithHalfPieChart";
 import SimpleSummaryCard from "../../component/cards/SimpleSummaryCard";
@@ -55,6 +55,7 @@ const MonthlyPage: FC<Props> = ({
               title={"残り日数"}
               mainUnit={"日"}
               height={180}
+              hintMessage={"今月末までの日数を表示しています。"}
             />
             <SimpleSummaryCardWichHalfPieChart
               values={topicData.monthBudgetAndAchievementData}

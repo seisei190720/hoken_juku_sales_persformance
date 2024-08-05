@@ -34,7 +34,7 @@ const VisitorBarChart: FC<Props> = ({ values }) => {
       <Stack gap={4} padding={1}>
         <Stack direction="row">
           <Typography variant="h6" color={blue[600]}>
-            {"経路別来店者数"}
+            {"来店者数 [経路別]"}
           </Typography>
         </Stack>
         <Stack

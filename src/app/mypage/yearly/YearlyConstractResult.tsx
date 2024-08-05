@@ -84,7 +84,7 @@ const YearlyConstractResult: FC<Props> = ({
       </Stack>
       <Stack direction="row" gap={2}>
         <YearlyBudgetAndAchievementComposedChart
-          title={"予算と実績"}
+          title={"予算と実績 [推移]"}
           values={yearlyConstractComposition.budgetAndAchievement}
         />
         <YearlyBudgetAndAchievementSourceDataList
@@ -100,17 +100,17 @@ const YearlyConstractResult: FC<Props> = ({
           columnHeaders={["月", "生保", "損保", "合計"]}
         />
         <YearlyConstractStackedChart
-          title={"契約額"}
+          title={"契約額 [推移]"}
           values={yearlyConstractComposition.constractSum}
         />
       </Stack>
       <Stack direction="row" gap={2}>
         <YearlyConstractStackedChart
-          title={"契約件数"}
+          title={"契約件数 [推移]"}
           values={yearlyConstractComposition.constractCount}
         />
         <YearlyConstractSourceDataList
-          title={"契約件数表"}
+          title={"契約件数"}
           values={yearlyConstractComposition.constractCount}
           columnHeaders={["月", "生保", "損保", "合計"]}
         />

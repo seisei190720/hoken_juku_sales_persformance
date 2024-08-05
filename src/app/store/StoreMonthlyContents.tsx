@@ -15,6 +15,7 @@ import { useContractBudgetApi } from "../api/useContractBudgetApi";
 import Constract from "../mypage/monthly/contract/Contract";
 import TargetMonthButtons from "../component/TargetMonthButtons";
 import ViewModeTabs, { PageMode } from "../component/ViewModeTabs";
+import HintToolTip from "../component/HintToolTip";
 
 type Props = {
   userId: string;
@@ -72,7 +73,7 @@ const StoreMonthlyContents: FC<Props> = ({
     <>
       <Stack sx={{ width: "100%" }}>
         <Stack direction="row" justifyContent="space-between">
-          <Stack direction="row" alignItems="center" ml={3} gap={2}>
+          <Stack direction="row" alignItems="center" ml={3} gap={1}>
             <ViewModeTabs
               viewMode={viewMode}
               setViewMode={setViewMode}
@@ -81,7 +82,17 @@ const StoreMonthlyContents: FC<Props> = ({
                 { label: "契約実績", value: "contract" },
               ]}
             />
-            <Stack direction="row" justifyContent="flex-end">
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="flex-end"
+              gap={3}
+            >
+              <HintToolTip
+                hintMessage={
+                  "契約実績は「成立日」を基準に表示しています。\n例：\n　　来店日：2024年8月10日\n　　成立日：2024年9月20日\n　　→2024年9月の契約実績に含まれる"
+                }
+              />
               <FormControlLabel
                 control={
                   <Switch

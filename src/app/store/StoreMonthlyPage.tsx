@@ -59,6 +59,7 @@ const StoreMonthlyPage: FC<Props> = ({
               title={"残り日数"}
               mainUnit={"日"}
               height={180}
+              hintMessage={"今月末までの日数を表示しています。"}
             />
             <SimpleSummaryCardWichHalfPieChart
               values={topicData.monthBudgetAndAchievementData}

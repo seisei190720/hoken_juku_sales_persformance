@@ -56,6 +56,7 @@ const YearlyPage: FC<Props> = ({
               title={"残り日数"}
               mainUnit={"日"}
               height={180}
+              hintMessage={"次の6月30日(年度末)までの日数を表示しています。"}
             />
             <SimpleSummaryCardWichHalfPieChart
               values={topicData.yearBudgetAndAchievementData}

@@ -32,7 +32,7 @@ const VisitorAndAppointmentBarChart: FC<Props> = ({ values }) => {
   return (
     <Card sx={{ padding: 2, borderRadius: "12px", flex: 2, gap: 2 }}>
       <Typography variant="h6" color={blue[600]}>
-        {"メンバー別来店者数"}
+        {"来店者数 & 次アポ取得数"}
       </Typography>
       <Stack
         direction="row"
@@ -77,8 +77,6 @@ const VisitorAndAppointmentBarChart: FC<Props> = ({ values }) => {
               stroke={blue[700]}
               // strokeWidth={2}
             />
-            {/* 責任挙績が追加できるようになったら、↓でグラフに表示する */}
-            {/* <Scatter dataKey="cnt" fill="red" /> */}
           </BarChart>
         </ResponsiveContainer>
       </Stack>

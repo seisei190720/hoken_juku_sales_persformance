@@ -1,3 +1,4 @@
+import { calcPercent } from "@/app/hooks/util";
 import {
   Application,
   ContractBudget,
@@ -32,16 +33,12 @@ export const useTopicAchievementComposition = (
 
   const moldResultData = useCallback(
     (contractBudget: number, contractSum: number) => {
-      const achievedPercent = (contractSum / contractBudget) * 100;
-      const resultPercent = Math.round(achievedPercent * 10) / 10;
-      const resultPercentUnderHundred =
-        resultPercent > 100 ? 100 : resultPercent;
       return {
         実績: contractSum,
         予算: contractBudget,
         未達額:
           contractBudget - contractSum < 0 ? 0 : contractBudget - contractSum,
-        達成率: isNaN(resultPercent) ? 0 : resultPercentUnderHundred,
+        達成率: calcPercent(contractSum, contractBudget, true),
       };
     },
     []

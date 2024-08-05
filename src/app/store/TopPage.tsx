@@ -67,7 +67,7 @@ const TopPage: FC<Props> = ({
           p={2}
         >
           <Stack mb={1}>
-            <Typography variant="h6">今月のトピック</Typography>
+            <Typography variant="h6">トピック</Typography>
           </Stack>
           <Stack direction="row" gap={3}>
             <SimpleSummaryCardWichHalfPieChart
@@ -104,6 +104,7 @@ const TopPage: FC<Props> = ({
                 title={"残り日数"}
                 mainUnit={"日"}
                 height={180}
+                hintMessage={"今月末までの日数を表示しています。"}
               />
               <SimpleSummaryCard
                 values={
@@ -112,7 +113,7 @@ const TopPage: FC<Props> = ({
                     subValue: `${lastAppComposition.lastApplicationData.count}件`,
                   }
                 }
-                title={"未成立の申込残り"}
+                title={"未成立の申込残り(見込)"}
                 mainUnit={"円"}
                 height={180}
               />
@@ -123,11 +124,11 @@ const TopPage: FC<Props> = ({
             </Stack>
             <Stack direction="row" gap={2}>
               <BudgetAndAchievementExpectBarChart
-                title={"実績グラフ"}
+                title={"見込実績 [メンバー別]"}
                 values={storeTopData.budgetAndAchievementExpectByMember}
               />
               <BudgetAndAchievementExpectedSouceList
-                title={"実績見込表"}
+                title={"見込実績"}
                 values={storeTopData.budgetAndAchievementExpectByMember}
                 columnHeaders={["名前", "予算", "実績", "見込額", "不足額"]}
               />

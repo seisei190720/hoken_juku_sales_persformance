@@ -6,6 +6,7 @@ import IndividualSalesResults from "./IndividualSalesResults";
 import { resolveYear, useSalesResultApi } from "../../api/useSalesResultApi";
 import TargetMonthButtons from "@/app/component/TargetMonthButtons";
 import ViewModeTabs, { PageMode } from "@/app/component/ViewModeTabs";
+import HintToolTip from "@/app/component/HintToolTip";
 
 type Props = {
   userId: string;
@@ -36,7 +37,7 @@ const MonthlyPageContents: FC<Props> = ({ userId, canEdit }) => {
     <>
       <Stack sx={{ width: "100%" }}>
         <Stack direction="row" justifyContent="space-between">
-          <Stack direction="row" alignItems="center" ml={3}>
+          <Stack direction="row" alignItems="center" ml={3} gap={2}>
             <ViewModeTabs
               viewMode={viewMode}
               setViewMode={setViewMode}
@@ -46,6 +47,11 @@ const MonthlyPageContents: FC<Props> = ({ userId, canEdit }) => {
                 { label: "成果", value: "achievement" },
                 { label: "契約実績", value: "contract" },
               ]}
+            />
+            <HintToolTip
+              hintMessage={
+                "契約実績は「成立日」を基準に表示しています。\n例：\n　　来店日：2024年8月10日\n　　成立日：2024年9月20日\n　　→2024年9月の契約実績に含まれる"
+              }
             />
           </Stack>
           <TargetMonthButtons

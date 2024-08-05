@@ -35,7 +35,7 @@ const ApplicatorBarChart: FC<Props> = ({ values }) => {
       <Stack gap={4} padding={1}>
         <Stack direction="row">
           <Typography variant="h6" color={blue[600]}>
-            {"商品別実績AC"}
+            {"実績 [商品別]"}
           </Typography>
         </Stack>
         <Stack

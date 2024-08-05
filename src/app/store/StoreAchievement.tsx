@@ -50,13 +50,13 @@ const StoreAchievement: FC<Props> = ({
           values={storeAchievementData.visitorAndAppointmentData}
         />
         <VisitorAndAppointmentSourceDataList
-          title={"来店者&次アポ表"}
+          title={"来店者数 & 次アポ取得数(率)"}
           values={storeAchievementData.visitorAndAppointmentData}
         />
       </Stack>
       <Stack direction="row" gap={2}>
         <SourceDataList
-          title={"新規契約件数(率)表"}
+          title={"新規契約件数(率)"}
           values={storeAchievementData.constractCountAndPercentData}
           columnHeaders={["名前", "契約数", "新規数", "割合"]}
         />
@@ -67,11 +67,11 @@ const StoreAchievement: FC<Props> = ({
       </Stack>
       <Stack direction="row" gap={2}>
         <CountAndPercentBarChart
-          title={"ありがとう(率)"}
+          title={"ありがとう件数(率)"}
           values={storeAchievementData.thankyouCountAndPercentData}
         />
         <SourceDataList
-          title={"ありがとう件数(率)表"}
+          title={"ありがとう件数(率)"}
           values={storeAchievementData.thankyouCountAndPercentData}
           columnHeaders={["名前", "件数", "申込数", "割合"]}
         />

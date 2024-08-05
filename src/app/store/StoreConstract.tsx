@@ -46,11 +46,11 @@ const StoreConstract: FC<Props> = ({
   return (
     <Stack direction="row" gap={2}>
       <YearlyBudgetAndAchievementComposedChart
-        title={"実績グラフ"}
+        title={"予算と実績"}
         values={storeConstractData.constractSumAndAchievementRateData}
       />
       <YearlyBudgetAndAchievementSourceDataList
-        title={"実績表"}
+        title={"予算と実績"}
         values={storeConstractData.constractSumAndAchievementRateData}
         columnHeaders={["名前", "予算", "実績", "達成率"]}
       />

@@ -29,6 +29,8 @@ import Box from "@mui/material/Box";
 import SuccessSnacBar from "@/app/component/SuccessSnacBar";
 import { useBoolean } from "@/app/hooks/util";
 import EmptyState from "../component/EmptyState";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 type Props = {
   salesResultData: IndividualSalesResult[] | undefined;
@@ -100,16 +102,8 @@ const ApplicationList: FC<Props> = ({
     }
   };
 
-  const getAccordionHeaderColor = (
-    thankyou: boolean,
-    showInProgressApp: boolean
-  ) => {
-    if (thankyou) return red[200];
-    return showInProgressApp ? orange[100] : green[100];
-  };
-
   if (!salesResultData) return <CircularProgress />;
-  if (salesResultData.length < 1)
+  if (salesResultData.filter((v) => v.applications.length > 0).length < 1)
     return (
       <Box pt={2}>
         <EmptyState
@@ -142,10 +136,9 @@ const ApplicationList: FC<Props> = ({
                 sx={{
                   height: "64px",
                   borderRadius: "12px ",
-                  backgroundColor: getAccordionHeaderColor(
-                    result.thankyou,
-                    existsInProgressConstract(result)
-                  ),
+                  backgroundColor: existsInProgressConstract(result)
+                    ? orange[100]
+                    : green[100],
                 }}
               >
                 <Stack
@@ -163,12 +156,19 @@ const ApplicationList: FC<Props> = ({
                   >
                     {`申込数：${result.applications.length}件`}
                   </Typography>
-                  <Typography
-                    variant="subtitle2"
-                    sx={{ color: "text.secondary" }}
-                  >
-                    {`ありがとう：${result.thankyou ? "完了済み" : "未完了"}`}
-                  </Typography>
+                  <Stack direction="row" gap={0.5}>
+                    <Typography
+                      variant="subtitle2"
+                      sx={{ color: "text.secondary" }}
+                    >
+                      {`ありがとう：${result.thankyou ? "完了済み" : "未完了"}`}
+                    </Typography>
+                    {result.thankyou ? (
+                      <FavoriteIcon color="error" />
+                    ) : (
+                      <FavoriteBorderIcon />
+                    )}
+                  </Stack>
                 </Stack>
               </AccordionSummary>
               <AccordionDetails>
