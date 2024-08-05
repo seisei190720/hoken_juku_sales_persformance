@@ -166,7 +166,7 @@ const ApplicationList: FC<Props> = ({
                     {result.thankyou ? (
                       <FavoriteIcon color="error" />
                     ) : (
-                      <FavoriteBorderIcon />
+                      <FavoriteBorderIcon color="disabled" />
                     )}
                   </Stack>
                 </Stack>

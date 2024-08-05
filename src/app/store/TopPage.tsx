@@ -1,7 +1,7 @@
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
-import { FC, useMemo } from "react";
+import { FC, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import { TopicBudgetAndAchievementType } from "../mypage/top/hooks/useTopicAchievementComposition";
 import SimpleSummaryCard from "../component/cards/SimpleSummaryCard";
@@ -12,6 +12,9 @@ import { useMockData } from "../mocks";
 import BudgetAndAchievementExpectBarChart from "../component/charts/BudgetAndAchievementExpectBarChart";
 import BudgetAndAchievementExpectedSouceList from "../component/lists/BudgetAndAchievementExpectedSouceList";
 import { useCountDownMonthDate } from "../hooks/util";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import IconButton from "@mui/material/IconButton";
 
 type Props = {
   userId: string;
@@ -54,6 +57,7 @@ const TopPage: FC<Props> = ({
     []
   );
   const dateData = useCountDownMonthDate();
+  const [displayTopic, setDisplayTopic] = useState<boolean>(true);
   return (
     <>
       <Stack gap={3}>
@@ -66,19 +70,40 @@ const TopPage: FC<Props> = ({
           borderRadius={"12px"}
           p={2}
         >
-          <Stack mb={1}>
+          <Stack direction="row" justifyContent="space-between" pr={2}>
             <Typography variant="h6">トピック</Typography>
+            {displayTopic ? (
+              <IconButton
+                aria-label="close"
+                size="small"
+                color="primary"
+                onClick={() => setDisplayTopic(false)}
+              >
+                <VisibilityOffIcon />
+              </IconButton>
+            ) : (
+              <IconButton
+                aria-label="close"
+                size="small"
+                color="primary"
+                onClick={() => setDisplayTopic(true)}
+              >
+                <VisibilityIcon />
+              </IconButton>
+            )}
           </Stack>
-          <Stack direction="row" gap={3}>
-            <SimpleSummaryCardWichHalfPieChart
-              values={topicData.monthBudgetAndAchievementData}
-              title={`今月の実績`}
-            />
-            <SimpleSummaryCardWichHalfPieChart
-              values={topicData.yearBudgetAndAchievementData}
-              title={`今年度の実績`}
-            />
-          </Stack>
+          {displayTopic && (
+            <Stack direction="row" gap={3}>
+              <SimpleSummaryCardWichHalfPieChart
+                values={topicData.monthBudgetAndAchievementData}
+                title={`今月の実績`}
+              />
+              <SimpleSummaryCardWichHalfPieChart
+                values={topicData.yearBudgetAndAchievementData}
+                title={`今年度の実績`}
+              />
+            </Stack>
+          )}
         </Box>
 
         <Box
