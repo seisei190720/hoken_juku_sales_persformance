@@ -35,8 +35,6 @@ export const useCountDownYearDate = () => {
   const today = dayjs();
   // 今日が今月の何日目かを取得
   const dayOfMonth = today.date();
-  // 経過率を計算
-  const progressRate = (dayOfMonth / 365) * 100;
 
   // 次の6月30日
   let nextJune30 = today.month(5).date(30);
@@ -44,8 +42,13 @@ export const useCountDownYearDate = () => {
   if (today.isAfter(nextJune30)) {
     nextJune30 = nextJune30.add(1, "year");
   }
+  const lastDays = nextJune30.diff(today, "day");
+  // 経過率を計算
+  const progressDays = 365 - lastDays;
+  const progressRate = (progressDays / 365) * 100;
+
   return {
-    lastDays: nextJune30.diff(today, "day"),
+    lastDays,
     progressRate: progressRate.toFixed(1),
   };
 };

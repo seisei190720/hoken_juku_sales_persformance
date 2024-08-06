@@ -26,12 +26,14 @@ type Props = {
         }
       | undefined;
   };
+  mutateTopicData: (mutateApp: boolean) => void;
 };
 const MonthlyPage: FC<Props> = ({
   userId,
   canEdit,
   topicData,
   lastAppComposition,
+  mutateTopicData,
 }) => {
   const [displayTopic, setDisplayTopic] = useState<boolean>(true);
   const dateData = useCountDownMonthDate();
@@ -99,7 +101,11 @@ const MonthlyPage: FC<Props> = ({
             </Stack>
           )}
         </Box>
-        <MonthlyPageContents userId={userId} canEdit={canEdit} />
+        <MonthlyPageContents
+          userId={userId}
+          canEdit={canEdit}
+          mutateTopicData={mutateTopicData}
+        />
       </Stack>
     </>
   );

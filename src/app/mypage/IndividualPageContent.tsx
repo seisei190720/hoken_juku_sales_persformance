@@ -1,6 +1,6 @@
 import Stack from "@mui/material/Stack";
 import dayjs from "dayjs";
-import { FC, useMemo, useState } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
 import MonthlyPage from "./monthly/MonthlyPage";
@@ -41,16 +41,28 @@ const IndividualPageContent: FC<Props> = ({ userId, canEdit }) => {
 
   const crrMonth = useMemo(() => dayjs().format("YYYY-MM"), []);
 
-  const { contractBudgetData } = useContractBudgetApi({
-    userId: userId,
-    year: resolveYear(crrMonth),
-    month: null,
-  });
-  const { applicationData } = useApplicationApi({
+  const { contractBudgetData, mutate: mutateContractBudget } =
+    useContractBudgetApi({
+      userId: userId,
+      year: resolveYear(crrMonth),
+      month: null,
+    });
+  const { applicationData, mutate: mutateApplication } = useApplicationApi({
     userId: userId,
     year: resolveYear(crrMonth),
     establishDate: null,
   });
+
+  const mutateTopicData = useCallback(
+    (mutateApp: boolean) => {
+      if (mutateApp) {
+        mutateLastApp();
+        mutateApplication();
+      }
+      mutateContractBudget();
+    },
+    [mutateLastApp, mutateContractBudget, mutateApplication]
+  );
 
   const topicData = useTopicAchievementComposition(
     contractBudgetData,
@@ -94,6 +106,7 @@ const IndividualPageContent: FC<Props> = ({ userId, canEdit }) => {
                 canEdit={canEdit}
                 topicData={topicData}
                 lastAppComposition={lastAppComposition}
+                mutateTopicData={mutateTopicData}
               />
             );
           case "yearly":
