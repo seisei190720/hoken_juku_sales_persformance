@@ -67,7 +67,8 @@ export const useSalesResultApi = (
     status: string | null;
     firstVisitDate: string | null;
     year: string | null;
-  }
+  },
+  mutateOtherData?: () => void
 ) => {
   const {
     data: salesResultData,
@@ -96,11 +97,14 @@ export const useSalesResultApi = (
           remarks: newData.remarks === "" ? null : newData.remarks,
         });
         await mutate(); //uuidが必要になるため、ローカルデータでmutateができない。
+        if (mutateOtherData) {
+          await mutateOtherData();
+        }
       } catch (error) {
         console.error("Error posting data:", error);
       }
     },
-    [userId, mutate]
+    [userId, mutate, mutateOtherData]
   );
 
   const updateSalesResultData = useCallback(
@@ -127,11 +131,14 @@ export const useSalesResultApi = (
           );
           return updatedSalesResultData;
         }, false);
+        if (mutateOtherData) {
+          await mutateOtherData();
+        }
       } catch (error) {
         console.error("Error updating data:", error);
       }
     },
-    [userId, mutate]
+    [userId, mutate, mutateOtherData]
   );
 
   const deleteSalesResultData = useCallback(
@@ -152,11 +159,14 @@ export const useSalesResultApi = (
           );
           return updatedSalesResultData;
         }, false);
+        if (mutateOtherData) {
+          await mutateOtherData();
+        }
       } catch (error) {
         console.error("Error deleting data:", error);
       }
     },
-    [mutate]
+    [mutate, mutateOtherData]
   );
 
   return {

@@ -34,11 +34,14 @@ const fetcher = async ([url, userId, year, month]: [
   });
 };
 
-export const useContractBudgetApi = (param: {
-  userId: string | null;
-  year: string | null;
-  month: string | null;
-}) => {
+export const useContractBudgetApi = (
+  param: {
+    userId: string | null;
+    year: string | null;
+    month: string | null;
+  },
+  mutateOtherData?: (mutateApp: boolean) => void
+) => {
   const {
     data: contractBudgetData,
     error,
@@ -55,11 +58,14 @@ export const useContractBudgetApi = (param: {
       try {
         await axios.post(prodUrl, newData);
         await mutate();
+        if (mutateOtherData) {
+          await mutateOtherData(false);
+        }
       } catch (error) {
         console.error("Error posting data:", error);
       }
     },
-    [mutate]
+    [mutate, mutateOtherData]
   );
 
   return {

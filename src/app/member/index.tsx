@@ -8,6 +8,7 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import IndividualPageContent from "../mypage/IndividualPageContent";
+import EmptyState from "../component/EmptyState";
 
 type Props = {
   userId: string;
@@ -53,8 +54,11 @@ const MemberPage: FC<Props> = ({ userId, canEdit }) => {
         </Stack>
       </Stack>
       {selecetedMember === null ? (
-        <Stack m={2}>
-          <Typography>表示したいメンバーを選択してください。</Typography>
+        <Stack height="calc(100vh - 200px)">
+          <EmptyState
+            message={"表示したいメンバーを選択してください。"}
+            subMessage={""}
+          />
         </Stack>
       ) : (
         <IndividualPageContent userId={selecetedMember.id} canEdit={false} />

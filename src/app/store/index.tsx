@@ -26,6 +26,7 @@ const StorePage: FC<Props> = ({ userId, canEdit }) => {
     event: React.MouseEvent<HTMLElement>,
     newToggleMenu: string
   ) => {
+    if (newToggleMenu === null) return;
     setToggleMenu(newToggleMenu as ToggleMenu);
   };
   const { salesResultData: lastApp } = useSalesResultApi(null, {
