@@ -15,6 +15,7 @@ import { TopicBudgetAndAchievementType } from "./hooks/useTopicAchievementCompos
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
+import { blue, green, grey } from "@mui/material/colors";
 
 type Props = {
   userId: string;
@@ -56,6 +57,8 @@ const TopPage: FC<Props> = ({
           ml={1}
           mr={1}
           sx={{
+            // background: blue[50],
+            // border: `solid ${blue[100]}`,
             background: "#f5f5f5",
           }}
           borderRadius={"12px"}
@@ -112,6 +115,8 @@ const TopPage: FC<Props> = ({
           mr={1}
           sx={{
             minHeight: "calc(100vh - 470px)",
+            // background: grey[100],
+            // border: `solid ${grey[200]}`,
             background: "#f5f5f5",
           }}
           borderRadius={"12px"}

@@ -40,28 +40,23 @@ const YearlyVisitorAreaChart: FC<Props> = ({ title, values }) => {
 
   return (
     <Card sx={{ padding: 2, borderRadius: "12px", flex: 2, gap: 2 }}>
-      <Stack direction="row" justifyContent="space-between">
-        <Typography variant="h6" color={blue[600]}>
-          {title}
-        </Typography>
-        <ToggleButtonGroup
-          size="small"
-          color="primary"
-          exclusive
-          value={chartViewMode}
-          onChange={updateViewMode}
-          aria-label="sales-result-chart-mode-tab"
-        >
-          <ToggleButton value="visitorBreakdown">来店者内訳</ToggleButton>
-          <ToggleButton value="nextAppointor">次アポ数</ToggleButton>
-        </ToggleButtonGroup>
-      </Stack>
-      <Stack
-        direction="row"
-        justifyContent="center"
-        width="100%"
-        height="300px"
-      >
+      <Stack justifyContent="space-between" height="100%" gap={1} p={1}>
+        <Stack direction="row" justifyContent="space-between">
+          <Typography variant="h6" color={blue[600]}>
+            {title}
+          </Typography>
+          <ToggleButtonGroup
+            size="small"
+            color="primary"
+            exclusive
+            value={chartViewMode}
+            onChange={updateViewMode}
+            aria-label="sales-result-chart-mode-tab"
+          >
+            <ToggleButton value="visitorBreakdown">来店者内訳</ToggleButton>
+            <ToggleButton value="nextAppointor">次アポ数</ToggleButton>
+          </ToggleButtonGroup>
+        </Stack>
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             width={500}

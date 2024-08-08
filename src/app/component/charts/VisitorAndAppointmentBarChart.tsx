@@ -31,15 +31,10 @@ const VisitorAndAppointmentBarChart: FC<Props> = ({ values }) => {
   if (!values) return <LoadingCard height={400} flex={2} />;
   return (
     <Card sx={{ padding: 2, borderRadius: "12px", flex: 2, gap: 2 }}>
-      <Typography variant="h6" color={blue[600]}>
-        {"来店者数 & 次アポ取得数"}
-      </Typography>
-      <Stack
-        direction="row"
-        justifyContent="center"
-        width="100%"
-        height="300px"
-      >
+      <Stack justifyContent="space-between" height="100%" gap={1}>
+        <Typography variant="h6" color={blue[600]}>
+          {"来店者数 & 次アポ取得数"}
+        </Typography>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             //   width={500}

@@ -32,15 +32,10 @@ const YearlyBudgetAndAchievementComposedChart: FC<Props> = ({
 
   return (
     <Card sx={{ padding: 2, borderRadius: "12px", flex: 2, gap: 2 }}>
-      <Typography variant="h6" color={blue[600]}>
-        {title}
-      </Typography>
-      <Stack
-        direction="row"
-        justifyContent="center"
-        width="100%"
-        height="300px"
-      >
+      <Stack justifyContent="space-between" height="100%" gap={1}>
+        <Typography variant="h6" color={blue[600]}>
+          {title}
+        </Typography>
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart
             width={500}

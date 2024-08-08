@@ -6,7 +6,7 @@ import { blue } from "@mui/material/colors";
 import { FC } from "react";
 import React from "react";
 import Chip from "@mui/material/Chip";
-import LoadingCard from "../cards/LoadingCard";
+import LoadingCard from "./LoadingCard";
 
 type Props = {
   values:

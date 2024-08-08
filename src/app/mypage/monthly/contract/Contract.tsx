@@ -4,7 +4,7 @@ import { Application, ContractBudget, ProductMst } from "@/app/types";
 import { grey } from "@mui/material/colors";
 import Stack from "@mui/material/Stack";
 import { FC } from "react";
-import ThreeCompartmentSummaryCard from "../../../component/charts/ThreeCompartmentSummaryCard";
+import ThreeCompartmentSummaryCard from "../../../component/cards/ThreeCompartmentSummaryCard";
 import ApplicatorBarChart from "../../../component/charts/ApplicatorBarChart";
 import { useApplicatorSummaryComposition } from "./hooks/useApplicatorSummaryComposition";
 

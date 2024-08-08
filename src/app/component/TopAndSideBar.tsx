@@ -16,8 +16,10 @@ import MuiDrawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import MenuIcon from "@mui/icons-material/Menu";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import { CognitoUser } from "amazon-cognito-identity-js";
+import Image from "next/image";
+import Stack from "@mui/material/Stack";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 type Props = {
   cognitoUser: CognitoUser | null;
@@ -57,19 +59,27 @@ const TopAndSideBar: FC<Props> = ({
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            ほけん塾 営業成績管理
-          </Typography>
+          <Stack gap={1} direction="row" alignItems="center" width="100%">
+            <Image
+              src="/hokenjukudog.png" //配置した画像のパスを記述する。
+              alt="Top Image"
+              height={40}
+              width={35}
+            />
+            <Typography variant="h6" noWrap component="div">
+              ほけん塾 営業成績管理システム
+            </Typography>
+          </Stack>
           {cognitoUser !== null && (
-            <Button
+            <IconButton
               color="inherit"
               onClick={() => {
                 cognitoUser.signOut();
                 window.location.reload();
               }}
             >
-              SignOut
-            </Button>
+              <LogoutIcon />
+            </IconButton>
           )}
         </Toolbar>
       </AppBar>

@@ -4,7 +4,7 @@ import Stack from "@mui/material/Stack";
 import { FC } from "react";
 import ConsultContentPieChart from "../../../component/charts/ConsultContentPieChart";
 import VisitorBarChart from "../../../component/charts/VisitorBarChart";
-import ThreeCompartmentSummaryCard from "../../../component/charts/ThreeCompartmentSummaryCard";
+import ThreeCompartmentSummaryCard from "../../../component/cards/ThreeCompartmentSummaryCard";
 import { useVisitorSummaryComposition } from "./hooks/useVisitorSummaryComposition";
 import SimpleSummaryCard from "../../../component/cards/SimpleSummaryCard";
 
