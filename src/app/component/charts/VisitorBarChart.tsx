@@ -31,46 +31,37 @@ const VisitorBarChart: FC<Props> = ({ values }) => {
   if (!values) return <LoadingCard height={400} flex={2} />;
   return (
     <Card sx={{ padding: 2, borderRadius: "12px", flex: 2 }}>
-      <Stack gap={4} padding={1}>
-        <Stack direction="row">
-          <Typography variant="h6" color={blue[600]}>
-            {"来店者数 [経路別]"}
-          </Typography>
-        </Stack>
-        <Stack
-          direction="row"
-          justifyContent="center"
-          width="100%"
-          height="300px"
-        >
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={values}
-              margin={{
-                top: 5,
-                right: 50,
-                left: 20,
-                bottom: 5,
-              }}
+      <Stack justifyContent="space-between" height="100%" gap={1}>
+        <Typography variant="h6" color={blue[600]}>
+          {"来店者数 [経路別]"}
+        </Typography>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            data={values}
+            margin={{
+              top: 5,
+              right: 50,
+              left: 20,
+              bottom: 5,
+            }}
+          >
+            {/* <CartesianGrid strokeDasharray="3 3" /> */}
+            <CartesianGrid />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar
+              dataKey="人数"
+              fill={blue[600]}
+              activeBar={<Rectangle fill={blue[100]} stroke={yellow[300]} />}
             >
-              {/* <CartesianGrid strokeDasharray="3 3" /> */}
-              <CartesianGrid />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar
-                dataKey="人数"
-                fill={blue[600]}
-                activeBar={<Rectangle fill={blue[100]} stroke={yellow[300]} />}
-              >
-                {values.map((v, index) => (
-                  <Cell key={`cell-${index}`} cursor="pointer" fill={v.color} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </Stack>
+              {values.map((v, index) => (
+                <Cell key={`cell-${index}`} cursor="pointer" fill={v.color} />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
       </Stack>
     </Card>
   );

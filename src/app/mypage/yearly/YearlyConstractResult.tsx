@@ -7,7 +7,7 @@ import YearlyConstractStackedChart from "../../component/charts/YearlyConstractS
 import YearlyConstractSourceDataList from "../../component/lists/YearlyConstractSourceDataList";
 import YearlyBudgetAndAchievementSourceDataList from "../../component/lists/YearlyBudgetAndAchievementSourceDataList";
 import BudgetCard from "../../component/cards/BudgetCard";
-import ThreeCompartmentSummaryCard from "../../component/charts/ThreeCompartmentSummaryCard";
+import ThreeCompartmentSummaryCard from "../../component/cards/ThreeCompartmentSummaryCard";
 
 type Props = {
   userId: string; // userId or "1"(storeId)の可能性がある

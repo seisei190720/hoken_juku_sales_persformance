@@ -32,12 +32,10 @@ const ApplicatorBarChart: FC<Props> = ({ values }) => {
   if (!values) return <LoadingCard height={400} flex={1} />;
   return (
     <Card sx={{ padding: 2, borderRadius: "12px", flex: 1 }}>
-      <Stack gap={4} padding={1}>
-        <Stack direction="row">
-          <Typography variant="h6" color={blue[600]}>
-            {"実績 [商品別]"}
-          </Typography>
-        </Stack>
+      <Stack justifyContent="space-between" height="100%" gap={1}>
+        <Typography variant="h6" color={blue[600]}>
+          {"実績 [商品別]"}
+        </Typography>
         <Stack
           direction="row"
           justifyContent="center"
